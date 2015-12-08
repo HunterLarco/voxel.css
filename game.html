@@ -57,8 +57,7 @@ canvas{
       y: 0,
       z: 0
     },
-    zoom: 1,
-    zbuffer: {}
+    zoom: 1
   }
   
   var mouse = {
@@ -117,17 +116,6 @@ canvas{
     
     for(var i=0,item; item=items[i++];)
       item.render();
-    
-    for(var coord in scene.zbuffer){
-      var rawPoint = coord.split(',');
-      var point = {x:rawPoint[0], y:rawPoint[1]};
-      var fill = scene.zbuffer[coord];
-      
-      ctx.fillStyle = fill;
-      ctx.fillRect(point.x, point.y, 1, 1);
-    }
-    
-    scene.zbuffer = {};
     
     ctx.restore();
   }
@@ -252,37 +240,16 @@ canvas{
       var rp2 = SceneRotate(p2);
       var rp3 = SceneRotate(p3);
       
-      var tlx = Math.round(Math.min(rp1.x, rp2.x, rp3.x));
-      var tly = Math.round(Math.min(rp1.y, rp2.y, rp3.y));
-      var brx = Math.round(Math.max(rp1.x, rp2.x, rp3.x));
-      var bry = Math.round(Math.max(rp1.y, rp2.y, rp3.y));
+      ctx.fillStyle = fill;
+      ctx.strokeStyle = stroke;
       
-      for(var x=tlx; x<=brx; x++)
-        for(var y=tly; y<=bry; y++){
-          if(is_in_triangle(x, y, rp1.x, rp1.y, rp2.x, rp2.y, rp3.x, rp3.y))
-            scene.zbuffer[x+','+y] = fill;
-        }
-    }
-    function is_in_triangle (px,py,ax,ay,bx,by,cx,cy){
-      // is point p in triangle abc
-      //credit: http://www.blackpawn.com/texts/pointinpoly/default.html
-
-      var v0 = [cx-ax,cy-ay];
-      var v1 = [bx-ax,by-ay];
-      var v2 = [px-ax,py-ay];
-
-      var dot00 = (v0[0]*v0[0]) + (v0[1]*v0[1]);
-      var dot01 = (v0[0]*v1[0]) + (v0[1]*v1[1]);
-      var dot02 = (v0[0]*v2[0]) + (v0[1]*v2[1]);
-      var dot11 = (v1[0]*v1[0]) + (v1[1]*v1[1]);
-      var dot12 = (v1[0]*v2[0]) + (v1[1]*v2[1]);
-
-      var invDenom = 1/ (dot00 * dot11 - dot01 * dot01);
-
-      var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-      var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-
-      return ((u >= 0) && (v >= 0) && (u + v < 1));
+      ctx.beginPath();
+      ctx.moveTo(rp1.x, rp1.y);
+      ctx.lineTo(rp2.x, rp2.y);
+      ctx.lineTo(rp3.x, rp3.y);
+      ctx.closePath();
+      // ctx.fill();
+      ctx.stroke();
     }
     
     
