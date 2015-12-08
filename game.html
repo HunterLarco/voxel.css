@@ -17,11 +17,21 @@ canvas{
   height:100%;
 }
 
+.fps{
+  position:absolute;
+  top:10px;
+  left:10px;
+  
+  font-size:16px;
+  line-height:16px;
+}
+
 </style>
 </head>
 <body>
 
 
+<div class='fps'></div>
 <canvas></canvas>
 
 
@@ -33,7 +43,7 @@ canvas{
   var canvas, ctx, width, height;
   
   var fps = {
-    CAP: 0.5,
+    CAP: 60,
     value: 0
   }
   
@@ -47,10 +57,30 @@ canvas{
       y: 0,
       z: 0
     },
-    zoom: 1
+    zoom: 1,
+    zbuffer: {}
   }
   
-  var squares = [];
+  var mouse = {
+    start: {
+      x: 0,
+      y: 0
+    },
+    current: {
+      x: 0,
+      y: 0
+    },
+    lastMove: {
+      x: 0,
+      y: 0
+    }
+  }
+  
+  var items = [];
+  
+  // uses a naive method of z-buffering:
+  // each triangle is ordered by average z-depth and then
+  // rendered in order from least to greatest.
   
   function BindCanvas(){
     canvas = document.querySelector('canvas');
@@ -71,18 +101,64 @@ canvas{
       fps.lastRender = Date.now();
       fps.value = 1000 / diff;
       
-      if (fps.value < fps.CAP) requestAnimationFrame(Render);
+      if (fps.value < fps.CAP - 5) requestAnimationFrame(Render);
       else setTimeout(Render, 1000 / fps.CAP);
     }
     
-    ctx.save();
-    ctx.translate(width/2, height/2);
+    if (fps.elem === undefined)
+      fps.elem = document.querySelector('.fps');
+    fps.elem.innerHTML = Math.round(fps.value);
     
-    var point = {x:0, y:0, z:100};
-    var rotated = Rotate(point, {x:1,y:0,z:0}, Math.PI/4);
-    ctx.fillRect(rotated.x, rotated.y, 6, 6);
+    ctx.clearRect(0, 0, width, height);
+    
+    ctx.save();
+    ctx.translate(width/2 + scene.pan.x, height/2 + scene.pan.y);
+    ctx.scale(scene.zoom, scene.zoom);
+    
+    for(var i=0,item; item=items[i++];)
+      item.render();
+    
+    for(var coord in scene.zbuffer){
+      var rawPoint = coord.split(',');
+      var point = {x:rawPoint[0], y:rawPoint[1]};
+      var fill = scene.zbuffer[coord];
+      
+      ctx.fillStyle = fill;
+      ctx.fillRect(point.x, point.y, 1, 1);
+    }
+    
+    scene.zbuffer = {};
     
     ctx.restore();
+  }
+  
+  function BindMouseToScene(){
+    canvas.addEventListener('mousedown', MouseDown);
+  }
+  function MouseDown(event){
+    mouse.start.x = event.x;
+    mouse.start.y = event.y;
+    
+    mouse.current.x = event.x;
+    mouse.current.y = event.y;
+    
+    window.addEventListener('mousemove', MouseMove);
+    window.addEventListener('mouseup', MouseUp);
+  }
+  function MouseUp(event){
+    window.removeEventListener('mousemove', MouseMove);
+    window.removeEventListener('mouseup', MouseUp);
+  }
+  function MouseMove(event){
+    mouse.lastMove.dx = event.x - mouse.current.x;
+    mouse.lastMove.dy = event.y - mouse.current.y;
+    
+    mouse.current.x = event.x;
+    mouse.current.y = event.y;
+    
+    const rotations = 2;
+    scene.rotate.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
+    scene.rotate.x += mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
   }
   
   // axis is unit vector
@@ -104,6 +180,13 @@ canvas{
       z: result[2][0]
     }
   }
+  function SceneRotate(point){
+    var rotated = point;
+    rotated = Rotate(rotated, {x:0,y:1,z:0}, scene.rotate.y);
+    rotated = Rotate(rotated, {x:1,y:0,z:0}, scene.rotate.x);
+    rotated = Rotate(rotated, {x:0,y:0,z:1}, scene.rotate.z);
+    return rotated;
+  }
   function MultiplyMatrices(m1, m2){
     var result = [];
     for (var i = 0; i < m1.length; i++) {
@@ -119,9 +202,224 @@ canvas{
     return result;
   }
   
+  function Line(){
+    var self = this;
+    
+    
+    var p1, p2;
+    var stroke = 'rgb(0,0,0)';
+    
+    
+    self.render = Render;
+    
+    
+    function Render(){
+      var rp1 = SceneRotate(p1);
+      var rp2 = SceneRotate(p2);
+      
+      ctx.strokeStyle = stroke;
+      
+      ctx.beginPath();
+      ctx.moveTo(rp1.x, rp1.y);
+      ctx.lineTo(rp2.x, rp2.y);
+      ctx.stroke();
+    }
+    
+    
+    (function Constructor(_p1, _p2, optionals){
+      var optionals = optionals || {};
+      
+      p1 = _p1;
+      p2 = _p2;
+      
+      if (!!optionals.stroke) stroke = optionals.stroke;
+    }).apply(self, arguments);
+  }
+  function Triangle(){
+    var self = this;
+    
+    
+    var p1, p2, p3;
+    var fill = 'rgba(0,0,0,0)';
+    var stroke = 'rgb(0,0,0)';
+    
+    
+    self.render = Render;
+    
+    
+    function Render(){
+      var rp1 = SceneRotate(p1);
+      var rp2 = SceneRotate(p2);
+      var rp3 = SceneRotate(p3);
+      
+      var tlx = Math.round(Math.min(rp1.x, rp2.x, rp3.x));
+      var tly = Math.round(Math.min(rp1.y, rp2.y, rp3.y));
+      var brx = Math.round(Math.max(rp1.x, rp2.x, rp3.x));
+      var bry = Math.round(Math.max(rp1.y, rp2.y, rp3.y));
+      
+      for(var x=tlx; x<=brx; x++)
+        for(var y=tly; y<=bry; y++){
+          if(is_in_triangle(x, y, rp1.x, rp1.y, rp2.x, rp2.y, rp3.x, rp3.y))
+            scene.zbuffer[x+','+y] = fill;
+        }
+    }
+    function is_in_triangle (px,py,ax,ay,bx,by,cx,cy){
+      // is point p in triangle abc
+      //credit: http://www.blackpawn.com/texts/pointinpoly/default.html
+
+      var v0 = [cx-ax,cy-ay];
+      var v1 = [bx-ax,by-ay];
+      var v2 = [px-ax,py-ay];
+
+      var dot00 = (v0[0]*v0[0]) + (v0[1]*v0[1]);
+      var dot01 = (v0[0]*v1[0]) + (v0[1]*v1[1]);
+      var dot02 = (v0[0]*v2[0]) + (v0[1]*v2[1]);
+      var dot11 = (v1[0]*v1[0]) + (v1[1]*v1[1]);
+      var dot12 = (v1[0]*v2[0]) + (v1[1]*v2[1]);
+
+      var invDenom = 1/ (dot00 * dot11 - dot01 * dot01);
+
+      var u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+      var v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+      return ((u >= 0) && (v >= 0) && (u + v < 1));
+    }
+    
+    
+    (function Constructor(_p1, _p2, _p3, optionals){
+      var optionals = optionals || {};
+      
+      p1 = _p1;
+      p2 = _p2;
+      p3 = _p3;
+      
+      if (!!optionals.fill) fill = optionals.fill;
+      if (!!optionals.stroke) stroke = optionals.stroke;
+    }).apply(self, arguments);
+  }
+  function Polygon(){
+    var self = this;
+    
+    
+    var triangles = [];
+    
+    
+    self.render = Render;
+    self.getTriangles = GetTriangles;
+    
+    
+    function Render(){
+      for(var i=0,triangle; triangle=triangles[i++];)
+        triangle.render();
+    }
+    function GetTriangles(){
+      return triangles.concat([]);
+    }
+    
+    
+    (function Constructor(){
+      if(arguments[arguments.length-1] === undefined || arguments[arguments.length-1].x === undefined){
+        var optionals = Array.prototype.slice.call(arguments, -1)[0];
+        var points = Array.prototype.slice.call(arguments, 0, -1);
+      }else{
+        var optionals = {};
+        var points = arguments;
+      }
+      
+      for(var i=1; i<points.length-1; i++)
+        triangles.push(new Triangle(points[0], points[i], points[i+1], optionals));
+    }).apply(self, arguments);
+  }
+  
+  function Cube(){
+    var self = this;
+    
+    
+    var polygons = [];
+    
+    
+    self.render = Render;
+    self.getPolygons = GetPolygons;
+    self.getTriangles = GetTriangles;
+    
+    
+    function Render(){
+      for(var i=0,polygon; polygon=polygons[i++];)
+        polygon.render();
+    }
+    function GetPolygons(){
+      return polygons.concat([]);
+    }
+    function GetTriangles(){
+      var triangles = [];
+      
+      for(var i=0,polygon; polygon=polygons[i++];)
+        triangles = triangles.concat(polygon.getTriangles());
+      
+      return triangles;
+    }
+    
+    
+    (function Constructor(x, y, z, dim, optionals){
+      var optionals = optionals || {};
+      
+      polygons.push(new Polygon(
+        {x: x      , y: y      , z: z      },
+        {x: x + dim, y: y      , z: z      },
+        {x: x + dim, y: y + dim, z: z      },
+        {x: x      , y: y + dim, z: z      },
+        optionals
+      ));
+      polygons.push(new Polygon(
+        {x: x      , y: y      , z: z + dim},
+        {x: x + dim, y: y      , z: z + dim},
+        {x: x + dim, y: y + dim, z: z + dim},
+        {x: x      , y: y + dim, z: z + dim},
+        optionals
+      ));
+      polygons.push(new Polygon(
+        {x: x      , z: z      , y: y      },
+        {x: x + dim, z: z      , y: y      },
+        {x: x + dim, z: z + dim, y: y      },
+        {x: x      , z: z + dim, y: y      },
+        optionals
+      ));
+      polygons.push(new Polygon(
+        {x: x      , z: z      , y: y + dim},
+        {x: x + dim, z: z      , y: y + dim},
+        {x: x + dim, z: z + dim, y: y + dim},
+        {x: x      , z: z + dim, y: y + dim},
+        optionals
+      ));
+      polygons.push(new Polygon(
+        {y: y      , z: z      , x: x      },
+        {y: y + dim, z: z      , x: x      },
+        {y: y + dim, z: z + dim, x: x      },
+        {y: y      , z: z + dim, x: x      },
+        optionals
+      ));
+      polygons.push(new Polygon(
+        {y: y      , z: z      , x: x + dim},
+        {y: y + dim, z: z      , x: x + dim},
+        {y: y + dim, z: z + dim, x: x + dim},
+        {y: y      , z: z + dim, x: x + dim},
+        optionals
+      ));
+    }).apply(self, arguments);
+  }
+  
   window.addEventListener('load', Init);
   function Init(){
+    items.push(new Cube(-350, -100, -100, 200, {fill: 'rgb(255,255,0)', stroke:'rgb(0,0,0)'}));
+    items.push(new Cube(-100, -100, -100, 200, {fill: 'rgb(0,255,255)', stroke:'rgb(0,0,0)'}));
+    items.push(new Cube( 150, -100, -100, 200, {fill: 'rgb(255,0,255)', stroke:'rgb(0,0,0)'}));
+    
+    items.push(new Line({x:0, y:0, z:0}, {x:1000, y:0, z:0}, {stroke:'rgb(255,0,0)'}));
+    items.push(new Line({x:0, y:0, z:0}, {x:0, y:1000, z:0}, {stroke:'rgb(0,255,0)'}));
+    items.push(new Line({x:0, y:0, z:0}, {x:0, y:0, z:1000}, {stroke:'rgb(0,0,255)'}));
+    
     BindCanvas();
+    BindMouseToScene();
     Render();
   }
   
