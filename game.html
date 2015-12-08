@@ -1,0 +1,131 @@
+<html>
+<head>
+<style>
+
+body{
+  padding:0px;
+  margin:0px;
+  
+  background:rgb(245,245,245);
+}
+
+canvas{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+
+</style>
+</head>
+<body>
+
+
+<canvas></canvas>
+
+
+<script>
+(function(){
+  
+  const undefined;
+  
+  var canvas, ctx, width, height;
+  
+  var fps = {
+    CAP: 0.5,
+    value: 0
+  }
+  
+  var scene = {
+    pan: {
+      x: 0,
+      y: 0
+    },
+    rotate: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    zoom: 1
+  }
+  
+  var squares = [];
+  
+  function BindCanvas(){
+    canvas = document.querySelector('canvas');
+    ctx = canvas.getContext('2d');
+    ResizeCanvas();
+    window.addEventListener('resize', ResizeCanvas);
+  }
+  function ResizeCanvas(){
+    width = canvas.width = canvas.offsetWidth*2;
+    height = canvas.height = canvas.offsetHeight*2;
+  }
+  function Render(){
+    if (fps.lastRender === undefined){
+      fps.lastRender = Date.now();
+      requestAnimationFrame(Render);
+    }else{
+      var diff = Date.now() - fps.lastRender;
+      fps.lastRender = Date.now();
+      fps.value = 1000 / diff;
+      
+      if (fps.value < fps.CAP) requestAnimationFrame(Render);
+      else setTimeout(Render, 1000 / fps.CAP);
+    }
+    
+    ctx.save();
+    ctx.translate(width/2, height/2);
+    
+    var point = {x:0, y:0, z:100};
+    var rotated = Rotate(point, {x:1,y:0,z:0}, Math.PI/4);
+    ctx.fillRect(rotated.x, rotated.y, 6, 6);
+    
+    ctx.restore();
+  }
+  
+  // axis is unit vector
+  function Rotate(point, axis, rotation){
+    var cos = Math.cos;
+    var sin = Math.sin;
+    
+    var transform = [
+      [ axis.x*axis.x*(1-cos(rotation))+cos(rotation), axis.x*axis.y*(1-cos(rotation))-axis.z*sin(rotation), axis.x*axis.z*(1-cos(rotation))+axis.y*sin(rotation) ],
+      [ axis.x*axis.y*(1-cos(rotation))+axis.z*sin(rotation), axis.y*axis.y*(1-cos(rotation))+cos(rotation), axis.y*axis.z*(1-cos(rotation))+axis.x*sin(rotation) ],
+      [ axis.x*axis.z*(1-cos(rotation))-axis.y*sin(rotation), axis.y*axis.z*(1-cos(rotation))+axis.x*sin(rotation), axis.z*axis.z*(1-cos(rotation))+cos(rotation) ]
+    ]
+    var vector = [[point.x], [point.y], [point.z]];
+    
+    var result = MultiplyMatrices(transform, vector);
+    return {
+      x: result[0][0],
+      y: result[1][0],
+      z: result[2][0]
+    }
+  }
+  function MultiplyMatrices(m1, m2){
+    var result = [];
+    for (var i = 0; i < m1.length; i++) {
+      result[i] = [];
+      for (var j = 0; j < m2[0].length; j++) {
+        var sum = 0;
+        for (var k = 0; k < m1[0].length; k++) {
+          sum += m1[i][k] * m2[k][j];
+        }
+        result[i][j] = sum;
+      }
+    }
+    return result;
+  }
+  
+  window.addEventListener('load', Init);
+  function Init(){
+    BindCanvas();
+    Render();
+  }
+  
+})();
+</script>
+</body>
+</html>
