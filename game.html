@@ -7,23 +7,75 @@ body{
   margin:0px;
   
   background:rgb(245,245,245);
+  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-canvas{
+.canvas{
   position:absolute;
   top:0px;
   left:0px;
   width:100%;
   height:100%;
+  
+  perspective:1000px;
+  perspective-origin:50% 50%;
+}
+.scene{
+  position:absolute;
+  top:50%;
+  left:50%;
+  
+  width:0;
+  height:0;
+  overflow:visible;
+  
+  transform-style: preserve-3d;
+  transform:rotateY(1deg);
 }
 
-.fps{
+.face{
+  display:block;
   position:absolute;
-  top:10px;
-  left:10px;
   
-  font-size:16px;
-  line-height:16px;
+  outline:none;
+  border:none;
+  
+  margin-left:-50px;
+  margin-top:-50px;
+  width:100px;
+  height:100px;
+  
+  background:rgb(180,180,180);
+}
+
+.cube{
+  position:absolute;
+  
+  transform-style: preserve-3d;
+}
+.cube .left{
+  transform:rotateY(90deg) translate3d(0, 0, 50px);
+}
+.cube .right{
+  transform:rotateY(90deg) translate3d(0, 0, -50px);
+}
+.cube .front{
+  transform:translate3d(0, 0, 50px);
+}
+.cube .back{
+  transform:translate3d(0, 0, -50px);
+}
+.cube .top{
+  transform:rotateX(90deg) translate3d(0, 0, 50px);
+}
+.cube .bottom{
+  transform:rotateX(90deg) translate3d(0, 0, -50px);
 }
 
 </style>
@@ -31,8 +83,9 @@ canvas{
 <body>
 
 
-<div class='fps'></div>
-<canvas></canvas>
+<div class='canvas'>
+  <div class='scene'></div>
+</div>
 
 
 <script>
@@ -40,12 +93,7 @@ canvas{
   
   const undefined;
   
-  var canvas, ctx, width, height;
-  
-  var fps = {
-    CAP: 60,
-    value: 0
-  }
+  var canvas;
   
   var scene = {
     pan: {
@@ -75,49 +123,94 @@ canvas{
     }
   }
   
-  var items = [];
-  
-  // uses a naive method of z-buffering:
-  // each triangle is ordered by average z-depth and then
-  // rendered in order from least to greatest.
-  
-  function BindCanvas(){
-    canvas = document.querySelector('canvas');
-    ctx = canvas.getContext('2d');
-    ResizeCanvas();
-    window.addEventListener('resize', ResizeCanvas);
-  }
-  function ResizeCanvas(){
-    width = canvas.width = canvas.offsetWidth*2;
-    height = canvas.height = canvas.offsetHeight*2;
-  }
-  function Render(){
-    if (fps.lastRender === undefined){
-      fps.lastRender = Date.now();
-      requestAnimationFrame(Render);
-    }else{
-      var diff = Date.now() - fps.lastRender;
-      fps.lastRender = Date.now();
-      fps.value = 1000 / diff;
-      
-      if (fps.value < fps.CAP - 5) requestAnimationFrame(Render);
-      else setTimeout(Render, 1000 / fps.CAP);
+  function Cube(){
+    var self = this;
+    
+    
+    const BLOCK_DIM = 100;
+    
+    
+    var cube;
+    var faces = {}
+    
+    var position = {x:0, y:0, z:0};
+    
+    
+    self.mesh = {
+      'setTop': SetTopMesh,
+      'setBottom': SetBottomMesh,
+      'setFront': SetFrontMesh,
+      'setBack': SetBackMesh,
+      'setLeft': SetLeftMesh,
+      'setRight': SetRightMesh
     }
     
-    if (fps.elem === undefined)
-      fps.elem = document.querySelector('.fps');
-    fps.elem.innerHTML = Math.round(fps.value);
     
-    ctx.clearRect(0, 0, width, height);
+    function SetTopMesh(src){
+      faces.top.src = src;
+    }
+    function SetBottomMesh(src){
+      faces.bottom.src = src;
+    }
+    function SetFrontMesh(src){
+      faces.front.src = src;
+    }
+    function SetBackMesh(src){
+      faces.back.src = src;
+    }
+    function SetLeftMesh(src){
+      faces.left.src = src;
+    }
+    function SetRightMesh(src){
+      faces.right.src = src;
+    }
     
-    ctx.save();
-    ctx.translate(width/2 + scene.pan.x, height/2 + scene.pan.y);
-    ctx.scale(scene.zoom, scene.zoom);
     
-    for(var i=0,item; item=items[i++];)
-      item.render();
+    function CreateCube(){
+      cube = CreateElem('div', 'cube');
+      
+      faces.top = CreateElem('img', 'face top');
+      faces.bottom = CreateElem('img', 'face bottom');
+      
+      faces.front = CreateElem('img', 'face front');
+      faces.back = CreateElem('img', 'face back');
+      
+      faces.left = CreateElem('img', 'face left');
+      faces.right = CreateElem('img', 'face right');
+      
+      for(var label in faces){
+        var face = faces[label];
+        face.src = 'empty.png';
+        cube.appendChild(face);
+      }
+    }
+    function CreateElem(type, cls){
+      var elem = document.createElement(type);
+      elem.setAttribute('class', cls);
+      return elem;
+    }
+    function UpdatePosition(){
+      cube.style.transform = 'translate3d('+position.x*BLOCK_DIM+'px, '+-position.y*BLOCK_DIM+'px, '+position.z*BLOCK_DIM+'px)';
+    }
+    function AppendToScene(){
+      canvas.children[0].appendChild(cube);
+    }
     
-    ctx.restore();
+    
+    (function Constructor(x, y, z){
+      position = {x:x, y:y, z:z};
+      CreateCube();
+      UpdatePosition();
+      AppendToScene();
+    }).apply(self, arguments);
+  }
+  
+  function BindCanvas(){
+    canvas = document.querySelector('.canvas');
+  }
+  function UpdateCSSRotations(){
+    var cssScene = canvas.querySelector('.scene');
+    cssScene.style.transform = 'rotateX('+scene.rotate.x+'rad) rotateY('+scene.rotate.y+'rad) rotateZ('+scene.rotate.z+'rad)';
   }
   
   function BindMouseToScene(){
@@ -146,248 +239,56 @@ canvas{
     
     const rotations = 2;
     scene.rotate.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
-    scene.rotate.x += mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
-  }
-  
-  // axis is unit vector
-  function Rotate(point, axis, rotation){
-    var cos = Math.cos;
-    var sin = Math.sin;
+    scene.rotate.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
     
-    var transform = [
-      [ axis.x*axis.x*(1-cos(rotation))+cos(rotation), axis.x*axis.y*(1-cos(rotation))-axis.z*sin(rotation), axis.x*axis.z*(1-cos(rotation))+axis.y*sin(rotation) ],
-      [ axis.x*axis.y*(1-cos(rotation))+axis.z*sin(rotation), axis.y*axis.y*(1-cos(rotation))+cos(rotation), axis.y*axis.z*(1-cos(rotation))+axis.x*sin(rotation) ],
-      [ axis.x*axis.z*(1-cos(rotation))-axis.y*sin(rotation), axis.y*axis.z*(1-cos(rotation))+axis.x*sin(rotation), axis.z*axis.z*(1-cos(rotation))+cos(rotation) ]
-    ]
-    var vector = [[point.x], [point.y], [point.z]];
-    
-    var result = MultiplyMatrices(transform, vector);
-    return {
-      x: result[0][0],
-      y: result[1][0],
-      z: result[2][0]
-    }
-  }
-  function SceneRotate(point){
-    var rotated = point;
-    rotated = Rotate(rotated, {x:0,y:1,z:0}, scene.rotate.y);
-    rotated = Rotate(rotated, {x:1,y:0,z:0}, scene.rotate.x);
-    rotated = Rotate(rotated, {x:0,y:0,z:1}, scene.rotate.z);
-    return rotated;
-  }
-  function MultiplyMatrices(m1, m2){
-    var result = [];
-    for (var i = 0; i < m1.length; i++) {
-      result[i] = [];
-      for (var j = 0; j < m2[0].length; j++) {
-        var sum = 0;
-        for (var k = 0; k < m1[0].length; k++) {
-          sum += m1[i][k] * m2[k][j];
-        }
-        result[i][j] = sum;
-      }
-    }
-    return result;
-  }
-  
-  function Line(){
-    var self = this;
-    
-    
-    var p1, p2;
-    var stroke = 'rgb(0,0,0)';
-    
-    
-    self.render = Render;
-    
-    
-    function Render(){
-      var rp1 = SceneRotate(p1);
-      var rp2 = SceneRotate(p2);
-      
-      ctx.strokeStyle = stroke;
-      
-      ctx.beginPath();
-      ctx.moveTo(rp1.x, rp1.y);
-      ctx.lineTo(rp2.x, rp2.y);
-      ctx.stroke();
-    }
-    
-    
-    (function Constructor(_p1, _p2, optionals){
-      var optionals = optionals || {};
-      
-      p1 = _p1;
-      p2 = _p2;
-      
-      if (!!optionals.stroke) stroke = optionals.stroke;
-    }).apply(self, arguments);
-  }
-  function Triangle(){
-    var self = this;
-    
-    
-    var p1, p2, p3;
-    var fill = 'rgba(0,0,0,0)';
-    var stroke = 'rgb(0,0,0)';
-    
-    
-    self.render = Render;
-    
-    
-    function Render(){
-      var rp1 = SceneRotate(p1);
-      var rp2 = SceneRotate(p2);
-      var rp3 = SceneRotate(p3);
-      
-      ctx.fillStyle = fill;
-      ctx.strokeStyle = stroke;
-      
-      ctx.beginPath();
-      ctx.moveTo(rp1.x, rp1.y);
-      ctx.lineTo(rp2.x, rp2.y);
-      ctx.lineTo(rp3.x, rp3.y);
-      ctx.closePath();
-      // ctx.fill();
-      ctx.stroke();
-    }
-    
-    
-    (function Constructor(_p1, _p2, _p3, optionals){
-      var optionals = optionals || {};
-      
-      p1 = _p1;
-      p2 = _p2;
-      p3 = _p3;
-      
-      if (!!optionals.fill) fill = optionals.fill;
-      if (!!optionals.stroke) stroke = optionals.stroke;
-    }).apply(self, arguments);
-  }
-  function Polygon(){
-    var self = this;
-    
-    
-    var triangles = [];
-    
-    
-    self.render = Render;
-    self.getTriangles = GetTriangles;
-    
-    
-    function Render(){
-      for(var i=0,triangle; triangle=triangles[i++];)
-        triangle.render();
-    }
-    function GetTriangles(){
-      return triangles.concat([]);
-    }
-    
-    
-    (function Constructor(){
-      if(arguments[arguments.length-1] === undefined || arguments[arguments.length-1].x === undefined){
-        var optionals = Array.prototype.slice.call(arguments, -1)[0];
-        var points = Array.prototype.slice.call(arguments, 0, -1);
-      }else{
-        var optionals = {};
-        var points = arguments;
-      }
-      
-      for(var i=1; i<points.length-1; i++)
-        triangles.push(new Triangle(points[0], points[i], points[i+1], optionals));
-    }).apply(self, arguments);
-  }
-  
-  function Cube(){
-    var self = this;
-    
-    
-    var polygons = [];
-    
-    
-    self.render = Render;
-    self.getPolygons = GetPolygons;
-    self.getTriangles = GetTriangles;
-    
-    
-    function Render(){
-      for(var i=0,polygon; polygon=polygons[i++];)
-        polygon.render();
-    }
-    function GetPolygons(){
-      return polygons.concat([]);
-    }
-    function GetTriangles(){
-      var triangles = [];
-      
-      for(var i=0,polygon; polygon=polygons[i++];)
-        triangles = triangles.concat(polygon.getTriangles());
-      
-      return triangles;
-    }
-    
-    
-    (function Constructor(x, y, z, dim, optionals){
-      var optionals = optionals || {};
-      
-      polygons.push(new Polygon(
-        {x: x      , y: y      , z: z      },
-        {x: x + dim, y: y      , z: z      },
-        {x: x + dim, y: y + dim, z: z      },
-        {x: x      , y: y + dim, z: z      },
-        optionals
-      ));
-      polygons.push(new Polygon(
-        {x: x      , y: y      , z: z + dim},
-        {x: x + dim, y: y      , z: z + dim},
-        {x: x + dim, y: y + dim, z: z + dim},
-        {x: x      , y: y + dim, z: z + dim},
-        optionals
-      ));
-      polygons.push(new Polygon(
-        {x: x      , z: z      , y: y      },
-        {x: x + dim, z: z      , y: y      },
-        {x: x + dim, z: z + dim, y: y      },
-        {x: x      , z: z + dim, y: y      },
-        optionals
-      ));
-      polygons.push(new Polygon(
-        {x: x      , z: z      , y: y + dim},
-        {x: x + dim, z: z      , y: y + dim},
-        {x: x + dim, z: z + dim, y: y + dim},
-        {x: x      , z: z + dim, y: y + dim},
-        optionals
-      ));
-      polygons.push(new Polygon(
-        {y: y      , z: z      , x: x      },
-        {y: y + dim, z: z      , x: x      },
-        {y: y + dim, z: z + dim, x: x      },
-        {y: y      , z: z + dim, x: x      },
-        optionals
-      ));
-      polygons.push(new Polygon(
-        {y: y      , z: z      , x: x + dim},
-        {y: y + dim, z: z      , x: x + dim},
-        {y: y + dim, z: z + dim, x: x + dim},
-        {y: y      , z: z + dim, x: x + dim},
-        optionals
-      ));
-    }).apply(self, arguments);
+    UpdateCSSRotations();
   }
   
   window.addEventListener('load', Init);
   function Init(){
-    items.push(new Cube(-350, -100, -100, 200, {fill: 'rgb(255,255,0)', stroke:'rgb(0,0,0)'}));
-    items.push(new Cube(-100, -100, -100, 200, {fill: 'rgb(0,255,255)', stroke:'rgb(0,0,0)'}));
-    items.push(new Cube( 150, -100, -100, 200, {fill: 'rgb(255,0,255)', stroke:'rgb(0,0,0)'}));
-    
-    items.push(new Line({x:0, y:0, z:0}, {x:1000, y:0, z:0}, {stroke:'rgb(255,0,0)'}));
-    items.push(new Line({x:0, y:0, z:0}, {x:0, y:1000, z:0}, {stroke:'rgb(0,255,0)'}));
-    items.push(new Line({x:0, y:0, z:0}, {x:0, y:0, z:1000}, {stroke:'rgb(0,0,255)'}));
-    
     BindCanvas();
     BindMouseToScene();
-    Render();
+    
+    var cube = ApplyDirtMesh(new Cube(-1, -1,-1));
+    var cube = ApplyDirtMesh(new Cube( 0, -1,-1));
+    var cube = ApplyDirtMesh(new Cube( 1, -1,-1));
+    
+    var cube = ApplyGrassMesh(new Cube(-1, 0,-1));
+    var cube = ApplyDirtMesh( new Cube( 0, 0,-1));
+    var cube = ApplyDirtMesh( new Cube( 1, 0,-1));
+    
+    var cube = ApplyGrassMesh(new Cube( 0, 1,-1));
+    var cube = ApplyGrassMesh(new Cube( 1, 1,-1));
+    
+    var cube = ApplyGrassMesh(new Cube(-1, -1, 0));
+    var cube = ApplyGrassMesh(new Cube( 0, -1, 0));
+    var cube = ApplyDirtMesh( new Cube( 1, -1, 0));
+    
+    var cube = ApplyGrassMesh(new Cube( 1, 0, 0));
+    
+    var cube = ApplyGrassMesh(new Cube(-1, -1, 1));
+    var cube = ApplyGrassMesh(new Cube( 0, -1, 1));
+    var cube = ApplyGrassMesh(new Cube( 1, -1, 1));
+  }
+  
+  
+  function ApplyGrassMesh(cube){
+    cube.mesh.setFront('res/basic/side.png');
+    cube.mesh.setLeft('res/basic/side.png');
+    cube.mesh.setBack('res/basic/side.png');
+    cube.mesh.setRight('res/basic/side.png');
+    cube.mesh.setTop('res/basic/top.png');
+    cube.mesh.setBottom('res/basic/bottom.png');
+    return cube;
+  }
+  function ApplyDirtMesh(cube){
+    cube.mesh.setFront('res/dirt/main.png');
+    cube.mesh.setLeft('res/dirt/main.png');
+    cube.mesh.setBack('res/dirt/main.png');
+    cube.mesh.setRight('res/dirt/main.png');
+    cube.mesh.setTop('res/dirt/main.png');
+    cube.mesh.setBottom('res/dirt/main.png');
+    return cube;
   }
   
 })();
