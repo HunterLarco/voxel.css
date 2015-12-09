@@ -155,6 +155,28 @@ h1 span{
   100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
 }
 
+.sidebar{
+  position:fixed;
+  left:0px;
+  top:0px;
+  
+  height:100%;
+  overflow:scroll;
+  
+  background:rgb(245,245,245);
+}
+.sidebar img{
+  display:block;
+  margin:20px;
+  
+  cursor:pointer;
+  
+  width:60px;
+  height:60px;
+  
+  border-radius:2px;
+}
+
 </style>
 
 <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
@@ -162,6 +184,18 @@ h1 span{
 </head>
 <body>
 
+
+<div class='sidebar'>
+  <img src='res/basic/side.png'/>
+  <img src='res/dirt/main.png'/>
+  <img src='res/water/main.png'/>
+  <img src='res/water/falltop.png'/>
+  <img src='res/water/fall.png'/>
+  <img src='res/water/fallcrash.png'/>
+  <img src='res/tree/leaves.png'/>
+  <img src='res/tree/bark.png'/>
+  <img src='res/clouds/main.png'/>
+</div>
 
 <h1><span>30&deg;</span>RAIN</h1>
 
@@ -211,7 +245,7 @@ h1 span{
       2: ApplyDirtMesh,
       3: ApplyBarkMesh,
       4: ApplyLeavesMesh,
-      5: ApplyApplesMesh,
+      5: ApplyWaterFallTopMesh,
       6: ApplyWaterMesh,
       7: ApplyCloudMesh,
       8: ApplyWaterFallMesh,
@@ -234,10 +268,10 @@ h1 span{
       ],
       [
         [2, 2, 2, 2, 1],
-        [8, 2, 2, 2, 2],
-        [8, 6, 3, 2, 2],
+        [5, 2, 2, 2, 2],
+        [5, 6, 3, 2, 2],
         [2, 6, 6, 6, 2],
-        [2, 2, 8, 8, 1]
+        [2, 2, 5, 5, 1]
       ],
       [
         [1, 2, 2, 1, 0],
@@ -325,8 +359,8 @@ h1 span{
       ],
       [
         [0, 0, 7, 7, 7],
-        [0, 7, 7, 7, 7],
-        [7, 7, 7, 7, 7],
+        [0, 7, 0, 0, 7],
+        [7, 0, 0, 0, 7],
         [0, 7, 7, 7, 0],
         [0, 0, 0, 0, 0]
       ],
@@ -495,7 +529,7 @@ h1 span{
           (function(x, stage, z, meshRenderer){
             setTimeout(function(){
                meshRenderer(new Cube(x-dx, stage-dy, z-dx));
-            }, 50 * i++ + 500);
+            }, 40 * i++ + 500);
           })(x, stage, z, meshRenderer);
         }
       }
@@ -557,21 +591,30 @@ h1 span{
     cube.mesh.setBottom('res/water/main.png');
     return cube;
   }
+  function ApplyWaterFallTopMesh(cube){
+    cube.mesh.setFront('res/water/falltop.png');
+    cube.mesh.setLeft('res/water/falltop.png');
+    cube.mesh.setBack('res/water/falltop.png');
+    cube.mesh.setRight('res/water/falltop.png');
+    cube.mesh.setTop('res/water/main.png');
+    cube.mesh.setBottom('res/water/main.png');
+    return cube;
+  }
   function ApplyWaterFallMesh(cube){
-    cube.mesh.setFront('res/water/fall.png');
-    cube.mesh.setLeft('res/water/fall.png');
-    cube.mesh.setBack('res/water/fall.png');
-    cube.mesh.setRight('res/water/fall.png');
-    cube.mesh.setTop('res/water/falltop.png');
+    cube.mesh.setFront('res/water/fall.gif');
+    cube.mesh.setLeft('res/water/fall.gif');
+    cube.mesh.setBack('res/water/fall.gif');
+    cube.mesh.setRight('res/water/fall.gif');
+    cube.mesh.setTop('res/water/main.png');
     cube.mesh.setBottom('res/water/main.png');
     return cube;
   }
   function ApplyWaterFallCrashMesh(cube){
-    cube.mesh.setFront('res/water/fallcrash.png');
-    cube.mesh.setLeft('res/water/fallcrash.png');
-    cube.mesh.setBack('res/water/fallcrash.png');
-    cube.mesh.setRight('res/water/fallcrash.png');
-    cube.mesh.setTop('res/water/falltop.png');
+    cube.mesh.setFront('res/water/crash.gif');
+    cube.mesh.setLeft('res/water/crash.gif');
+    cube.mesh.setBack('res/water/crash.gif');
+    cube.mesh.setRight('res/water/crash.gif');
+    cube.mesh.setTop('res/water/main.png');
     cube.mesh.setBottom('res/water/main.png');
     return cube;
   }
