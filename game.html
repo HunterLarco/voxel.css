@@ -46,10 +46,10 @@ body{
   outline:none;
   border:none;
   
-  margin-left:-50px;
-  margin-top:-50px;
-  width:100px;
-  height:100px;
+  margin-left:-15px;
+  margin-top:-15px;
+  width:30px;
+  height:30px;
   
   background:rgb(180,180,180);
 }
@@ -60,22 +60,22 @@ body{
   transform-style: preserve-3d;
 }
 .cube .left{
-  transform:rotateY(90deg) translate3d(0, 0, 50px);
+  transform:rotateY(90deg) translate3d(0, 0, 15px);
 }
 .cube .right{
-  transform:rotateY(90deg) translate3d(0, 0, -50px);
+  transform:rotateY(90deg) translate3d(0, 0, -15px);
 }
 .cube .front{
-  transform:translate3d(0, 0, 50px);
+  transform:translate3d(0, 0, 15px);
 }
 .cube .back{
-  transform:translate3d(0, 0, -50px);
+  transform:translate3d(0, 0, -15px);
 }
 .cube .top{
-  transform:rotateX(90deg) translate3d(0, 0, 50px);
+  transform:rotateX(90deg) translate3d(0, 0, 15px);
 }
 .cube .bottom{
-  transform:rotateX(90deg) translate3d(0, 0, -50px);
+  transform:rotateX(90deg) translate3d(0, 0, -15px);
 }
 
 </style>
@@ -217,7 +217,7 @@ body{
     var self = this;
     
     
-    const BLOCK_DIM = 100;
+    const BLOCK_DIM = 30;
     
     
     var cube;
@@ -334,8 +334,51 @@ body{
     UpdateCSSRotations();
   }
   
+  function GenerateTerrain(dim, height){
+    // must be a power of two (dim)
+    var midHeight = Math.floor(height / 2);
+    
+    var emptyWorld = BuildEmptyWorld(dim, height);
+    GenerateFractalTerrain(emptyWorld, 0, 0, dim, dim, -midHeight, height - midHeight, midHeight);
+    world.layout = emptyWorld;
+  }
+  function BuildEmptyWorld(basedim, height){
+    var worldMap = [];
+    for(var y=0; y<height; y++){
+      var layer = [];
+      for(var x=0; x<basedim; x++){
+        var row = [];
+        for(var z=0; z<basedim; z++)
+          row.push(0);
+        layer.push(row);
+      }
+      worldMap.push(layer);
+    }
+    return worldMap;
+  }
+  function GenerateFractalTerrain(world, x, y, width, height, min, max, baseHeight){
+    if(width === 1 && height === 1){
+      for(var i=0; i<baseHeight; i++)
+        world[i][y][x] = 2;
+      world[baseHeight][y][x] = 1;
+      return;
+    }
+    
+    var halfWidth = Math.floor(width / 2);
+    var halfHeight = Math.floor(height / 2);
+    var diffHeight = Math.floor(Math.random()*(max - min)) + min;
+    var cappedDiffHeight = Math.min(0, diffHeight);
+    var sectionHeight = baseHeight + cappedDiffHeight;
+    
+    GenerateFractalTerrain(world, x            , y             , halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
+    GenerateFractalTerrain(world, x + halfWidth, y             , halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
+    GenerateFractalTerrain(world, x + halfWidth, y + halfHeight, halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
+    GenerateFractalTerrain(world, x            , y + halfHeight, halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
+  }
+  
   window.addEventListener('load', Init);
   function Init(){
+    GenerateTerrain(16, 15);
     BindCanvas();
     BindMouseToScene();
     
