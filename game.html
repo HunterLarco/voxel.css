@@ -123,6 +123,96 @@ body{
     }
   }
   
+  var world = {
+    blockMap: {
+      1: ApplyGrassMesh,
+      2: ApplyDirtMesh,
+      3: ApplyBarkMesh,
+      4: ApplyLeavesMesh,
+      5: ApplyApplesMesh,
+      6: ApplyWaterMesh
+    },
+    layout: [
+      [
+        [2, 2, 2, 2, 2],
+        [2, 2, 2, 2, 2],
+        [2, 6, 6, 2, 2],
+        [2, 6, 6, 6, 2],
+        [2, 2, 6, 6, 2]
+      ],
+      [
+        [2, 2, 2, 2, 2],
+        [2, 2, 2, 2, 2],
+        [6, 6, 2, 2, 2],
+        [2, 6, 6, 6, 2],
+        [2, 2, 2, 6, 6]
+      ],
+      [
+        [2, 2, 2, 2, 1],
+        [6, 2, 2, 2, 2],
+        [6, 6, 3, 2, 2],
+        [2, 6, 6, 6, 2],
+        [2, 2, 6, 6, 1]
+      ],
+      [
+        [1, 2, 2, 1, 0],
+        [0, 1, 2, 2, 1],
+        [0, 0, 3, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 0, 0, 0]
+      ],
+      [
+        [0, 1, 1, 0, 0],
+        [0, 0, 1, 1, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 4, 0],
+        [0, 0, 3, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 4, 4, 0],
+        [0, 4, 3, 4, 0],
+        [0, 4, 4, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 4, 4, 0, 0],
+        [0, 4, 4, 4, 0],
+        [0, 4, 4, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 4, 4, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ]
+    ]
+  }
+  
   function Cube(){
     var self = this;
     
@@ -249,26 +339,22 @@ body{
     BindCanvas();
     BindMouseToScene();
     
-    var cube = ApplyDirtMesh(new Cube(-1, -1,-1));
-    var cube = ApplyDirtMesh(new Cube( 0, -1,-1));
-    var cube = ApplyDirtMesh(new Cube( 1, -1,-1));
+    var height = world.layout.length;
+    var width = world.layout[0].length;
+    var dy = Math.floor(height / 2);
+    var dx = Math.floor(width / 2);
     
-    var cube = ApplyGrassMesh(new Cube(-1, 0,-1));
-    var cube = ApplyDirtMesh( new Cube( 0, 0,-1));
-    var cube = ApplyDirtMesh( new Cube( 1, 0,-1));
+    for(var stage=0; stage<world.layout.length; stage++){
+      for(var z=0; z<world.layout[stage].length; z++){
+        for(var x=0; x<world.layout[stage][z].length; x++){
+          var blockMapValue = world.layout[stage][z][x];
+          var meshRenderer = world.blockMap[blockMapValue];
+          if (meshRenderer !== undefined)
+            meshRenderer(new Cube(x-dx, stage-dy, z-dx));
+        }
+      }
+    }
     
-    var cube = ApplyGrassMesh(new Cube( 0, 1,-1));
-    var cube = ApplyGrassMesh(new Cube( 1, 1,-1));
-    
-    var cube = ApplyGrassMesh(new Cube(-1, -1, 0));
-    var cube = ApplyGrassMesh(new Cube( 0, -1, 0));
-    var cube = ApplyDirtMesh( new Cube( 1, -1, 0));
-    
-    var cube = ApplyGrassMesh(new Cube( 1, 0, 0));
-    
-    var cube = ApplyGrassMesh(new Cube(-1, -1, 1));
-    var cube = ApplyGrassMesh(new Cube( 0, -1, 1));
-    var cube = ApplyGrassMesh(new Cube( 1, -1, 1));
   }
   
   
@@ -288,6 +374,42 @@ body{
     cube.mesh.setRight('res/dirt/main.png');
     cube.mesh.setTop('res/dirt/main.png');
     cube.mesh.setBottom('res/dirt/main.png');
+    return cube;
+  }
+  function ApplyBarkMesh(cube){
+    cube.mesh.setFront('res/tree/bark.png');
+    cube.mesh.setLeft('res/tree/bark.png');
+    cube.mesh.setBack('res/tree/bark.png');
+    cube.mesh.setRight('res/tree/bark.png');
+    cube.mesh.setTop('res/tree/cuttrunk.png');
+    cube.mesh.setBottom('res/tree/cuttrunk.png');
+    return cube;
+  }
+  function ApplyLeavesMesh(cube){
+    cube.mesh.setFront('res/tree/leaves.png');
+    cube.mesh.setLeft('res/tree/leaves.png');
+    cube.mesh.setBack('res/tree/leaves.png');
+    cube.mesh.setRight('res/tree/leaves.png');
+    cube.mesh.setTop('res/tree/leaves.png');
+    cube.mesh.setBottom('res/tree/leaves.png');
+    return cube;
+  }
+  function ApplyApplesMesh(cube){
+    cube.mesh.setFront('res/tree/apples.png');
+    cube.mesh.setLeft('res/tree/apples.png');
+    cube.mesh.setBack('res/tree/apples.png');
+    cube.mesh.setRight('res/tree/apples.png');
+    cube.mesh.setTop('res/tree/leaves.png');
+    cube.mesh.setBottom('res/tree/leaves.png');
+    return cube;
+  }
+  function ApplyWaterMesh(cube){
+    cube.mesh.setFront('res/water/main.png');
+    cube.mesh.setLeft('res/water/main.png');
+    cube.mesh.setBack('res/water/main.png');
+    cube.mesh.setRight('res/water/main.png');
+    cube.mesh.setTop('res/water/main.png');
+    cube.mesh.setBottom('res/water/main.png');
     return cube;
   }
   
