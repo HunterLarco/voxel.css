@@ -14,6 +14,9 @@ body{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  
+  background:url(res/background.png);
+  background-size:100px 100px;
 }
 
 .canvas{
@@ -46,10 +49,10 @@ body{
   outline:none;
   border:none;
   
-  margin-left:-15px;
-  margin-top:-15px;
-  width:30px;
-  height:30px;
+  margin-left:-18px;
+  margin-top:-18px;
+  width:36px;
+  height:36px;
   
   background:rgb(180,180,180);
 }
@@ -57,31 +60,83 @@ body{
 .cube{
   position:absolute;
   
-  transform-style: preserve-3d;
+  transform-style:preserve-3d;
 }
+.cube .anim{
+  animation: animation 1000ms linear both;
+  transform-style:preserve-3d;
+}
+
 .cube .left{
-  transform:rotateY(90deg) translate3d(0, 0, 15px);
+  transform:rotateY(90deg) translate3d(0, 0, 18px);
 }
 .cube .right{
-  transform:rotateY(90deg) translate3d(0, 0, -15px);
+  transform:rotateY(90deg) translate3d(0, 0, -18px);
 }
 .cube .front{
-  transform:translate3d(0, 0, 15px);
+  transform:translate3d(0, 0, 18px);
 }
 .cube .back{
-  transform:translate3d(0, 0, -15px);
+  transform:translate3d(0, 0, -18px);
 }
 .cube .top{
-  transform:rotateX(90deg) translate3d(0, 0, 15px);
+  transform:rotateX(90deg) translate3d(0, 0, 18px);
 }
 .cube .bottom{
-  transform:rotateX(90deg) translate3d(0, 0, -15px);
+  transform:rotateX(90deg) translate3d(0, 0, -18px);
+}
+
+h1{
+  position:absolute;
+  
+  bottom:0px;
+  right:0px;
+  
+  font-size:80px;
+  line-height:80px;
+  font-weight:400;
+  font-family:'lato';
+  
+  margin:0px;
+  padding:30px;
+}
+h1 span{
+  font-size:50px;
+  line-height:50px;
+  font-weight:300;
+}
+
+@keyframes animation { 
+  0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 300, 0, 1); opacity:0; }
+  1.3% { transform: matrix3d(1, 0, 0, 0, 0, 3.905, 0, 0, 0, 0, 1, 0, 0, 237.02, 0, 1); }
+  2.55% { transform: matrix3d(1, 0, 0, 0, 0, 4.554, 0, 0, 0, 0, 1, 0, 0, 182.798, 0, 1); }
+  4.1% { transform: matrix3d(1, 0, 0, 0, 0, 4.025, 0, 0, 0, 0, 1, 0, 0, 125.912, 0, 1); }
+  5.71% { transform: matrix3d(1, 0, 0, 0, 0, 3.039, 0, 0, 0, 0, 1, 0, 0, 79.596, 0, 1); }
+  8.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.82, 0, 0, 0, 0, 1, 0, 0, 31.647, 0, 1); opacity:1; }
+  8.81% { transform: matrix3d(1, 0, 0, 0, 0, 1.581, 0, 0, 0, 0, 1, 0, 0, 21.84, 0, 1); }
+  11.96% { transform: matrix3d(1, 0, 0, 0, 0, 1.034, 0, 0, 0, 0, 1, 0, 0, -4.825, 0, 1); }
+  12.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.023, 0, 0, 0, 0, 1, 0, 0, -5.53, 0, 1); }
+  15.07% { transform: matrix3d(1, 0, 0, 0, 0, 0.947, 0, 0, 0, 0, 1, 0, 0, -12.662, 0, 1); }
+  16.12% { transform: matrix3d(1, 0, 0, 0, 0, 0.951, 0, 0, 0, 0, 1, 0, 0, -13.007, 0, 1); }
+  27.23% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, -2.352, 0, 1); }
+  27.58% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, -2.121, 0, 1); }
+  38.34% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.311, 0, 1); }
+  40.09% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.291, 0, 1); }
+  50% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.048, 0, 1); }
+  60.56% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.007, 0, 1); }
+  82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
+  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
 }
 
 </style>
+
+<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
 
+
+<h1><span>30&deg;</span>RAIN</h1>
 
 <div class='canvas'>
   <div class='scene'></div>
@@ -102,7 +157,7 @@ body{
     },
     rotate: {
       x: 0,
-      y: 0,
+      y: -Math.PI/4,
       z: 0
     },
     zoom: 1
@@ -130,29 +185,32 @@ body{
       3: ApplyBarkMesh,
       4: ApplyLeavesMesh,
       5: ApplyApplesMesh,
-      6: ApplyWaterMesh
+      6: ApplyWaterMesh,
+      7: ApplyCloudMesh,
+      8: ApplyWaterFallMesh,
+      9: ApplyWaterFallCrashMesh
     },
     layout: [
       [
         [2, 2, 2, 2, 2],
-        [2, 2, 2, 2, 2],
-        [2, 6, 6, 2, 2],
+        [9, 2, 2, 2, 2],
+        [9, 6, 6, 2, 2],
         [2, 6, 6, 6, 2],
-        [2, 2, 6, 6, 2]
+        [2, 2, 9, 9, 2]
       ],
       [
         [2, 2, 2, 2, 2],
-        [2, 2, 2, 2, 2],
-        [6, 6, 2, 2, 2],
+        [8, 2, 2, 2, 2],
+        [8, 6, 2, 2, 2],
         [2, 6, 6, 6, 2],
-        [2, 2, 2, 6, 6]
+        [2, 2, 8, 8, 2]
       ],
       [
         [2, 2, 2, 2, 1],
-        [6, 2, 2, 2, 2],
-        [6, 6, 3, 2, 2],
+        [8, 2, 2, 2, 2],
+        [8, 6, 3, 2, 2],
         [2, 6, 6, 6, 2],
-        [2, 2, 6, 6, 1]
+        [2, 2, 8, 8, 1]
       ],
       [
         [1, 2, 2, 1, 0],
@@ -192,7 +250,7 @@ body{
       [
         [0, 0, 0, 0, 0],
         [0, 0, 4, 4, 0],
-        [0, 4, 3, 4, 0],
+        [0, 4, 4, 4, 0],
         [0, 4, 4, 0, 0],
         [0, 0, 0, 0, 0]
       ],
@@ -209,6 +267,48 @@ body{
         [0, 0, 4, 4, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 7, 7, 0],
+        [0, 7, 7, 7, 0],
+        [0, 0, 7, 0, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 7, 7, 7],
+        [0, 7, 7, 7, 7],
+        [7, 7, 7, 7, 7],
+        [0, 7, 7, 7, 0],
+        [0, 0, 0, 0, 0]
+      ],
+      [
+        [0, 0, 0, 0, 0],
+        [0, 0, 7, 7, 0],
+        [0, 7, 7, 7, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
       ]
     ]
   }
@@ -217,7 +317,7 @@ body{
     var self = this;
     
     
-    const BLOCK_DIM = 30;
+    const BLOCK_DIM = 36;
     
     
     var cube;
@@ -258,6 +358,7 @@ body{
     
     function CreateCube(){
       cube = CreateElem('div', 'cube');
+      var anim = CreateElem('div', 'anim');
       
       faces.top = CreateElem('img', 'face top');
       faces.bottom = CreateElem('img', 'face bottom');
@@ -271,8 +372,9 @@ body{
       for(var label in faces){
         var face = faces[label];
         face.src = 'empty.png';
-        cube.appendChild(face);
+        anim.appendChild(face);
       }
+      cube.appendChild(anim);
     }
     function CreateElem(type, cls){
       var elem = document.createElement(type);
@@ -334,58 +436,17 @@ body{
     UpdateCSSRotations();
   }
   
-  function GenerateTerrain(dim, height){
-    // must be a power of two (dim)
-    var midHeight = Math.floor(height / 2);
-    
-    var emptyWorld = BuildEmptyWorld(dim, height);
-    GenerateFractalTerrain(emptyWorld, 0, 0, dim, dim, -midHeight, height - midHeight, midHeight);
-    world.layout = emptyWorld;
-  }
-  function BuildEmptyWorld(basedim, height){
-    var worldMap = [];
-    for(var y=0; y<height; y++){
-      var layer = [];
-      for(var x=0; x<basedim; x++){
-        var row = [];
-        for(var z=0; z<basedim; z++)
-          row.push(0);
-        layer.push(row);
-      }
-      worldMap.push(layer);
-    }
-    return worldMap;
-  }
-  function GenerateFractalTerrain(world, x, y, width, height, min, max, baseHeight){
-    if(width === 1 && height === 1){
-      for(var i=0; i<baseHeight; i++)
-        world[i][y][x] = 2;
-      world[baseHeight][y][x] = 1;
-      return;
-    }
-    
-    var halfWidth = Math.floor(width / 2);
-    var halfHeight = Math.floor(height / 2);
-    var diffHeight = Math.floor(Math.random()*(max - min)) + min;
-    var cappedDiffHeight = Math.min(0, diffHeight);
-    var sectionHeight = baseHeight + cappedDiffHeight;
-    
-    GenerateFractalTerrain(world, x            , y             , halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
-    GenerateFractalTerrain(world, x + halfWidth, y             , halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
-    GenerateFractalTerrain(world, x + halfWidth, y + halfHeight, halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
-    GenerateFractalTerrain(world, x            , y + halfHeight, halfWidth, halfHeight, Math.floor(min / 2), Math.floor(max / 2), sectionHeight);
-  }
-  
   window.addEventListener('load', Init);
   function Init(){
-    GenerateTerrain(16, 15);
     BindCanvas();
     BindMouseToScene();
+    UpdateCSSRotations();
     
     var height = world.layout.length;
     var width = world.layout[0].length;
     var dy = Math.floor(height / 2);
     var dx = Math.floor(width / 2);
+    var i = 0;
     
     for(var stage=0; stage<world.layout.length; stage++){
       for(var z=0; z<world.layout[stage].length; z++){
@@ -393,11 +454,14 @@ body{
           var blockMapValue = world.layout[stage][z][x];
           var meshRenderer = world.blockMap[blockMapValue];
           if (meshRenderer !== undefined)
-            meshRenderer(new Cube(x-dx, stage-dy, z-dx));
+          (function(x, stage, z, meshRenderer){
+            setTimeout(function(){
+               meshRenderer(new Cube(x-dx, stage-dy, z-dx));
+            }, 50 * i++ + 500);
+          })(x, stage, z, meshRenderer);
         }
       }
     }
-    
   }
   
   
@@ -453,6 +517,33 @@ body{
     cube.mesh.setRight('res/water/main.png');
     cube.mesh.setTop('res/water/main.png');
     cube.mesh.setBottom('res/water/main.png');
+    return cube;
+  }
+  function ApplyWaterFallMesh(cube){
+    cube.mesh.setFront('res/water/fall.png');
+    cube.mesh.setLeft('res/water/fall.png');
+    cube.mesh.setBack('res/water/fall.png');
+    cube.mesh.setRight('res/water/fall.png');
+    cube.mesh.setTop('res/water/falltop.png');
+    cube.mesh.setBottom('res/water/main.png');
+    return cube;
+  }
+  function ApplyWaterFallCrashMesh(cube){
+    cube.mesh.setFront('res/water/fallcrash.png');
+    cube.mesh.setLeft('res/water/fallcrash.png');
+    cube.mesh.setBack('res/water/fallcrash.png');
+    cube.mesh.setRight('res/water/fallcrash.png');
+    cube.mesh.setTop('res/water/falltop.png');
+    cube.mesh.setBottom('res/water/main.png');
+    return cube;
+  }
+  function ApplyCloudMesh(cube){
+    cube.mesh.setFront('res/clouds/main.png');
+    cube.mesh.setLeft('res/clouds/main.png');
+    cube.mesh.setBack('res/clouds/main.png');
+    cube.mesh.setRight('res/clouds/main.png');
+    cube.mesh.setTop('res/clouds/main.png');
+    cube.mesh.setBottom('res/clouds/main.png');
     return cube;
   }
   
