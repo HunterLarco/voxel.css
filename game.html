@@ -29,6 +29,8 @@ body{
   
   perspective:1000px;
   perspective-origin:50% 50%;
+  
+  cursor:move;
 }
 .scene{
   position:absolute;
@@ -55,7 +57,16 @@ body{
   width:36px;
   height:36px;
   
-  background:rgb(180,180,180);
+  background:rgba(0,0,0,0.3);
+  
+  cursor:pointer;
+}
+.face img{
+  width:100%;
+  height:100%;
+}
+.cube:hover img{
+  visibility:hidden;
 }
 
 .cube{
@@ -185,6 +196,12 @@ h1 span{
 <body>
 
 
+<h1><span>30&deg;</span>RAIN</h1>
+
+<div class='canvas'>
+  <div class='scene'></div>
+</div>
+
 <div class='sidebar'>
   <img src='res/basic/side.png'/>
   <img src='res/dirt/main.png'/>
@@ -195,12 +212,6 @@ h1 span{
   <img src='res/tree/leaves.png'/>
   <img src='res/tree/bark.png'/>
   <img src='res/clouds/main.png'/>
-</div>
-
-<h1><span>30&deg;</span>RAIN</h1>
-
-<div class='canvas'>
-  <div class='scene'></div>
 </div>
 
 
@@ -422,19 +433,34 @@ h1 span{
       
       var anim = CreateElem('div', 'anim' + (!!falldown ? ' down' : ' up'));
       
-      faces.top = CreateElem('img', 'face top');
-      faces.bottom = CreateElem('img', 'face bottom');
+      var topWrapper = CreateElem('div', 'face top');
+      faces.top = CreateElem('img', '');
+      topWrapper.appendChild(faces.top);
       
-      faces.front = CreateElem('img', 'face front');
-      faces.back = CreateElem('img', 'face back');
+      var bottomWrapper = CreateElem('div', 'face bottom');
+      faces.bottom = CreateElem('img', '');
+      bottomWrapper.appendChild(faces.bottom);
       
-      faces.left = CreateElem('img', 'face left');
-      faces.right = CreateElem('img', 'face right');
+      var leftWrapper = CreateElem('div', 'face left');
+      faces.left = CreateElem('img', '');
+      leftWrapper.appendChild(faces.left);
+      
+      var rightWrapper = CreateElem('div', 'face right');
+      faces.right = CreateElem('img', '');
+      rightWrapper.appendChild(faces.right);
+      
+      var frontWrapper = CreateElem('div', 'face front');
+      faces.front = CreateElem('img', '');
+      frontWrapper.appendChild(faces.front);
+      
+      var backWrapper = CreateElem('div', 'face back');
+      faces.back = CreateElem('img', '');
+      backWrapper.appendChild(faces.back);
       
       for(var label in faces){
         var face = faces[label];
         face.src = 'empty.png';
-        anim.appendChild(face);
+        anim.appendChild(face.parentElement);
       }
       cube.appendChild(anim);
     }
@@ -626,6 +652,41 @@ h1 span{
     cube.mesh.setTop('res/clouds/main.png');
     cube.mesh.setBottom('res/clouds/main.png');
     return cube;
+  }
+  
+  GetCurrentWeather(function(event){
+    console.log(event)
+  })
+  
+  function GetCurrentWeather(callback){
+    GetCurrentPosition(function(event){
+      var lat = event.coords.latitude;
+      var lon = event.coords.longitude;
+      QueryWeatherAPI(lat, lon, callback);
+    })
+  }
+  function GetCurrentPosition(callback){
+    navigator.geolocation.getCurrentPosition(callback);
+  }
+  function QueryWeatherAPI(lat, lon, callback){
+    // API: http://openweathermap.org/current
+    var URL = '//api.openweathermap.org/data/2.5/weather?appid=2de143494c0b295cca9337e1e96b00e0&lat='+lat+'&lon='+lon;
+    GetJSONRequest(URL, callback);
+  }
+  function GetJSONRequest(URL, callback){
+    GetRequest(URL, function(event){
+      var json = JSON.parse(event.response);
+      callback(json);
+    });
+  }
+  function GetRequest(URL, callback){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function(){
+      if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        callback(xmlHttp);
+    }
+    xmlHttp.open('GET', URL, true);
+    xmlHttp.send(null);
   }
   
 })();
