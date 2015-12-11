@@ -85,26 +85,6 @@ body{
   animation:fallup 1000ms linear both;
 }
 
-h1{
-  position:absolute;
-  
-  bottom:0px;
-  right:0px;
-  
-  font-size:80px;
-  line-height:80px;
-  font-weight:400;
-  font-family:'lato';
-  
-  margin:0px;
-  padding:30px;
-}
-h1 span{
-  font-size:50px;
-  line-height:50px;
-  font-weight:300;
-}
-
 @keyframes fallup {
   0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 300, 0, 1); opacity:0; }
   1.3% { transform: matrix3d(1, 0, 0, 0, 0, 3.905, 0, 0, 0, 0, 1, 0, 0, 237.02, 0, 1); }
@@ -149,6 +129,8 @@ h1 span{
 }
 
 .sidebar{
+  display:none;
+  
   position:fixed;
   left:0px;
   top:0px;
@@ -173,8 +155,6 @@ h1 span{
 
 </style>
 
-<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'></link>
-
 <script src='scripts/Scene.js'></script>
 <script src='scripts/SavedWorld.js'></script>
 <script src='scripts/Cube.js'></script>
@@ -185,8 +165,6 @@ h1 span{
 </head>
 <body>
 
-
-<h1><span>30&deg;</span>RAIN</h1>
 
 <div class='canvas'>
   <div class='scene'></div>
@@ -207,7 +185,7 @@ h1 span{
 <script>
 (function(){
   
-  const BLOCKDIM = 28;
+  const BLOCKDIM = 20;
   const undefined;
   
   
@@ -220,7 +198,8 @@ h1 span{
     LoadSidebar();
     
     scene = new Scene();
-    scene.rotate(0, Math.PI/3, 0);
+    scene.pan(7 * BLOCKDIM, 4 * BLOCKDIM, 0);
+    scene.rotate(0, Math.PI/2, 0);
     scene.attach(document.body);
     
     world = new SavedWorld(scene);
