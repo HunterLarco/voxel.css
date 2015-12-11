@@ -176,8 +176,10 @@ h1 span{
 <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'></link>
 
 <script src='scripts/Scene.js'></script>
+<script src='scripts/SavedWorld.js'></script>
 <script src='scripts/Cube.js'></script>
 <script src='scripts/meshes.js'></script>
+<script src='scripts/defaultworld.js'></script>
 
 </head>
 <body>
@@ -209,10 +211,7 @@ h1 span{
   
   
   var scene;
-  var world = [];
-  var tool = {
-    currentMesh: MESHES.grass
-  }
+  var world;
   
   
   window.addEventListener('load', Init);
@@ -223,129 +222,9 @@ h1 span{
     scene.rotate(0, -Math.PI/4, 0);
     scene.attach(document.body);
     
-    LoadWorld();
-  }
-  function LoadWorld(){
-    var world = {
-      blockMap: {
-        1: MESHES.grass,
-        2: MESHES.dirt,
-        3: MESHES.treeTrunk,
-        4: MESHES.treeLeaves,
-        5: MESHES.waterFallTop,
-        6: MESHES.water,
-        7: MESHES.cloud,
-        8: MESHES.waterFall,
-        9: MESHES.waterFallCrash
-      },
-      layout: [
-        [
-          [0, 0, 0, 0, 0],
-          [9, 0, 0, 0, 0],
-          [9, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 9, 9, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [8, 0, 0, 0, 0],
-          [8, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 8, 8, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [8, 2, 2, 2, 0],
-          [8, 2, 2, 2, 2],
-          [0, 2, 2, 2, 2],
-          [0, 2, 8, 8, 0]
-        ],
-        [
-          [2, 2, 2, 2, 0],
-          [5, 2, 2, 2, 2],
-          [5, 6, 3, 2, 2],
-          [1, 6, 6, 6, 2],
-          [0, 1, 5, 5, 1]
-        ],
-        [
-          [1, 2, 2, 1, 0],
-          [0, 1, 2, 2, 1],
-          [0, 0, 3, 1, 1],
-          [0, 0, 0, 0, 1],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 1, 1, 0, 0],
-          [0, 0, 1, 1, 0],
-          [0, 0, 3, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 3, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 3, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 4, 0],
-          [0, 0, 3, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 0, 4, 4, 0],
-          [0, 4, 3, 4, 0],
-          [0, 4, 4, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 4, 4, 0, 0],
-          [0, 4, 4, 4, 0],
-          [0, 4, 4, 0, 0],
-          [0, 0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 4, 4, 0],
-          [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0]
-        ]
-      ]
-    }
-    
-    var height = world.layout.length;
-    var width = world.layout[0].length;
-    var dy = Math.floor(height / 2);
-    var dx = Math.floor(width / 2);
-    var i = 0;
-    
-    for(var stage=0; stage<world.layout.length; stage++){
-      for(var z=0; z<world.layout[stage].length; z++){
-        for(var x=0; x<world.layout[stage][z].length; x++){
-          var blockMapValue = world.layout[stage][z][x];
-          var mesh = world.blockMap[blockMapValue];
-          if (mesh !== undefined)
-          (function(x, stage, z, mesh){
-            setTimeout(function(){
-              LoadCube(x-dx, stage-dy, z-dx, mesh);
-            }, 40 * i++ + 500);
-          })(x, stage, z, mesh);
-        }
-      }
-    }
+    world = new SavedWorld(scene);
+    world.setToolMesh(MESHES.grass);
+    world.import(DEFAULTWORLD);
   }
   
   function LoadSidebar(){
@@ -356,56 +235,7 @@ h1 span{
     }
   }
   function SetCurrentMesh(event){
-    tool.currentMesh = event.target.mesh;
-  }
-  
-  
-  function LoadCube(x, y, z, mesh){
-    x *= BLOCKDIM;
-    y *= BLOCKDIM;
-    z *= BLOCKDIM;
-    
-    var cube = new Cube(x, y, z, BLOCKDIM);
-    cube.setMesh(mesh);
-    
-    cube.addEventListener('CubeClick', RemoveCube);
-    
-    cube.addEventListener('TopClick', NewCubeFromTop);
-    cube.addEventListener('BottomClick', NewCubeFromBottom);
-    cube.addEventListener('FrontClick', NewCubeFromFront);
-    cube.addEventListener('BackClick', NewCubeFromBack);
-    cube.addEventListener('LeftClick', NewCubeFromLeft);
-    cube.addEventListener('RightClick', NewCubeFromRight);
-    
-    if (mesh === MESHES.cloud) cube.animDown(scene);
-    else cube.animUp(scene);
-  }
-  function RemoveCube(event){
-    event.target.removeFromScene();
-  }
-  function NewCubeFromTop(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM+1, pos.z/BLOCKDIM, tool.currentMesh);
-  }
-  function NewCubeFromBottom(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM-1, pos.z/BLOCKDIM, tool.currentMesh);
-  }
-  function NewCubeFromRight(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM+1, pos.y/BLOCKDIM, pos.z/BLOCKDIM, tool.currentMesh);
-  }
-  function NewCubeFromLeft(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM-1, pos.y/BLOCKDIM, pos.z/BLOCKDIM, tool.currentMesh);
-  }
-  function NewCubeFromBack(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM, pos.z/BLOCKDIM-1, tool.currentMesh);
-  }
-  function NewCubeFromFront(event){
-    var pos = event.target.getPosition();
-    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM, pos.z/BLOCKDIM+1, tool.currentMesh);
+    world.setToolMesh(event.target.mesh);
   }
   
   

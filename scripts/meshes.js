@@ -6,7 +6,8 @@ const MESHES = {
     'front'  : 'res/dirt/main.png',
     'back'   : 'res/dirt/main.png',
     'left'   : 'res/dirt/main.png',
-    'right'  : 'res/dirt/main.png'
+    'right'  : 'res/dirt/main.png',
+    'label'  : 'dirt'
   },
   
   grass: {
@@ -15,7 +16,8 @@ const MESHES = {
     'front'  : 'res/grass/side.png',
     'back'   : 'res/grass/side.png',
     'left'   : 'res/grass/side.png',
-    'right'  : 'res/grass/side.png'
+    'right'  : 'res/grass/side.png',
+    'label'  : 'grass'
   },
   
   water: {
@@ -24,7 +26,8 @@ const MESHES = {
     'front'  : 'res/water/main.png',
     'back'   : 'res/water/main.png',
     'left'   : 'res/water/main.png',
-    'right'  : 'res/water/main.png'
+    'right'  : 'res/water/main.png',
+    'label'  : 'water'
   },
   
   waterFall: {
@@ -33,7 +36,8 @@ const MESHES = {
     'front'  : 'res/water/fall.png',
     'back'   : 'res/water/fall.png',
     'left'   : 'res/water/fall.png',
-    'right'  : 'res/water/fall.png'
+    'right'  : 'res/water/fall.png',
+    'label'  : 'waterFall'
   },
   
   waterFallTop: {
@@ -42,7 +46,8 @@ const MESHES = {
     'front'  : 'res/water/falltop.png',
     'back'   : 'res/water/falltop.png',
     'left'   : 'res/water/falltop.png',
-    'right'  : 'res/water/falltop.png'
+    'right'  : 'res/water/falltop.png',
+    'label'  : 'waterFallTop'
   },
   
   waterFallCrash: {
@@ -51,7 +56,8 @@ const MESHES = {
     'front'  : 'res/water/crash.png',
     'back'   : 'res/water/crash.png',
     'left'   : 'res/water/crash.png',
-    'right'  : 'res/water/crash.png'
+    'right'  : 'res/water/crash.png',
+    'label'  : 'waterFallCrash'
   },
   
   cloud: {
@@ -60,7 +66,8 @@ const MESHES = {
     'front'  : 'res/cloud/main.png',
     'back'   : 'res/cloud/main.png',
     'left'   : 'res/cloud/main.png',
-    'right'  : 'res/cloud/main.png'
+    'right'  : 'res/cloud/main.png',
+    'label'  : 'cloud'
   },
   
   treeTrunk: {
@@ -69,7 +76,8 @@ const MESHES = {
     'front'  : 'res/tree/bark.png',
     'back'   : 'res/tree/bark.png',
     'left'   : 'res/tree/bark.png',
-    'right'  : 'res/tree/bark.png'
+    'right'  : 'res/tree/bark.png',
+    'label'  : 'treeTrunk'
   },
   
   treeLeaves: {
@@ -78,7 +86,8 @@ const MESHES = {
     'front'  : 'res/tree/leaves.png',
     'back'   : 'res/tree/leaves.png',
     'left'   : 'res/tree/leaves.png',
-    'right'  : 'res/tree/leaves.png'
+    'right'  : 'res/tree/leaves.png',
+    'label'  : 'treeLeaves'
   }
   
 }

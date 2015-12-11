@@ -13,6 +13,8 @@
     var cubeElement;
     var animElement;
     var faces = {}
+    
+    var mesh;
   
     var dimension;
     var position = {x:0, y:0, z:0};
@@ -21,27 +23,37 @@
     
     
     self.setMesh = SetMesh;
+    self.getMesh = GetMesh;
     
     self.animUp = AnimUp;
     self.animDown = AnimDown;
     self.removeFromScene = RemoveFromScene;
     
     self.getPosition = GetPosition;
+    self.getDimension = GetDimension;
     
     self.addEventListener = AddEventListener;
     self.removeEventListener = RemoveEventListener;
     
     
-    function SetMesh(mesh){
+    function SetMesh(_mesh){
+      mesh = _mesh;
+      
       for(var label in faces){
         var faceMesh = mesh[label];
         if (faceMesh !== undefined)
           faces[label].src = faceMesh;
       }
     }
+    function GetMesh(){
+      return mesh;
+    }
     
     function GetPosition(){
       return position;
+    }
+    function GetDimension(){
+      return dimension;
     }
     
     function AnimUp(scene){
