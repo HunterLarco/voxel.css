@@ -52,6 +52,7 @@
     self.isAttached = IsAttached;
     
     self.appendChild = AppendChild;
+    self.removeChild = RemoveChild;
     
     
     function Rotate(x, y, z){
@@ -159,6 +160,9 @@
     
     function AppendChild(elem){
       cameraElement.appendChild(elem);
+    }
+    function RemoveChild(elem){
+      cameraElement.removeChild(elem);
     }
     
     

@@ -189,17 +189,16 @@ h1 span{
   <div class='scene'></div>
 </div>
 
-<!-- <div class='sidebar'>
-  <img src='res/grass/side.png'/>
-  <img src='res/dirt/main.png'/>
-  <img src='res/water/main.png'/>
-  <img src='res/water/falltop.png'/>
-  <img src='res/water/fall.png'/>
-  <img src='res/water/crash.png'/>
-  <img src='res/tree/leaves.png'/>
-  <img src='res/tree/bark.png'/>
-  <img src='res/clouds/main.png'/>
-</div> -->
+<div class='sidebar'>
+  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
+  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
+  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
+  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
+  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
+  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
+  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
+  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
+</div>
 
 
 <script>
@@ -210,10 +209,16 @@ h1 span{
   
   
   var scene;
+  var world = [];
+  var tool = {
+    currentMesh: MESHES.grass
+  }
   
   
   window.addEventListener('load', Init);
   function Init(){
+    LoadSidebar();
+    
     scene = new Scene();
     scene.rotate(0, -Math.PI/4, 0);
     scene.attach(document.body);
@@ -335,16 +340,74 @@ h1 span{
           if (mesh !== undefined)
           (function(x, stage, z, mesh){
             setTimeout(function(){
-               var cube = new Cube((x-dx) * BLOCKDIM, (stage-dy) * BLOCKDIM, (z-dx) * BLOCKDIM, BLOCKDIM);
-               cube.setMesh(mesh);
-               if (mesh === MESHES.cloud) cube.animDown(scene);
-               else cube.animUp(scene);
+              LoadCube(x-dx, stage-dy, z-dx, mesh);
             }, 40 * i++ + 500);
           })(x, stage, z, mesh);
         }
       }
     }
   }
+  
+  function LoadSidebar(){
+    var items = document.querySelectorAll('.sidebar .mesh');
+    for(var i=0,item; item=items[i++];){
+      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.addEventListener('click', SetCurrentMesh);
+    }
+  }
+  function SetCurrentMesh(event){
+    tool.currentMesh = event.target.mesh;
+  }
+  
+  
+  function LoadCube(x, y, z, mesh){
+    x *= BLOCKDIM;
+    y *= BLOCKDIM;
+    z *= BLOCKDIM;
+    
+    var cube = new Cube(x, y, z, BLOCKDIM);
+    cube.setMesh(mesh);
+    
+    cube.addEventListener('CubeClick', RemoveCube);
+    
+    cube.addEventListener('TopClick', NewCubeFromTop);
+    cube.addEventListener('BottomClick', NewCubeFromBottom);
+    cube.addEventListener('FrontClick', NewCubeFromFront);
+    cube.addEventListener('BackClick', NewCubeFromBack);
+    cube.addEventListener('LeftClick', NewCubeFromLeft);
+    cube.addEventListener('RightClick', NewCubeFromRight);
+    
+    if (mesh === MESHES.cloud) cube.animDown(scene);
+    else cube.animUp(scene);
+  }
+  function RemoveCube(event){
+    event.target.removeFromScene();
+  }
+  function NewCubeFromTop(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM+1, pos.z/BLOCKDIM, tool.currentMesh);
+  }
+  function NewCubeFromBottom(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM-1, pos.z/BLOCKDIM, tool.currentMesh);
+  }
+  function NewCubeFromRight(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM+1, pos.y/BLOCKDIM, pos.z/BLOCKDIM, tool.currentMesh);
+  }
+  function NewCubeFromLeft(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM-1, pos.y/BLOCKDIM, pos.z/BLOCKDIM, tool.currentMesh);
+  }
+  function NewCubeFromBack(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM, pos.z/BLOCKDIM-1, tool.currentMesh);
+  }
+  function NewCubeFromFront(event){
+    var pos = event.target.getPosition();
+    LoadCube(pos.x/BLOCKDIM, pos.y/BLOCKDIM, pos.z/BLOCKDIM+1, tool.currentMesh);
+  }
+  
   
   // GetCurrentWeather(function(event){
     // console.log(event)
