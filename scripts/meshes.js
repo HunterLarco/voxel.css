@@ -33,30 +33,30 @@ const MESHES = {
   waterFall: {
     'top'    : 'res/water/main.png',
     'bottom' : 'res/water/main.png',
-    'front'  : 'res/water/fall.png',
-    'back'   : 'res/water/fall.png',
-    'left'   : 'res/water/fall.png',
-    'right'  : 'res/water/fall.png',
+    'front'  : 'res/water/fall.gif',
+    'back'   : 'res/water/fall.gif',
+    'left'   : 'res/water/fall.gif',
+    'right'  : 'res/water/fall.gif',
     'label'  : 'waterFall'
   },
   
   waterFallTop: {
     'top'    : 'res/water/main.png',
     'bottom' : 'res/water/main.png',
-    'front'  : 'res/water/falltop.png',
-    'back'   : 'res/water/falltop.png',
-    'left'   : 'res/water/falltop.png',
-    'right'  : 'res/water/falltop.png',
+    'front'  : 'res/water/falltop.gif',
+    'back'   : 'res/water/falltop.gif',
+    'left'   : 'res/water/falltop.gif',
+    'right'  : 'res/water/falltop.gif',
     'label'  : 'waterFallTop'
   },
   
   waterFallCrash: {
     'top'    : 'res/water/main.png',
     'bottom' : 'res/water/main.png',
-    'front'  : 'res/water/crash.png',
-    'back'   : 'res/water/crash.png',
-    'left'   : 'res/water/crash.png',
-    'right'  : 'res/water/crash.png',
+    'front'  : 'res/water/crash.gif',
+    'back'   : 'res/water/crash.gif',
+    'left'   : 'res/water/crash.gif',
+    'right'  : 'res/water/crash.gif',
     'label'  : 'waterFallCrash'
   },
   
