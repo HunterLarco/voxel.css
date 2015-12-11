@@ -5,6 +5,9 @@
     var undefined;
     
     
+    const AUTOSAVE = true;
+    
+    
     var scene;
     var blocks = [];
     
@@ -19,6 +22,10 @@
     self.export = Export;
     self.import = Import;
     
+    self.exportToBrowser = ExportToBrowser;
+    self.importFromBrowser = ImportFromBrowser;
+    self.isSavedToBrowser = IsSavedToBrowser;
+    
     self.setToolMesh = SetToolMesh;
     
     
@@ -27,6 +34,8 @@
       
       blocks.push(cube);
       cube.animUp(scene);
+      
+      if(AUTOSAVE) ExportToBrowser();
     }
     function RemoveBlock(cube){
       var index = blocks.indexOf(cube);
@@ -34,6 +43,8 @@
       
       cube.removeFromScene();
       blocks.splice(index, 1);
+      
+      if(AUTOSAVE) ExportToBrowser();
       return true;
     }
     
@@ -63,6 +74,16 @@
           }, 20 * i + 500);
         })(cube);
       }
+    }
+    
+    function ExportToBrowser(){
+      localStorage.setItem('savedWorld', Export());
+    }
+    function ImportFromBrowser(){
+      Import(localStorage.getItem('savedWorld') || '[]');
+    }
+    function IsSavedToBrowser(){
+      return !!localStorage.getItem('savedWorld');
     }
     
     function SetToolMesh(mesh){

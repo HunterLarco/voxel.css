@@ -219,12 +219,14 @@ h1 span{
     LoadSidebar();
     
     scene = new Scene();
-    scene.rotate(0, -Math.PI/4, 0);
+    scene.rotate(0, Math.PI/6, 0);
     scene.attach(document.body);
     
     world = new SavedWorld(scene);
     world.setToolMesh(MESHES.grass);
-    world.import(DEFAULTWORLD);
+    
+    if(world.isSavedToBrowser()) world.importFromBrowser();
+    else world.import(DEFAULTWORLD);
   }
   
   function LoadSidebar(){
