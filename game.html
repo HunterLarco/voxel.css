@@ -19,7 +19,7 @@ body{
   background-size:100px 100px;
 }
 
-.canvas{
+.scene{
   position:absolute;
   top:0px;
   left:0px;
@@ -32,7 +32,8 @@ body{
   
   cursor:move;
 }
-.scene{
+.scene .zoom,
+.scene .camera{
   position:absolute;
   top:50%;
   left:50%;
@@ -42,7 +43,6 @@ body{
   overflow:visible;
   
   transform-style: preserve-3d;
-  transform:rotateY(1deg);
 }
 
 .face{
@@ -82,25 +82,6 @@ body{
 }
 .cube .anim.up{
   animation:fallup 1000ms linear both;
-}
-
-.cube .left{
-  transform:rotateY(90deg) translate3d(0, 0, 18px);
-}
-.cube .right{
-  transform:rotateY(90deg) translate3d(0, 0, -18px);
-}
-.cube .front{
-  transform:translate3d(0, 0, 18px);
-}
-.cube .back{
-  transform:translate3d(0, 0, -18px);
-}
-.cube .top{
-  transform:rotateX(90deg) translate3d(0, 0, 18px);
-}
-.cube .bottom{
-  transform:rotateX(90deg) translate3d(0, 0, -18px);
 }
 
 h1{
@@ -170,6 +151,7 @@ h1 span{
   position:fixed;
   left:0px;
   top:0px;
+  z-index:1;
   
   height:100%;
   overflow:scroll;
@@ -190,7 +172,11 @@ h1 span{
 
 </style>
 
-<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'></link>
+
+<script src='scripts/Scene.js'></script>
+<script src='scripts/Cube.js'></script>
+<script src='scripts/meshes.js'></script>
 
 </head>
 <body>
@@ -202,8 +188,8 @@ h1 span{
   <div class='scene'></div>
 </div>
 
-<div class='sidebar'>
-  <img src='res/basic/side.png'/>
+<!-- <div class='sidebar'>
+  <img src='res/grass/side.png'/>
   <img src='res/dirt/main.png'/>
   <img src='res/water/main.png'/>
   <img src='res/water/falltop.png'/>
@@ -212,333 +198,162 @@ h1 span{
   <img src='res/tree/leaves.png'/>
   <img src='res/tree/bark.png'/>
   <img src='res/clouds/main.png'/>
-</div>
+</div> -->
 
 
 <script>
 (function(){
   
+  const BLOCKDIM = 36;
   const undefined;
   
-  var canvas;
   
-  var scene = {
-    pan: {
-      x: 0,
-      y: 0
-    },
-    rotate: {
-      x: 0,
-      y: -Math.PI/4,
-      z: 0
-    },
-    zoom: 1
-  }
+  var scene;
   
-  var mouse = {
-    start: {
-      x: 0,
-      y: 0
-    },
-    current: {
-      x: 0,
-      y: 0
-    },
-    lastMove: {
-      x: 0,
-      y: 0
-    }
-  }
-  
-  var world = {
-    blockMap: {
-      1: ApplyGrassMesh,
-      2: ApplyDirtMesh,
-      3: ApplyBarkMesh,
-      4: ApplyLeavesMesh,
-      5: ApplyWaterFallTopMesh,
-      6: ApplyWaterMesh,
-      7: ApplyCloudMesh,
-      8: ApplyWaterFallMesh,
-      9: ApplyWaterFallCrashMesh
-    },
-    layout: [
-      [
-        [2, 2, 2, 2, 2],
-        [9, 2, 2, 2, 2],
-        [9, 6, 6, 2, 2],
-        [2, 6, 6, 6, 2],
-        [2, 2, 9, 9, 2]
-      ],
-      [
-        [2, 2, 2, 2, 2],
-        [8, 2, 2, 2, 2],
-        [8, 6, 2, 2, 2],
-        [2, 6, 6, 6, 2],
-        [2, 2, 8, 8, 2]
-      ],
-      [
-        [2, 2, 2, 2, 1],
-        [5, 2, 2, 2, 2],
-        [5, 6, 3, 2, 2],
-        [2, 6, 6, 6, 2],
-        [2, 2, 5, 5, 1]
-      ],
-      [
-        [1, 2, 2, 1, 0],
-        [0, 1, 2, 2, 1],
-        [0, 0, 3, 1, 1],
-        [1, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0]
-      ],
-      [
-        [0, 1, 1, 0, 0],
-        [0, 0, 1, 1, 0],
-        [0, 0, 3, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 3, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 3, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 4, 0],
-        [0, 0, 3, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 4, 4, 0],
-        [0, 4, 4, 4, 0],
-        [0, 4, 4, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 4, 4, 0, 0],
-        [0, 4, 4, 4, 0],
-        [0, 4, 4, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 4, 4, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 7, 7, 0],
-        [0, 7, 7, 7, 0],
-        [0, 0, 7, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 7, 7, 7],
-        [0, 7, 0, 0, 7],
-        [7, 0, 0, 0, 7],
-        [0, 7, 7, 7, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 7, 7, 0],
-        [0, 7, 7, 7, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ]
-    ]
-  }
-  
-  function Cube(){
-    var self = this;
-    
-    
-    const BLOCK_DIM = 36;
-    
-    
-    var cube;
-    var faces = {}
-    
-    var position = {x:0, y:0, z:0};
-    
-    
-    self.mesh = {
-      'setTop': SetTopMesh,
-      'setBottom': SetBottomMesh,
-      'setFront': SetFrontMesh,
-      'setBack': SetBackMesh,
-      'setLeft': SetLeftMesh,
-      'setRight': SetRightMesh
-    }
-    
-    
-    function SetTopMesh(src){
-      faces.top.src = src;
-    }
-    function SetBottomMesh(src){
-      faces.bottom.src = src;
-    }
-    function SetFrontMesh(src){
-      faces.front.src = src;
-    }
-    function SetBackMesh(src){
-      faces.back.src = src;
-    }
-    function SetLeftMesh(src){
-      faces.left.src = src;
-    }
-    function SetRightMesh(src){
-      faces.right.src = src;
-    }
-    
-    
-    function CreateCube(falldown){
-      cube = CreateElem('div', 'cube');
-      
-      var anim = CreateElem('div', 'anim' + (!!falldown ? ' down' : ' up'));
-      
-      var topWrapper = CreateElem('div', 'face top');
-      faces.top = CreateElem('img', '');
-      topWrapper.appendChild(faces.top);
-      
-      var bottomWrapper = CreateElem('div', 'face bottom');
-      faces.bottom = CreateElem('img', '');
-      bottomWrapper.appendChild(faces.bottom);
-      
-      var leftWrapper = CreateElem('div', 'face left');
-      faces.left = CreateElem('img', '');
-      leftWrapper.appendChild(faces.left);
-      
-      var rightWrapper = CreateElem('div', 'face right');
-      faces.right = CreateElem('img', '');
-      rightWrapper.appendChild(faces.right);
-      
-      var frontWrapper = CreateElem('div', 'face front');
-      faces.front = CreateElem('img', '');
-      frontWrapper.appendChild(faces.front);
-      
-      var backWrapper = CreateElem('div', 'face back');
-      faces.back = CreateElem('img', '');
-      backWrapper.appendChild(faces.back);
-      
-      for(var label in faces){
-        var face = faces[label];
-        face.src = 'empty.png';
-        anim.appendChild(face.parentElement);
-      }
-      cube.appendChild(anim);
-    }
-    function CreateElem(type, cls){
-      var elem = document.createElement(type);
-      elem.setAttribute('class', cls);
-      return elem;
-    }
-    function UpdatePosition(){
-      cube.style.transform = 'translate3d('+position.x*BLOCK_DIM+'px, '+-position.y*BLOCK_DIM+'px, '+position.z*BLOCK_DIM+'px)';
-    }
-    function AppendToScene(){
-      canvas.children[0].appendChild(cube);
-    }
-    
-    
-    (function Constructor(x, y, z, down){
-      position = {x:x, y:y, z:z};
-      CreateCube(down);
-      UpdatePosition();
-      AppendToScene();
-    }).apply(self, arguments);
-  }
-  
-  function BindCanvas(){
-    canvas = document.querySelector('.canvas');
-  }
-  function UpdateCSSRotations(){
-    var cssScene = canvas.querySelector('.scene');
-    cssScene.style.transform = 'rotateX('+scene.rotate.x+'rad) rotateY('+scene.rotate.y+'rad) rotateZ('+scene.rotate.z+'rad)';
-  }
-  function UpdateCSSZoom(){
-    canvas.style.transform = 'scale('+scene.zoom+', '+scene.zoom+')';
-  }
-  
-  function BindMouseToScene(){
-    canvas.addEventListener('mousedown', MouseDown);
-    canvas.addEventListener('mousewheel', OnScroll);
-  }
-  function MouseDown(event){
-    mouse.start.x = event.x;
-    mouse.start.y = event.y;
-    
-    mouse.current.x = event.x;
-    mouse.current.y = event.y;
-    
-    window.addEventListener('mousemove', MouseMove);
-    window.addEventListener('mouseup', MouseUp);
-  }
-  function MouseUp(event){
-    window.removeEventListener('mousemove', MouseMove);
-    window.removeEventListener('mouseup', MouseUp);
-  }
-  function MouseMove(event){
-    mouse.lastMove.dx = event.x - mouse.current.x;
-    mouse.lastMove.dy = event.y - mouse.current.y;
-    
-    mouse.current.x = event.x;
-    mouse.current.y = event.y;
-    
-    const rotations = 2;
-    scene.rotate.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
-    scene.rotate.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
-    
-    UpdateCSSRotations();
-  }
-  function OnScroll(event){
-    scene.zoom += event.deltaY / 5000;
-    UpdateCSSZoom();
-    event.preventDefault();
-    return false;
-  }
   
   window.addEventListener('load', Init);
   function Init(){
-    BindCanvas();
-    BindMouseToScene();
-    UpdateCSSRotations();
+    scene = new Scene();
+    scene.rotate(0, -Math.PI/4, 0);
+    scene.attach(document.body);
+    
+    LoadWorld();
+  }
+  function LoadWorld(){
+    var world = {
+      blockMap: {
+        1: MESHES.grass,
+        2: MESHES.dirt,
+        3: MESHES.treeTrunk,
+        4: MESHES.treeLeaves,
+        5: MESHES.waterFallTop,
+        6: MESHES.water,
+        7: MESHES.cloud,
+        8: MESHES.waterFall,
+        9: MESHES.waterFallCrash
+      },
+      layout: [
+        [
+          [2, 2, 2, 2, 2],
+          [9, 2, 2, 2, 2],
+          [9, 6, 6, 2, 2],
+          [2, 6, 6, 6, 2],
+          [2, 2, 9, 9, 2]
+        ],
+        [
+          [2, 2, 2, 2, 2],
+          [8, 2, 2, 2, 2],
+          [8, 6, 2, 2, 2],
+          [2, 6, 6, 6, 2],
+          [2, 2, 8, 8, 2]
+        ],
+        [
+          [2, 2, 2, 2, 1],
+          [5, 2, 2, 2, 2],
+          [5, 6, 3, 2, 2],
+          [2, 6, 6, 6, 2],
+          [2, 2, 5, 5, 1]
+        ],
+        [
+          [1, 2, 2, 1, 0],
+          [0, 1, 2, 2, 1],
+          [0, 0, 3, 1, 1],
+          [1, 0, 0, 0, 1],
+          [1, 1, 0, 0, 0]
+        ],
+        [
+          [0, 1, 1, 0, 0],
+          [0, 0, 1, 1, 0],
+          [0, 0, 3, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 3, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 3, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 4, 0],
+          [0, 0, 3, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 4, 4, 0],
+          [0, 4, 4, 4, 0],
+          [0, 4, 4, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 4, 4, 0, 0],
+          [0, 4, 4, 4, 0],
+          [0, 4, 4, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 4, 4, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 7, 7, 0],
+          [0, 7, 7, 7, 0],
+          [0, 0, 7, 0, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 7, 7, 7],
+          [0, 7, 0, 0, 7],
+          [7, 0, 0, 0, 7],
+          [0, 7, 7, 7, 0],
+          [0, 0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0, 0],
+          [0, 0, 7, 7, 0],
+          [0, 7, 7, 7, 0],
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0]
+        ]
+      ]
+    }
     
     var height = world.layout.length;
     var width = world.layout[0].length;
@@ -550,113 +365,24 @@ h1 span{
       for(var z=0; z<world.layout[stage].length; z++){
         for(var x=0; x<world.layout[stage][z].length; x++){
           var blockMapValue = world.layout[stage][z][x];
-          var meshRenderer = world.blockMap[blockMapValue];
-          if (meshRenderer !== undefined)
-          (function(x, stage, z, meshRenderer){
+          var mesh = world.blockMap[blockMapValue];
+          if (mesh !== undefined)
+          (function(x, stage, z, mesh){
             setTimeout(function(){
-               meshRenderer(new Cube(x-dx, stage-dy, z-dx));
+               var cube = new Cube((x-dx) * BLOCKDIM, (stage-dy) * BLOCKDIM, (z-dx) * BLOCKDIM, BLOCKDIM);
+               cube.setMesh(mesh);
+               if (mesh === MESHES.cloud) cube.animDown(scene);
+               else cube.animUp(scene);
             }, 40 * i++ + 500);
-          })(x, stage, z, meshRenderer);
+          })(x, stage, z, mesh);
         }
       }
     }
   }
   
-  
-  function ApplyGrassMesh(cube){
-    cube.mesh.setFront('res/basic/side.png');
-    cube.mesh.setLeft('res/basic/side.png');
-    cube.mesh.setBack('res/basic/side.png');
-    cube.mesh.setRight('res/basic/side.png');
-    cube.mesh.setTop('res/basic/top.png');
-    cube.mesh.setBottom('res/basic/bottom.png');
-    return cube;
-  }
-  function ApplyDirtMesh(cube){
-    cube.mesh.setFront('res/dirt/main.png');
-    cube.mesh.setLeft('res/dirt/main.png');
-    cube.mesh.setBack('res/dirt/main.png');
-    cube.mesh.setRight('res/dirt/main.png');
-    cube.mesh.setTop('res/dirt/main.png');
-    cube.mesh.setBottom('res/dirt/main.png');
-    return cube;
-  }
-  function ApplyBarkMesh(cube){
-    cube.mesh.setFront('res/tree/bark.png');
-    cube.mesh.setLeft('res/tree/bark.png');
-    cube.mesh.setBack('res/tree/bark.png');
-    cube.mesh.setRight('res/tree/bark.png');
-    cube.mesh.setTop('res/tree/cuttrunk.png');
-    cube.mesh.setBottom('res/tree/cuttrunk.png');
-    return cube;
-  }
-  function ApplyLeavesMesh(cube){
-    cube.mesh.setFront('res/tree/leaves.png');
-    cube.mesh.setLeft('res/tree/leaves.png');
-    cube.mesh.setBack('res/tree/leaves.png');
-    cube.mesh.setRight('res/tree/leaves.png');
-    cube.mesh.setTop('res/tree/leaves.png');
-    cube.mesh.setBottom('res/tree/leaves.png');
-    return cube;
-  }
-  function ApplyApplesMesh(cube){
-    cube.mesh.setFront('res/tree/apples.png');
-    cube.mesh.setLeft('res/tree/apples.png');
-    cube.mesh.setBack('res/tree/apples.png');
-    cube.mesh.setRight('res/tree/apples.png');
-    cube.mesh.setTop('res/tree/leaves.png');
-    cube.mesh.setBottom('res/tree/leaves.png');
-    return cube;
-  }
-  function ApplyWaterMesh(cube){
-    cube.mesh.setFront('res/water/main.png');
-    cube.mesh.setLeft('res/water/main.png');
-    cube.mesh.setBack('res/water/main.png');
-    cube.mesh.setRight('res/water/main.png');
-    cube.mesh.setTop('res/water/main.png');
-    cube.mesh.setBottom('res/water/main.png');
-    return cube;
-  }
-  function ApplyWaterFallTopMesh(cube){
-    cube.mesh.setFront('res/water/falltop.png');
-    cube.mesh.setLeft('res/water/falltop.png');
-    cube.mesh.setBack('res/water/falltop.png');
-    cube.mesh.setRight('res/water/falltop.png');
-    cube.mesh.setTop('res/water/main.png');
-    cube.mesh.setBottom('res/water/main.png');
-    return cube;
-  }
-  function ApplyWaterFallMesh(cube){
-    cube.mesh.setFront('res/water/fall.png');
-    cube.mesh.setLeft('res/water/fall.png');
-    cube.mesh.setBack('res/water/fall.png');
-    cube.mesh.setRight('res/water/fall.png');
-    cube.mesh.setTop('res/water/main.png');
-    cube.mesh.setBottom('res/water/main.png');
-    return cube;
-  }
-  function ApplyWaterFallCrashMesh(cube){
-    cube.mesh.setFront('res/water/crash.png');
-    cube.mesh.setLeft('res/water/crash.png');
-    cube.mesh.setBack('res/water/crash.png');
-    cube.mesh.setRight('res/water/crash.png');
-    cube.mesh.setTop('res/water/main.png');
-    cube.mesh.setBottom('res/water/main.png');
-    return cube;
-  }
-  function ApplyCloudMesh(cube){
-    cube.mesh.setFront('res/clouds/main.png');
-    cube.mesh.setLeft('res/clouds/main.png');
-    cube.mesh.setBack('res/clouds/main.png');
-    cube.mesh.setRight('res/clouds/main.png');
-    cube.mesh.setTop('res/clouds/main.png');
-    cube.mesh.setBottom('res/clouds/main.png');
-    return cube;
-  }
-  
-  GetCurrentWeather(function(event){
-    console.log(event)
-  })
+  // GetCurrentWeather(function(event){
+    // console.log(event)
+  // })
   
   function GetCurrentWeather(callback){
     GetCurrentPosition(function(event){
