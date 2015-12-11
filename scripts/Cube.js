@@ -41,7 +41,10 @@
       
       for(var label in faces){
         var faceMesh = mesh[label];
-        if (faceMesh !== undefined)
+        if (faceMesh === undefined) continue;
+        if (faceMesh instanceof Array)
+          new SyncedGif(faceMesh, 320).attach(faces[label]);
+        else
           faces[label].src = faceMesh;
       }
     }
