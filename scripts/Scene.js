@@ -20,6 +20,9 @@
       lastMove: { x: 0, y: 0 }
     }
     
+    var canZoom = true;
+    var canOrbit = true;
+    
     
     self.rotate = Rotate;
     self.pan    = Pan;
@@ -45,6 +48,7 @@
     self.getPanY = GetPanY;
     self.getPanZ = GetPanZ;
     
+    self.setZoom = SetZoom;
     self.getZoom = GetZoom;
     
     self.attach = Attach;
@@ -53,6 +57,14 @@
     
     self.appendChild = AppendChild;
     self.removeChild = RemoveChild;
+    
+    self.disableZoom = DisableZoom;
+    self.enableZoom = EnableZoom;
+    self.canZoom = CanZoom;
+    
+    self.disableOrbit = DisableOrbit;
+    self.enableOrbit = EnableOrbit;
+    self.canOrbit = CanOrbit;
     
     
     function Rotate(x, y, z){
@@ -165,6 +177,29 @@
       cameraElement.removeChild(elem);
     }
     
+    function DisableZoom(){
+      canZoom = false;
+    }
+    function EnableZoom(){
+      canZoom = true;
+    }
+    function CanZoom(){
+      return canZoom;
+    }
+    
+    function DisableOrbit(){
+      canOrbit = false;
+    }
+    function EnableOrbit(){
+      canOrbit = true;
+    }
+    function CanOrbit(){
+      return canOrbit;
+    }
+    
+    
+    
+    
     
     function CreateSceneElement(){
       sceneElement = document.createElement('div');
@@ -205,6 +240,8 @@
       mouse.current.x = event.x;
       mouse.current.y = event.y;
     
+      if (!canOrbit) return;
+      
       const rotations = 2;
       rotation.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
       rotation.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
@@ -212,6 +249,8 @@
       UpdateSceneTransforms();
     }
     function OnScroll(event){
+      if (!canZoom) return;
+      
       zoom += event.deltaY / 5000;
       UpdateSceneTransforms();
       event.preventDefault();

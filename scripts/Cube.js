@@ -35,6 +35,9 @@
     self.addEventListener = AddEventListener;
     self.removeEventListener = RemoveEventListener;
     
+    self.enableHoverState = EnableHoverState;
+    self.disableHoverState = DisableHoverState;
+    
     
     function SetMesh(_mesh){
       mesh = _mesh;
@@ -74,9 +77,16 @@
       parentScene.removeChild(cubeElement);
     }
     
+    function EnableHoverState(){
+      cubeElement.setAttribute('class', 'cube editable');
+    }
+    function DisableHoverState(){
+      cubeElement.setAttribute('class', 'cube');
+    }
+    
   
     function CreateCube(){
-      cubeElement = CreateElem('div', 'cube');
+      cubeElement = CreateElem('div', 'cube editable');
       animElement = CreateElem('div', 'anim');
     
       CreateFace('top');

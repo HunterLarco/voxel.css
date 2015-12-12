@@ -7,125 +7,20 @@ body{
   margin:0px;
   
   background:rgb(245,245,245);
+  color:rgb(31,31,31);
   
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  font-size:0px;
+  font-family:'lato', Helvetica, Arial;
+  font-weight:400;
+}
+
+.demo{
+  position:relative;
   
-  background:url(res/background.png);
+  height:500px;
+  
+  background:rgb(232,232,232);
   background-size:100px 100px;
-}
-
-.scene{
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  
-  perspective:1000px;
-  perspective-origin:50% 50%;
-  
-  cursor:move;
-}
-.scene .zoom,
-.scene .camera{
-  position:absolute;
-  top:50%;
-  left:50%;
-  
-  width:0;
-  height:0;
-  overflow:visible;
-  
-  transform-style: preserve-3d;
-}
-
-.face{
-  display:block;
-  position:absolute;
-  
-  outline:none;
-  border:none;
-  
-  margin-left:-18px;
-  margin-top:-18px;
-  width:36px;
-  height:36px;
-  
-  cursor:pointer;
-}
-.face img{
-  width:100%;
-  height:100%;
-}
-.cube:hover img{
-  visibility:hidden;
-}
-.cube:hover .face{
-  background:rgba(0,0,0,0.3);
-}
-
-.cube{
-  position:absolute;
-  
-  transform-style:preserve-3d;
-}
-.cube .anim{
-  transform-style:preserve-3d;
-}
-.cube .anim.down{
-  animation:falldown 1000ms linear both;
-}
-.cube .anim.up{
-  animation:fallup 1000ms linear both;
-}
-
-@keyframes fallup {
-  0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 300, 0, 1); opacity:0; }
-  1.3% { transform: matrix3d(1, 0, 0, 0, 0, 3.905, 0, 0, 0, 0, 1, 0, 0, 237.02, 0, 1); }
-  2.55% { transform: matrix3d(1, 0, 0, 0, 0, 4.554, 0, 0, 0, 0, 1, 0, 0, 182.798, 0, 1); }
-  4.1% { transform: matrix3d(1, 0, 0, 0, 0, 4.025, 0, 0, 0, 0, 1, 0, 0, 125.912, 0, 1); }
-  5.71% { transform: matrix3d(1, 0, 0, 0, 0, 3.039, 0, 0, 0, 0, 1, 0, 0, 79.596, 0, 1); }
-  8.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.82, 0, 0, 0, 0, 1, 0, 0, 31.647, 0, 1); opacity:1; }
-  8.81% { transform: matrix3d(1, 0, 0, 0, 0, 1.581, 0, 0, 0, 0, 1, 0, 0, 21.84, 0, 1); }
-  11.96% { transform: matrix3d(1, 0, 0, 0, 0, 1.034, 0, 0, 0, 0, 1, 0, 0, -4.825, 0, 1); }
-  12.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.023, 0, 0, 0, 0, 1, 0, 0, -5.53, 0, 1); }
-  15.07% { transform: matrix3d(1, 0, 0, 0, 0, 0.947, 0, 0, 0, 0, 1, 0, 0, -12.662, 0, 1); }
-  16.12% { transform: matrix3d(1, 0, 0, 0, 0, 0.951, 0, 0, 0, 0, 1, 0, 0, -13.007, 0, 1); }
-  27.23% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, -2.352, 0, 1); }
-  27.58% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, -2.121, 0, 1); }
-  38.34% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.311, 0, 1); }
-  40.09% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.291, 0, 1); }
-  50% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.048, 0, 1); }
-  60.56% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.007, 0, 1); }
-  82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
-  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
-}
-@keyframes falldown {
-  0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -300, 0, 1); opacity:0; }
-  1.3% { transform: matrix3d(1, 0, 0, 0, 0, 3.905, 0, 0, 0, 0, 1, 0, 0, -237.02, 0, 1); }
-  2.55% { transform: matrix3d(1, 0, 0, 0, 0, 4.554, 0, 0, 0, 0, 1, 0, 0, -182.798, 0, 1); }
-  4.1% { transform: matrix3d(1, 0, 0, 0, 0, 4.025, 0, 0, 0, 0, 1, 0, 0, -125.912, 0, 1); }
-  5.71% { transform: matrix3d(1, 0, 0, 0, 0, 3.039, 0, 0, 0, 0, 1, 0, 0, -79.596, 0, 1); }
-  8.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.82, 0, 0, 0, 0, 1, 0, 0, -31.647, 0, 1); opacity:1; }
-  8.81% { transform: matrix3d(1, 0, 0, 0, 0, 1.581, 0, 0, 0, 0, 1, 0, 0, -21.84, 0, 1); }
-  11.96% { transform: matrix3d(1, 0, 0, 0, 0, 1.034, 0, 0, 0, 0, 1, 0, 0, 4.825, 0, 1); }
-  12.11% { transform: matrix3d(1, 0, 0, 0, 0, 1.023, 0, 0, 0, 0, 1, 0, 0, 5.53, 0, 1); }
-  15.07% { transform: matrix3d(1, 0, 0, 0, 0, 0.947, 0, 0, 0, 0, 1, 0, 0, 12.662, 0, 1); }
-  16.12% { transform: matrix3d(1, 0, 0, 0, 0, 0.951, 0, 0, 0, 0, 1, 0, 0, 13.007, 0, 1); }
-  27.23% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, 2.352, 0, 1); }
-  27.58% { transform: matrix3d(1, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, 2.121, 0, 1); }
-  38.34% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.311, 0, 1); }
-  40.09% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.291, 0, 1); }
-  50% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.048, 0, 1); }
-  60.56% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.007, 0, 1); }
-  82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
-  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
 }
 
 .sidebar{
@@ -139,7 +34,7 @@ body{
   height:100%;
   overflow:scroll;
   
-  background:rgb(245,245,245);
+  background:rgb(250,250,250);
 }
 .sidebar img{
   display:block;
@@ -153,6 +48,218 @@ body{
   border-radius:2px;
 }
 
+.nav{
+  background:#009688;
+  color:rgb(255,255,255);
+}
+.nav .item{
+  display:inline-block;
+  vertical-align:middle;
+  
+  font-size:18px;
+  line-height:18px;
+  
+  margin:0px;
+  padding:20px 12px;
+  
+  cursor:pointer;
+}
+.nav .item:hover{
+  background:rgba(0,0,0,0.2);
+}
+
+.nav img{
+  display:inline-block;
+  vertical-align:middle;
+  
+  margin:0px;
+  padding:0px 11px;
+  
+  height:36px;
+}
+
+label.voxel{
+  color:#009688;
+}
+
+.pitch{
+  margin:50px 0px;
+}
+.pitch h1{
+  margin:0px;
+  padding:0px 20px;
+  
+  text-align:center;
+  
+  font-size:40px;
+  line-height:40px;
+  font-weight:300;
+}
+.pitch h2{
+  margin:0px;
+  padding:0px 20px;
+  
+  text-align:center;
+  
+  font-size:36px;
+  line-height:36px;
+  font-weight:300;
+}
+.pitch .example{
+  padding:50px 0px;
+  
+  max-width:800px;
+  width:100%;
+  margin:auto;
+}
+
+.pitch .example code{
+  font-size:15px;
+  line-height:17px;
+}
+.pitch .example .fiddle{
+  display:block;
+  
+  background:rgb(255,255,255);
+  color:rgb(102,102,102);
+  
+  font-size:15px;
+  line-height:15px;
+  font-weight:300;
+  font-style:italic;
+  text-align:right;
+  
+  padding:16px 26px;
+  
+  cursor:pointer;
+}
+.pitch .example .fiddle:hover{
+  text-decoration:underline;
+}
+
+.pitch .imagePreview{
+  text-align:center;
+}
+.pitch .imagePreview .item{
+  display:inline-block;
+  vertical-align:top;
+  
+  margin:0px 12px;
+}
+.pitch .imagePreview .item h3{
+  font-size:12px;
+  line-height:12px;
+  
+  margin:0px 0px 6px 0px;
+  padding:0px;
+}
+.pitch .imagePreview .item .img,
+.pitch .imagePreview .item img{
+  width:128px;
+  height:128px;
+  
+  border-radius:2px;
+}
+.pitch .imagePreview .item .img{
+  border:2px dashed rgb(120,120,120);
+}
+
+.pitch .animation{
+  position:relative;
+  
+  height:200px;
+  
+  perspective:1000px;
+  perspective-origin:50% 50%;
+}
+.pitch .animation .cube{
+  position:absolute;
+  
+  top:50%;
+  left:50%;
+  
+  width:0px;
+  height:0px;
+  
+  overflow:visible;
+  
+  transform-style:preserve-3d;
+  transform:rotateX(-15deg) rotateY(45deg);
+  
+  animation:CubeRotation 2000ms linear infinite;
+}
+.pitch .animation .cube .face{
+  display:block;
+  position:absolute;
+  
+  outline:none;
+  border:none;
+  
+  margin-left:-64px;
+  margin-top:-64px;
+  width:128px;
+  height:128px;
+}
+.pitch .animation .cube .left{
+  transform:rotateY(90deg) translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .right{
+  transform:rotateY(90deg) translate3d(0, 0, -64px);
+}
+.pitch .animation .cube .front{
+  transform:translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .back{
+  transform:translate3d(0, 0, -64px);
+}
+.pitch .animation .cube .top{
+  transform:rotateX(90deg) translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .bottom{
+  transform:rotateX(90deg) translate3d(0, 0, -64px);
+}
+
+@keyframes CubeRotation {
+  0% { transform:rotateX(0deg) rotateY(0deg); }
+  100% { transform:rotateX(360deg) rotateY(360deg); } 
+}
+
+.calltoaction{
+  padding:70px;
+  background:rgb(232,232,232);
+}
+.calltoaction .buttons{
+  text-align:center;
+}
+.calltoaction .buttons a{
+  display:inline-block;
+  cursor:pointer;
+  
+  background:#00BCD4;
+  color:rgb(255,255,255);
+  
+  border:none;
+  border-radius:2px;
+  
+  padding:16px 30px;
+  margin:0px 8px;
+  
+  font-size:24px;
+  line-height:22px;
+}
+
+.footer{
+  font-size:18px;
+  line-height:18px;
+  
+  text-align:center;
+  
+  background:#009688;
+  color:rgb(255,255,255);
+  
+  padding:20px 12px;
+}
+
 </style>
 
 <script src='scripts/Scene.js'></script>
@@ -162,98 +269,156 @@ body{
 <script src='scripts/meshes.js'></script>
 <script src='scripts/defaultworld.js'></script>
 
+<link rel='stylesheet' type='text/css' href='css/voxel.css'></link>
+
+<link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'></link>
+
+<link rel='stylesheet' href='highlight/styles/solarized-dark.css'>
+<script src='highlight/highlight.pack.js'></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
 </head>
 <body>
 
 
-<div class='canvas'>
-  <div class='scene'></div>
+<div class='nav'>
+  <img src='icon.png'/>
+  <a class='item'>Docs</a>
+  <a class='item'>Download</a>
+  <a class='item'>Github Repo</a>
+  <a class='item'>Demo</a>
 </div>
 
-<div class='sidebar'>
-  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
-  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
-  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
-  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
-  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
-  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
-  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
-  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
+
+<div class='demo'></div>
+
+
+<div class='pitch'>
+  
+  <h1><label class='voxel'>voxel.css</label> makes 3D rendering easy</h1>
+  
+  <div class='example'>
+    <pre><code>var scene = new Scene();
+scene.pan(100, 0, 0);
+scene.rotate(0, Math.PI/2, 0);
+scene.attach(document.body);
+
+var world = new SavedWorld(scene);
+
+if(world.isSavedToBrowser()) world.importFromBrowser();
+else world.add(new Cube(0, 0, 0, 100));</code></pre>
+    <a class='fiddle'>View in JSFiddle</a>
+  </div>
+  
+  <h2>CSS means no ray tracing for mouse events</h2>
+
+  <div class='example'>
+    <pre><code>var cube = new Cube(0, 0, 0, 100);
+
+cube.addEventListener('CubeClick', CubeWasClicked);
+
+cube.addEventListener('TopClick', TopWasClicked);
+cube.addEventListener('FrontClick', FrontWasClicked);</code></pre>
+    <a class='fiddle'>View in JSFiddle</a>
+  </div>
+  
+  <h2>CSS means a mesh can support all image types</h2>
+  
+  <div class='example imagePreview'>
+    <div class='item'>
+      <h3>PNG</h3>
+      <img src='res/grass/side.png'/>
+    </div>
+    <div class='item'>
+      <h3>GIF</h3>
+      <img src='res/water/crash.gif'/>
+    </div>
+    <div class='item'>
+      <h3>SVG</h3>
+      <img src='res/tree/rings.svg'/>
+    </div>
+    <div class='item'>
+      <h3>etc ...</h3>
+      <div class='img'></div>
+    </div>
+  </div>
+  
+  <h2>CSS means GPU acceleration and CSS3 transitions</h2>
+  
+  <div class='example animation'>
+    <div class='cube' style='margin-left:-250px;'>
+      <img class='face top' src='res/grass/top.png'/>
+      <img class='face bottom' src='res/grass/bottom.png'/>
+      <img class='face left' src='res/grass/side.png'/>
+      <img class='face right' src='res/grass/side.png'/>
+      <img class='face front' src='res/grass/side.png'/>
+      <img class='face back' src='res/grass/side.png'/>
+    </div>
+    
+    <div class='cube'>
+      <img class='face top' src='res/water/main.png'/>
+      <img class='face bottom' src='res/water/main.png'/>
+      <img class='face left' src='res/water/crash.gif'/>
+      <img class='face right' src='res/water/crash.gif'/>
+      <img class='face front' src='res/water/crash.gif'/>
+      <img class='face back' src='res/water/crash.gif'/>
+    </div>
+    
+    <div class='cube' style='margin-left:250px;'>
+      <img class='face top' src='res/tree/rings.png'/>
+      <img class='face bottom' src='res/tree/rings.png'/>
+      <img class='face left' src='res/tree/bark.png'/>
+      <img class='face right' src='res/tree/bark.png'/>
+      <img class='face front' src='res/tree/bark.png'/>
+      <img class='face back' src='res/tree/bark.png'/>
+    </div>
+  </div>
+  
 </div>
+
+
+<div class='calltoaction'>
+  <div class='buttons'>
+    <a>TO THE DOCS</a>
+    <a>DOWNLOAD NOW</a>
+  </div>
+</div>
+
+
+<div class='footer'>Go. Build something crazy!</div>
+
+
 
 
 <script>
 (function(){
   
   const BLOCKDIM = 20;
-  const undefined;
-  
-  
-  var scene;
   var world;
-  
+  var scene;
   
   window.addEventListener('load', Init);
   function Init(){
-    LoadSidebar();
-    
+    CreateWorld();
+  }
+  
+  function CreateWorld(){
     scene = new Scene();
     scene.pan(7 * BLOCKDIM, 4 * BLOCKDIM, 0);
     scene.rotate(0, Math.PI/2, 0);
-    scene.attach(document.body);
+    
+    window.addEventListener('resize', FixSceneZoom);
+    
+    scene.attach(document.querySelector('.demo'));
+    scene.disableZoom();
     
     world = new SavedWorld(scene);
-    world.setToolMesh(MESHES.grass);
+    world.preventEdits();
     
-    if(world.isSavedToBrowser()) world.importFromBrowser();
-    else world.import(DEFAULTWORLD);
+    world.import(DEFAULTWORLD);
   }
-  
-  function LoadSidebar(){
-    var items = document.querySelectorAll('.sidebar .mesh');
-    for(var i=0,item; item=items[i++];){
-      item.mesh = MESHES[item.getAttribute('data-mesh')];
-      item.addEventListener('click', SetCurrentMesh);
-    }
-  }
-  function SetCurrentMesh(event){
-    world.setToolMesh(event.target.mesh);
-  }
-  
-  
-  // GetCurrentWeather(function(event){
-    // console.log(event)
-  // })
-  
-  function GetCurrentWeather(callback){
-    GetCurrentPosition(function(event){
-      var lat = event.coords.latitude;
-      var lon = event.coords.longitude;
-      QueryWeatherAPI(lat, lon, callback);
-    })
-  }
-  function GetCurrentPosition(callback){
-    navigator.geolocation.getCurrentPosition(callback);
-  }
-  function QueryWeatherAPI(lat, lon, callback){
-    // API: http://openweathermap.org/current
-    var URL = '//api.openweathermap.org/data/2.5/weather?appid=2de143494c0b295cca9337e1e96b00e0&lat='+lat+'&lon='+lon;
-    GetJSONRequest(URL, callback);
-  }
-  function GetJSONRequest(URL, callback){
-    GetRequest(URL, function(event){
-      var json = JSON.parse(event.response);
-      callback(json);
-    });
-  }
-  function GetRequest(URL, callback){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function(){
-      if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        callback(xmlHttp);
-    }
-    xmlHttp.open('GET', URL, true);
-    xmlHttp.send(null);
+  function FixSceneZoom(){
+    scene.setZoom(window.innerWidth / 1435);
   }
   
 })();

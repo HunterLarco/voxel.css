@@ -5,12 +5,13 @@
     var undefined;
     
     
-    const AUTOSAVE = true;
+    const AUTOSAVE = false;
     
     
     var scene;
     var blocks = [];
     
+    var canEdit = true;
     var tool = {
       mesh: MESHES.grass
     }
@@ -28,9 +29,13 @@
     
     self.setToolMesh = SetToolMesh;
     
+    self.preventEdits = PreventEdits;
+    self.enableEdits = EnableEdits;
+    
     
     function AddBlock(cube){
       BindCube(cube);
+      UpdateEditClassPerBlock(cube);
       
       blocks.push(cube);
       cube.animUp(scene);
@@ -90,6 +95,18 @@
       tool.mesh = mesh;
     }
     
+    function PreventEdits(){
+      canEdit = false;
+      UpdateEditClass();
+    }
+    function EnableEdits(){
+      canEdit = true;
+      UpdateEditClass();
+    }
+    function CanEdit(){
+      return canEdit;
+    }
+    
     
     function ClearBlocks(){
       while(blocks.length > 0)
@@ -107,24 +124,31 @@
       cube.addEventListener('RightClick', NewCubeFromRight);
     }
     function RemoveCube(event){
+      if (!canEdit) return;
       RemoveBlock(event.target);
     }
     function NewCubeFromTop(event){
+      if (!canEdit) return;
       NewOffsetCube(event, 0, 1, 0);
     }
     function NewCubeFromBottom(event){
+      if (!canEdit) return;
       NewOffsetCube(event, 0, -1, 0);
     }
     function NewCubeFromRight(event){
+      if (!canEdit) return;
       NewOffsetCube(event, 1, 0, 0);
     }
     function NewCubeFromLeft(event){
+      if (!canEdit) return;
       NewOffsetCube(event, -1, 0, 0);
     }
     function NewCubeFromBack(event){
+      if (!canEdit) return;
       NewOffsetCube(event, 0, 0, -1);
     }
     function NewCubeFromFront(event){
+      if (!canEdit) return;
       NewOffsetCube(event, 0, 0, 1);
     }
     function NewOffsetCube(event, dx, dy, dz){
@@ -138,9 +162,19 @@
       AddBlock(cube);
     }
     
+    function UpdateEditClass(){
+      for(var i=0,block; block=blocks[i++];)
+        UpdateEditClassPerBlock(block);
+    }
+    function UpdateEditClassPerBlock(block){
+      if (canEdit) block.enableHoverState();
+      block.disableHoverState();
+    }
+    
     
     (function Constructor(_scene){
       scene = _scene;
+      UpdateEditClass();
     }).apply(self, arguments);
   }
   
