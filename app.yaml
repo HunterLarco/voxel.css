@@ -1,0 +1,37 @@
+# 1-0-0 Initial Release (Yellow Color Scheme, Minimal Example Work)
+# 2-0-0 1 Year Update (Designed for Employers)
+# 2-0-1 Added Mobile Responsiveness
+# 3-0-0 Redesign
+# 4-0-0 Redesign
+# 5-0-0 Redesign
+# 6-0-0 Redesign and Playground Written
+
+
+application: voxelcss
+version: 0-0-0
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: images/favicon.ico
+  upload: images/favicon\.ico
+
+- url: /images
+  static_dir: images
+- url: /res
+  static_dir: res
+- url: /css
+  static_dir: css
+- url: /highlight
+  static_dir: highlight
+- url: /scripts
+  static_dir: scripts
+
+- url: .*
+  script: app.app
+
+libraries:
+- name: webapp2
+  version: "2.5.1"
