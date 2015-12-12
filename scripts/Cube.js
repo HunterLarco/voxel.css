@@ -27,7 +27,13 @@
     
     self.animUp = AnimUp;
     self.animDown = AnimDown;
+    self.addToScene = AddToScene;
     self.removeFromScene = RemoveFromScene;
+    
+    self.setPosition = SetPosition;
+    self.setPositionX = SetPositionX;
+    self.setPositionY = SetPositionY;
+    self.setPositionZ = SetPositionZ;
     
     self.getPosition = GetPosition;
     self.getDimension = GetDimension;
@@ -72,9 +78,32 @@
       animElement.setAttribute('class', 'anim down');
       AppendToScene();
     }
+    function AddToScene(scene){
+      parentScene = scene;
+      AppendToScene();
+    }
     function RemoveFromScene(){
       if(parentScene === undefined) return;
       parentScene.removeChild(cubeElement);
+    }
+    
+    function SetPosition(x, y, z){
+      if(x !== undefined) position.x = x;
+      if(y !== undefined) position.y = y;
+      if(z !== undefined) position.z = z;
+      UpdatePosition();
+    }
+    function SetPositionX(x){
+      position.x = x;
+      UpdatePosition();
+    }
+    function SetPositionY(y){
+      position.y = y;
+      UpdatePosition();
+    }
+    function SetPositionZ(z){
+      position.z = z;
+      UpdatePosition();
     }
     
     function EnableHoverState(){
