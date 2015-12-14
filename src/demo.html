@@ -155,6 +155,14 @@ body{
 
 </style>
 
+<script src='scripts/ext/EventListener.js'></script>
+<script src='scripts/ext/Positioned.js'></script>
+
+<script src='scripts/voxelcss/Voxel.js'></script>
+
+
+
+
 <script src='scripts/voxelcss/Scene.js'></script>
 <script src='scripts/voxelcss/SavedWorld.js'></script>
 <script src='scripts/voxelcss/Cube.js'></script>
@@ -219,42 +227,6 @@ body{
   }
   function SetCurrentMesh(event){
     world.setToolMesh(event.target.mesh);
-  }
-  
-  
-  // GetCurrentWeather(function(event){
-    // console.log(event)
-  // })
-  
-  function GetCurrentWeather(callback){
-    GetCurrentPosition(function(event){
-      var lat = event.coords.latitude;
-      var lon = event.coords.longitude;
-      QueryWeatherAPI(lat, lon, callback);
-    })
-  }
-  function GetCurrentPosition(callback){
-    navigator.geolocation.getCurrentPosition(callback);
-  }
-  function QueryWeatherAPI(lat, lon, callback){
-    // API: http://openweathermap.org/current
-    var URL = '//api.openweathermap.org/data/2.5/weather?appid=2de143494c0b295cca9337e1e96b00e0&lat='+lat+'&lon='+lon;
-    GetJSONRequest(URL, callback);
-  }
-  function GetJSONRequest(URL, callback){
-    GetRequest(URL, function(event){
-      var json = JSON.parse(event.response);
-      callback(json);
-    });
-  }
-  function GetRequest(URL, callback){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function(){
-      if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        callback(xmlHttp);
-    }
-    xmlHttp.open('GET', URL, true);
-    xmlHttp.send(null);
   }
   
 })();

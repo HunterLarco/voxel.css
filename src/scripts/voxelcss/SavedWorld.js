@@ -66,7 +66,7 @@
       var json = JSON.parse(string);
       
       for(var i=0,serial; serial=json[i++];){
-        var cube = new Cube(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
+        var cube = new Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
         cube.setMesh(MESHES[serial.mesh]);
         (function(cube){
           setTimeout(function(){
