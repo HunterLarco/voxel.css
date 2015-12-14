@@ -1,24 +1,3 @@
-<html>
-<head>
-<style>
-
-body{
-  padding:0px;
-  margin:0px;
-  
-  background:rgb(245,245,245);
-  
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  
-  background:url(res/background.png);
-  background-size:100px 100px;
-}
-
 .scene{
   position:absolute;
   top:0px;
@@ -26,6 +5,13 @@ body{
   width:100%;
   height:100%;
   overflow:hidden;
+  
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   
   perspective:1000px;
   perspective-origin:50% 50%;
@@ -127,112 +113,3 @@ body{
   82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
 }
-
-.sidebar{
-  position:fixed;
-  left:0px;
-  top:0px;
-  z-index:1;
-  
-  height:100%;
-  overflow:scroll;
-  
-  background:rgb(245,245,245);
-}
-.sidebar img{
-  display:block;
-  margin:20px;
-  
-  cursor:pointer;
-  
-  width:60px;
-  height:60px;
-  
-  border-radius:2px;
-}
-
-</style>
-
-<script src='scripts/interfaces/EventListener.js'></script>
-<script src='scripts/interfaces/Positioned.js'></script>
-
-<script src='scripts/voxelcss/Voxel.js'></script>
-<script src='scripts/voxelcss/Scene.js'></script>
-<script src='scripts/voxelcss/World.js'></script>
-<script src='scripts/voxelcss/Editor.js'></script>
-<script src='scripts/voxelcss/SyncedGif.js'></script>
-
-<script src='scripts/data/meshes.js'></script>
-<script src='scripts/data/defaultworld.js'></script>
-
-</head>
-<body>
-
-
-<div class='canvas'>
-  <div class='scene'></div>
-</div>
-
-<div class='sidebar'>
-  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
-  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
-  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
-  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
-  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
-  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
-  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
-  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
-</div>
-
-
-<script>
-(function(){
-  
-  const BLOCKDIM = 20;
-  const undefined;
-  
-  
-  var scene;
-  var world;
-  var editor;
-  
-  
-  window.addEventListener('load', Init);
-  
-  function Init(){
-    LoadSidebar();
-    
-    scene = new Scene();
-    scene.attach(document.body);
-    scene.add(new Voxel(-100, 0, 0, 50, {
-      mesh: MESHES.grass
-    }));
-    
-    world = new World(scene);
-    world.add(new Voxel(100, 0, 0, 100, {
-      mesh: MESHES.water
-    }));
-    
-    editor = new Editor(world, {
-      autosave: true
-    });
-    
-    if(editor.isSaved()) editor.load();
-  }
-  
-  
-  function LoadSidebar(){
-    var items = document.querySelectorAll('.sidebar .mesh');
-    for(var i=0,item; item=items[i++];){
-      item.mesh = MESHES[item.getAttribute('data-mesh')];
-      item.addEventListener('click', SetCurrentMesh);
-    }
-  }
-  function SetCurrentMesh(event){
-    editor.setToolMesh(event.target.mesh);
-  }
-  
-})();
-</script>
-</body>
-</html>
