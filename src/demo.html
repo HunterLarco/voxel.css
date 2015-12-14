@@ -159,11 +159,12 @@ body{
 <script src='scripts/interfaces/Positioned.js'></script>
 
 <script src='scripts/voxelcss/Voxel.js'></script>
-
-
-
-
 <script src='scripts/voxelcss/Scene.js'></script>
+<script src='scripts/voxelcss/World.js'></script>
+
+
+
+
 <script src='scripts/voxelcss/SavedWorld.js'></script>
 <script src='scripts/voxelcss/SyncedGif.js'></script>
 
@@ -207,19 +208,26 @@ body{
     
     scene = new Scene();
     scene.pan(7 * BLOCKDIM, 4 * BLOCKDIM, 0);
-    scene.rotate(0, Math.PI/2, 0);
+    scene.rotate(0, Math.PI/4, 0);
     scene.attach(document.body);
     
     // scene.disableOrbit();
     // scene.disableZoom();
     // scene.disablePan();
     
-    scene.add(new Voxel(0, 0, 0, 100, {
+    scene.add(new Voxel(-100, 0, 0, 100, {
       mesh: MESHES.grass
     }));
     
-    // world = new SavedWorld(scene);
-    // world.setToolMesh(MESHES.grass);
+    world = new World(scene);
+    
+    world.add(new Voxel(100, 0, 0, 100, {
+      mesh: MESHES.water
+    }));
+    
+    // world.save();
+    // world.load();
+    
     
     // if(world.isSavedToBrowser()) world.importFromBrowser();
     // else world.import(DEFAULTWORLD);
