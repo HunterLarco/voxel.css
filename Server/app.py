@@ -10,14 +10,14 @@ class Landing(webapp2.RequestHandler):
     self.response.out.write(template.render(path, template_values))
 
 
-class WormDemo(webapp2.RequestHandler):
+class Demo(webapp2.RequestHandler):
   def get(self):
     template_values = {}
-    path = os.path.join(os.path.dirname(__file__), 'worm.html')
+    path = os.path.join(os.path.dirname(__file__), 'demo.html')
     self.response.out.write(template.render(path, template_values))
 
 
 app = webapp2.WSGIApplication([
-  ('/worm/?', WormDemo),
+  ('/demo/?', Demo),
   ('/.*', Landing)
 ], debug=True)

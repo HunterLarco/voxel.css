@@ -1,0 +1,140 @@
+<html>
+<head>
+<style>
+
+body{
+  padding:0px;
+  margin:0px;
+  
+  background:rgb(245,245,245);
+  color:rgb(31,31,31);
+  
+  font-size:0px;
+  font-family:Helvetica, Arial;
+  font-weight:400;
+}
+
+.sidebar{
+  position:fixed;
+  left:0px;
+  top:0px;
+  z-index:1;
+  
+  height:100%;
+  overflow:scroll;
+  
+  background:rgb(250,250,250);
+}
+.sidebar img{
+  display:block;
+  margin:20px;
+  
+  cursor:pointer;
+  
+  width:60px;
+  height:60px;
+  
+  border-radius:2px;
+}
+
+.help{
+  position:fixed;
+  
+  bottom:0px;
+  right:0px;
+  
+  text-align:right;
+  
+  padding:20px;
+}
+.help h1{
+  padding:0px;
+  margin:0px 0px 8px 0px;
+  
+  font-weight:700;
+  font-size:14px;
+  line-height:17px;
+}
+.help p{
+  padding:0px;
+  margin:2px 0px;
+  
+  font-size:12px;
+  line-height:15px;
+}
+
+</style>
+
+<title>voxel.css • Demo</title>
+
+<script src='/scripts/demoworld.js'></script>
+<script src='/scripts/meshes.js'></script>
+
+<script src='/voxelcss/voxel.js'></script>
+<link rel='stylesheet' type='text/css' href='/voxelcss/voxel.css'></link>
+
+</head>
+<body>
+
+
+<div class='sidebar'>
+  <img class='mesh' data-mesh='grass'          src='/res/grass/side.png'/>
+  <img class='mesh' data-mesh='dirt'           src='/res/dirt/main.png'/>
+  <img class='mesh' data-mesh='water'          src='/res/water/main.png'/>
+  <img class='mesh' data-mesh='waterFallTop'   src='/res/water/falltop.png'/>
+  <img class='mesh' data-mesh='waterFall'      src='/res/water/fall.png'/>
+  <img class='mesh' data-mesh='waterFallCrash' src='/res/water/crash.png'/>
+  <img class='mesh' data-mesh='treeLeaves'     src='/res/tree/leaves.png'/>
+  <img class='mesh' data-mesh='treeTrunk'      src='/res/tree/bark.png'/>
+</div>
+
+
+<div class='help'>
+  <h1>Help</h1>
+  <p>Drag to orbit</p>
+  <p>Shift-Drag to pan</p>
+  <p>Scroll to zoom</p>
+  <p>Click to add a voxel</p>
+  <p>Right click to remove a voxel</p>
+</help>
+
+
+<script>
+(function(){
+  
+  var world;
+  var scene;
+  var editor;
+  
+  window.addEventListener('load', Init);
+  function Init(){
+    scene = new voxelcss.Scene();
+    scene.pan(0, 0, 0);
+    scene.rotate(-Math.PI/11, Math.PI/3, 0);
+    scene.attach(document.body);
+    
+    world = new voxelcss.World(scene);
+    editor = new voxelcss.Editor(world);
+    editor.enableAutoSave();
+    
+    if(editor.isSaved()) editor.load();
+    else editor.import(DEMOWORLD);
+    
+    LoadSidebar();
+  }
+  
+  function LoadSidebar(){
+    var items = document.querySelectorAll('.sidebar .mesh');
+    for(var i=0,item; item=items[i++];){
+      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.addEventListener('click', SetCurrentMesh);
+    }
+  }
+  function SetCurrentMesh(event){
+    editor.setToolMesh(event.target.mesh);
+  }
+  
+})();
+</script>
+</body>
+</html>
