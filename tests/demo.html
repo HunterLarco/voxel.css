@@ -37,6 +37,8 @@ body{
 
 </style>
 
+<script src='../src/core/LibWrapper.js'></script>
+
 <script src='../src/interfaces/EventListener.js'></script>
 <script src='../src/interfaces/Positioned.js'></script>
 
@@ -50,6 +52,9 @@ body{
 <script src='data/defaultworld.js'></script>
 
 <link rel='stylesheet' href='../src/voxel.css'></link>
+
+<!-- <script src='../build/voxel.js'></script> -->
+<!-- <link rel='stylesheet' href='../build/voxel.css'></link> -->
 
 </head>
 <body>
@@ -88,18 +93,18 @@ body{
   function Init(){
     LoadSidebar();
     
-    scene = new Scene();
+    scene = new voxelcss.Scene();
     scene.attach(document.body);
-    scene.add(new Voxel(-100, 0, 0, 50, {
+    scene.add(new voxelcss.Voxel(-100, 0, 0, 50, {
       mesh: MESHES.grass
     }));
     
-    world = new World(scene);
-    world.add(new Voxel(100, 0, 0, 100, {
+    world = new voxelcss.World(scene);
+    world.add(new voxelcss.Voxel(100, 0, 0, 100, {
       mesh: MESHES.water
     }));
     
-    editor = new Editor(world, {
+    editor = new voxelcss.Editor(world, {
       autosave: true
     });
     

@@ -121,6 +121,6 @@
     return self;
   }
   
-  window.Positioned = Positioned;
+  voxelcss.interfaces.Positioned = Positioned;
   
 })();

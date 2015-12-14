@@ -50,7 +50,7 @@
         if (faceMesh === undefined) continue;
         mesh[label] = faceMesh;
         if (faceMesh instanceof Array)
-          new SyncedGif(faceMesh, 320).attach(faces[label]);
+          new voxelcss.SyncedGif(faceMesh, 320).attach(faces[label]);
         else
           faces[label].src = faceMesh;
       }
@@ -105,7 +105,7 @@
     }
     
     function Clone(){
-      return new Voxel(
+      return new voxelcss.Voxel(
         self.getPositionX(),
         self.getPositionY(),
         self.getPositionZ(),
@@ -225,7 +225,7 @@
   
   
     (function Constructor(x, y, z, dim, options){
-      Positioned(EventListener(self));
+      voxelcss.interfaces.Positioned(voxelcss.interfaces.EventListener(self));
       self.addEventListener('move', UpdatePosition);
       
       SetDimension(dim);
@@ -247,6 +247,6 @@
     }).apply(self, arguments);
   }
   
-  window.Voxel = Voxel;
+  voxelcss.Voxel = Voxel;
   
 })();

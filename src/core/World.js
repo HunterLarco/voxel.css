@@ -57,7 +57,7 @@
       var json = JSON.parse(string+'');
       
       for(var i=0,serial; serial=json[i++];){
-        var voxel = new Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
+        var voxel = new voxelcss.Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
         voxel.setMesh(serial.mesh);
         AddVoxel(voxel);
       }
@@ -104,6 +104,6 @@
     }).apply(self, arguments);
   }
   
-  window.World = World;
+  voxelcss.World = World;
   
 })();

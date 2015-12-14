@@ -82,6 +82,6 @@
     }).apply(self, arguments);
   }
   
-  window.SyncedGif = SyncedGif;
+  voxelcss.SyncedGif = SyncedGif;
   
 })();

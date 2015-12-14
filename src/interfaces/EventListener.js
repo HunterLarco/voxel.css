@@ -36,6 +36,6 @@
     return self;
   }
   
-  window.EventListener = EventListener;
+  voxelcss.interfaces.EventListener = EventListener;
   
 })();
