@@ -204,7 +204,7 @@ body{
     
     scene = new Scene();
     scene.attach(document.body);
-    scene.add(new Voxel(-100, 0, 0, 100, {
+    scene.add(new Voxel(-100, 0, 0, 50, {
       mesh: MESHES.grass
     }));
     
@@ -216,6 +216,8 @@ body{
     editor = new Editor(world, {
       autosave: true
     });
+    
+    if(editor.isSaved()) editor.load();
   }
   
   

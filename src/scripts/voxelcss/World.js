@@ -46,7 +46,7 @@
         json.push({
           position: voxel.getPosition(),
           dimension: voxel.getDimension(),
-          mesh: voxel.getMesh().label
+          mesh: voxel.getMesh()
         });
       
       return JSON.stringify(json);
@@ -58,12 +58,8 @@
       
       for(var i=0,serial; serial=json[i++];){
         var voxel = new Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
-        voxel.setMesh(MESHES[serial.mesh]);
-        (function(cube){
-          setTimeout(function(){
-            AddVoxel(cube);
-          }, 20 * i + 500);
-        })(voxel);
+        voxel.setMesh(serial.mesh);
+        AddVoxel(voxel);
       }
     }
     
@@ -90,7 +86,7 @@
     
     function ClearBlocks(){
       while(voxels.length > 0)
-        RemoveBlock(voxels[0]);
+        RemoveVoxel(voxels[0]);
     }
     function FormSaveName(){
       return 'savedWorld<'+worldLabel+'>';

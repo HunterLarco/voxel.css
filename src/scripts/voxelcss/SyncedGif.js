@@ -53,6 +53,12 @@
     }
     
     
+    function CatchupRun(partialIndex){
+      isRunning = true;
+      index = Math.floor(partialIndex);
+      
+      setTimeout(CycleImage, (index + 1 - partialIndex) * timingPerCycle);
+    }
     function CycleImage(){
       if(!isRunning) return;
       
@@ -70,9 +76,9 @@
       imageSequence = _imageSequence;
       duration = _duration;
       timingPerCycle = duration / imageSequence.length;
-      index = Math.floor((Date.now() % duration) / timingPerCycle);
       
-      Run();
+      var partialIndex = (Date.now() % duration) / timingPerCycle;
+      CatchupRun(partialIndex);
     }).apply(self, arguments);
   }
   

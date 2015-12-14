@@ -23,6 +23,8 @@
     
     self.save = Save;
     self.load = Load;
+    self.isSaved = IsSaved;
+    self.deleteSave = DeleteSave;
     
     self.export = Export;
     self.import = Import;
@@ -62,6 +64,12 @@
       var response = world.load();
       LoadWorldVoxels();
       return response;
+    }
+    function IsSaved(){
+      return world.isSaved();
+    }
+    function DeleteSave(){
+      return world.deleteSave();
     }
     
     function Export(){
