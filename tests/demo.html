@@ -1,0 +1,124 @@
+<html>
+<head>
+<style>
+
+body{
+  padding:0px;
+  margin:0px;
+  
+  background:rgb(245,245,245);
+  
+  background:url(res/background.png);
+  background-size:100px 100px;
+}
+
+.sidebar{
+  position:fixed;
+  left:0px;
+  top:0px;
+  z-index:1;
+  
+  height:100%;
+  overflow:scroll;
+  
+  background:rgb(245,245,245);
+}
+.sidebar img{
+  display:block;
+  margin:20px;
+  
+  cursor:pointer;
+  
+  width:60px;
+  height:60px;
+  
+  border-radius:2px;
+}
+
+</style>
+
+<script src='../src/interfaces/EventListener.js'></script>
+<script src='../src/interfaces/Positioned.js'></script>
+
+<script src='../src/core/Voxel.js'></script>
+<script src='../src/core/Scene.js'></script>
+<script src='../src/core/World.js'></script>
+<script src='../src/core/Editor.js'></script>
+<script src='../src/core/SyncedGif.js'></script>
+
+<script src='data/meshes.js'></script>
+<script src='data/defaultworld.js'></script>
+
+<link rel='stylesheet' href='../src/voxel.css'></link>
+
+</head>
+<body>
+
+
+<div class='canvas'>
+  <div class='scene'></div>
+</div>
+
+<div class='sidebar'>
+  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
+  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
+  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
+  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
+  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
+  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
+  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
+  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
+</div>
+
+
+<script>
+(function(){
+  
+  const BLOCKDIM = 20;
+  const undefined;
+  
+  
+  var scene;
+  var world;
+  var editor;
+  
+  
+  window.addEventListener('load', Init);
+  
+  function Init(){
+    LoadSidebar();
+    
+    scene = new Scene();
+    scene.attach(document.body);
+    scene.add(new Voxel(-100, 0, 0, 50, {
+      mesh: MESHES.grass
+    }));
+    
+    world = new World(scene);
+    world.add(new Voxel(100, 0, 0, 100, {
+      mesh: MESHES.water
+    }));
+    
+    editor = new Editor(world, {
+      autosave: true
+    });
+    
+    if(editor.isSaved()) editor.load();
+  }
+  
+  
+  function LoadSidebar(){
+    var items = document.querySelectorAll('.sidebar .mesh');
+    for(var i=0,item; item=items[i++];){
+      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.addEventListener('click', SetCurrentMesh);
+    }
+  }
+  function SetCurrentMesh(event){
+    editor.setToolMesh(event.target.mesh);
+  }
+  
+})();
+</script>
+</body>
+</html>
