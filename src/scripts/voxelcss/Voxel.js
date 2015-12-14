@@ -201,7 +201,7 @@
   
   
     (function Constructor(x, y, z, dim, options){
-      ExtendPositioned(ExtendEventListener(self));
+      Positioned(EventListener(self));
       
       self.setPosition(x, y, z);
       SetDimension(dim);

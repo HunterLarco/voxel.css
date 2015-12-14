@@ -1,6 +1,9 @@
 (function(){
   
-  function ExtendPositioned(obj){
+  function Positioned(obj){
+    var self = obj || new Function();
+    
+    
     var position = {x:0, y:0, z:0};
     
 
@@ -80,25 +83,25 @@
     }
     
     
-    obj.setPosition  = SetPosition;
-    obj.setPositionX = SetPositionX;
-    obj.setPositionY = SetPositionY;
-    obj.setPositionZ = SetPositionZ;
+    self.setPosition  = SetPosition;
+    self.setPositionX = SetPositionX;
+    self.setPositionY = SetPositionY;
+    self.setPositionZ = SetPositionZ;
     
-    obj.translate  = Translate;
-    obj.translateX = TranslateX;
-    obj.translateY = TranslateY;
-    obj.translateZ = TranslateZ;
+    self.translate  = Translate;
+    self.translateX = TranslateX;
+    self.translateY = TranslateY;
+    self.translateZ = TranslateZ;
     
-    obj.getPosition  = GetPosition;
-    obj.getPositionX = GetPositionX;
-    obj.getPositionY = GetPositionY;
-    obj.getPositionZ = GetPositionZ;
+    self.getPosition  = GetPosition;
+    self.getPositionX = GetPositionX;
+    self.getPositionY = GetPositionY;
+    self.getPositionZ = GetPositionZ;
     
     
-    return obj;
+    return self;
   }
   
-  window.ExtendPositioned = ExtendPositioned;
+  window.Positioned = Positioned;
   
 })();

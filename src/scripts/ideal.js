@@ -5,10 +5,13 @@
   function Init(){
     var scene = new voxelcss.Scene();
     scene.attach(document.body);
+    scene.add(new Voxel(0, 0, 0, 100, {
+      mesh: MESHES.grass
+    }));
     
     var world = new voxelcss.World();
     world.load([]);
-    world.add(new Voxel(0, 0, 0, 100, {
+    world.add(new Voxel(100, 0, 0, 100, {
       mesh: MESHES.grass
     }));
     

@@ -1,6 +1,9 @@
 (function(){
   
-  function ExtendEventListener(obj){
+  function EventListener(obj){
+    var self = obj || new Function();
+    
+    
     var listeners = {};
     
 
@@ -25,14 +28,14 @@
     }
     
     
-    obj.addEventListener = AddEventListener;
-    obj.removeEventListener = RemoveEventListener;
-    obj.triggerEvent = TriggerEvent;
+    self.addEventListener = AddEventListener;
+    self.removeEventListener = RemoveEventListener;
+    self.triggerEvent = TriggerEvent;
     
     
-    return obj;
+    return self;
   }
   
-  window.ExtendEventListener = ExtendEventListener;
+  window.EventListener = EventListener;
   
 })();
