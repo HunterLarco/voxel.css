@@ -1,9 +1,9 @@
 (function(){
   
   // EVENTS
-  //    onOrbit
-  //    onPan
-  //    onZoom
+  //    onorbit
+  //    onpan
+  //    onzoom
   function Scene(){
     var self = this;
     var undefined;
@@ -451,7 +451,7 @@
     
     
     (function Constructor(){
-      EventListener(self);
+      voxelcss.interfaces.EventListener(self);
       
       CreateSceneElement();
       BindMouse();
@@ -459,6 +459,6 @@
     }).apply(self, arguments);
   }
   
-  window.Scene = Scene;
+  voxelcss.Scene = Scene;
   
 })();

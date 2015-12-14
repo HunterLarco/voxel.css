@@ -194,6 +194,6 @@
     }).apply(self, arguments);
   }
   
-  window.Editor = Editor;
+  voxelcss.Editor = Editor;
   
 })();

@@ -1,7 +1,7 @@
 (function(){
   
   // EVENTS
-  //   onMove
+  //   onmove
   function Positioned(obj){
     var self = obj || new Function();
     
@@ -121,6 +121,6 @@
     return self;
   }
   
-  window.Positioned = Positioned;
+  voxelcss.interfaces.Positioned = Positioned;
   
 })();
