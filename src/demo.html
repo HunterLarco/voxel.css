@@ -210,11 +210,19 @@ body{
     scene.rotate(0, Math.PI/2, 0);
     scene.attach(document.body);
     
-    world = new SavedWorld(scene);
-    world.setToolMesh(MESHES.grass);
+    // scene.disableOrbit();
+    // scene.disableZoom();
+    // scene.disablePan();
     
-    if(world.isSavedToBrowser()) world.importFromBrowser();
-    else world.import(DEFAULTWORLD);
+    scene.add(new Voxel(0, 0, 0, 100, {
+      mesh: MESHES.grass
+    }));
+    
+    // world = new SavedWorld(scene);
+    // world.setToolMesh(MESHES.grass);
+    
+    // if(world.isSavedToBrowser()) world.importFromBrowser();
+    // else world.import(DEFAULTWORLD);
   }
   
   function LoadSidebar(){

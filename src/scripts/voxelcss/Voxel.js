@@ -1,5 +1,13 @@
 (function(){
   
+  // EVENTS
+  //    onCubeClick
+  //    onTopClick
+  //    onBottomClick
+  //    onFrontClick
+  //    onBackClick
+  //    onLeftClick
+  //    onRightClick
   function Voxel(){
     var self = this;
     var undefined;
@@ -29,6 +37,8 @@
     
     self.setDimension = SetDimension;
     self.getDimension = GetDimension;
+    
+    self.getDomElement = GetDomElement;
     
     
     function SetMesh(_mesh){
@@ -88,6 +98,10 @@
     }
     function GetDimension(){
       return dimension;
+    }
+    
+    function GetDomElement(){
+      return cubeElement;
     }
     
   

@@ -1,5 +1,9 @@
 (function(){
   
+  // EVENTS
+  //    onOrbit
+  //    onPan
+  //    onZoom
   function Scene(){
     var self = this;
     var undefined;
@@ -10,20 +14,26 @@
     var cameraElement;
     var isAttached = false;
     
-    var rotation = { x: 0, y: 0, z: 0 };
-    var pan = { x: 0, y: 0, z: 0 };
+    var rotation = {x:0, y:0, z:0};
+    var pan = {x:0, y:0, z:0};
     var zoom = 1;
     
     var mouse = {
-      start: { x: 0, y: 0 },
-      current: { x: 0, y: 0 },
-      lastMove: { x: 0, y: 0 }
+      start: {x:0, y:0},
+      current: {x:0, y:0},
+      lastMove: {x:0, y:0},
+      shiftDown: false
     }
+    
+    var canOrbit = true;
+    var canPan = true;
+    var canZoom = true;
     
     
     self.rotate = Rotate;
-    self.pan    = Pan;
-    self.zoom   = Zoom;
+    self.rotateX = RotateX;
+    self.rotateY = RotateY;
+    self.rotateZ = RotateZ;
     
     self.setRotation  = SetRotation;
     self.setRotationX = SetRotationX;
@@ -35,6 +45,11 @@
     self.getRotationY = GetRotationY;
     self.getRotationZ = GetRotationZ;
     
+    self.pan  = Pan;
+    self.panX = PanX;
+    self.panY = PanY;
+    self.panZ = PanZ;
+    
     self.setPan  = SetPan;
     self.setPanX = SetPanX;
     self.setPanY = SetPanY;
@@ -45,54 +60,109 @@
     self.getPanY = GetPanY;
     self.getPanZ = GetPanZ;
     
+    self.zoom = Zoom;
+    self.setZoom = SetZoom;
     self.getZoom = GetZoom;
     
     self.attach = Attach;
     self.detach = Detach;
     self.isAttached = IsAttached;
     
-    self.appendChild = AppendChild;
-    self.removeChild = RemoveChild;
+    self.enableOrbit = EnableOrbit;
+    self.disableOrbit = DisableOrbit;
+    self.canOrbit = CanOrbit;
+
+    self.enablePan = EnablePan;
+    self.disablePan = DisablePan;
+    self.canPan = CanPan;
+    
+    self.enableZoom = EnableZoom;
+    self.disableZoom = DisableZoom;
+    self.canZoom = CanZoom;
+    
+    self.add = AddVoxel;
+    self.remove = RemoveVoxel;
     
     
     function Rotate(x, y, z){
-      rotation.x += x || 0;
-      rotation.y += y || 0;
-      rotation.z += z || 0;
-      UpdateSceneTransforms();
+      return {
+        x: RotateX(x),
+        y: RotateY(y),
+        z: RotateZ(z)
+      }
     }
-    function Pan(x, y, z){
-      pan.x += x || 0;
-      pan.y += y || 0;
-      pan.z += z || 0;
+    function RotateX(x){
+      if(x === undefined || typeof x != 'number')
+        return rotation.x;
+      
+      var old = rotation.x;
+      rotation.x += x;
       UpdateSceneTransforms();
+      return old;
     }
-    function Zoom(_zoom){
-      zoom += _zoom || 0;
+    function RotateY(y){
+      if(y === undefined || typeof y != 'number')
+        return rotation.y;
+      
+      var old = rotation.y;
+      rotation.y += y;
       UpdateSceneTransforms();
+      return old;
+    }
+    function RotateZ(z){
+      if(z === undefined || typeof z != 'number')
+        return rotation.z;
+      
+      var old = rotation.z;
+      rotation.z += z;
+      UpdateSceneTransforms();
+      return old;
     }
     
     function SetRotation(x, y, z){
-      rotation.x = x || 0;
-      rotation.y = y || 0;
-      rotation.z = z || 0;
+      var old = {
+        x: SetRotationX(x),
+        y: SetRotationY(y),
+        z: SetRotationZ(z)
+      };
+      
       UpdateSceneTransforms();
+      return old;
     }
     function SetRotationX(x){
-      rotation.x = x || 0;
+      if(x === undefined || typeof x != 'number')
+        return rotation.x;
+      
+      var old = rotation.x;
+      rotation.x = x;
       UpdateSceneTransforms();
+      return old;
     }
     function SetRotationY(y){
-      rotation.y = y || 0;
+      if(y === undefined || typeof y != 'number')
+        return rotation.y;
+      
+      var old = rotation.y;
+      rotation.y = y;
       UpdateSceneTransforms();
+      return old;
     }
     function SetRotationZ(z){
-      rotation.z = z || 0;
+      if(z === undefined || typeof z != 'number')
+        return rotation.z;
+      
+      var old = rotation.z;
+      rotation.z = z;
       UpdateSceneTransforms();
+      return old;
     }
     
     function GetRotation(){
-      return rotation;
+      return {
+        x: rotation.x,
+        y: rotation.y,
+        z: rotation.z
+      };
     }
     function GetRotationX(){
       return rotation.x;
@@ -104,27 +174,85 @@
       return rotation.z;
     }
     
-    function SetPan(x, y, z){
-      pan.x = x || 0;
-      pan.y = y || 0;
-      pan.z = z || 0;
+    function Pan(x, y, z){
+      return {
+        x: PanX(x),
+        y: PanY(y),
+        z: PanZ(z)
+      }
+    }
+    function PanX(x){
+      if(x === undefined || typeof x != 'number')
+        return pan.x;
+      
+      var old = pan.x;
+      pan.x += x;
       UpdateSceneTransforms();
+      return old;
+    }
+    function PanY(y){
+      if(y === undefined || typeof y != 'number')
+        return pan.y;
+      
+      var old = pan.y;
+      pan.y += y;
+      UpdateSceneTransforms();
+      return old;
+    }
+    function PanZ(z){
+      if(z === undefined || typeof z != 'number')
+        return pan.z;
+      
+      var old = pan.z;
+      pan.z += z;
+      UpdateSceneTransforms();
+      return old;
+    }
+    
+    function SetPan(x, y, z){
+      var old = {
+        x: SetPanX(x),
+        y: SetPanY(y),
+        z: SetPanZ(z)
+      };
+      
+      UpdateSceneTransforms();
+      return old;
     }
     function SetPanX(x){
-      pan.x = x || 0;
+      if(x === undefined || typeof x != 'number')
+        return pan.x;
+      
+      var old = pan.x;
+      pan.x = x;
       UpdateSceneTransforms();
+      return old;
     }
     function SetPanY(y){
-      pan.y = y || 0;
+      if(y === undefined || typeof y != 'number')
+        return pan.y;
+      
+      var old = pan.y;
+      pan.y = y;
       UpdateSceneTransforms();
+      return old;
     }
     function SetPanZ(z){
-      pan.z = z || 0;
+      if(z === undefined || typeof z != 'number')
+        return pan.z;
+      
+      var old = pan.z;
+      pan.z = z;
       UpdateSceneTransforms();
+      return old;
     }
     
     function GetPan(){
-      return pan;
+      return {
+        x: pan.x,
+        y: pan.y,
+        z: pan.z
+      };
     }
     function GetPanX(){
       return pan.x;
@@ -136,9 +264,23 @@
       return pan.z;
     }
     
+    function Zoom(_zoom){
+      if(_zoom === undefined || typeof _zoom != 'number')
+        return zoom;
+      
+      var old = zoom;
+      zoom += _zoom;
+      UpdateSceneTransforms();
+      return old;
+    }
     function SetZoom(_zoom){
+      if(_zoom === undefined || typeof _zoom != 'number')
+        return zoom;
+      
+      var old = zoom;
       zoom = _zoom;
       UpdateSceneTransforms();
+      return zoom;
     }
     function GetZoom(){
       return zoom;
@@ -158,11 +300,47 @@
       return isAttached;
     }
     
-    function AppendChild(elem){
-      cameraElement.appendChild(elem);
+    function EnableOrbit(){
+      if(canOrbit) return;
+      canOrbit = true;
     }
-    function RemoveChild(elem){
-      cameraElement.removeChild(elem);
+    function DisableOrbit(){
+      if(!canOrbit) return;
+      canOrbit = false;
+    }
+    function CanOrbit(){
+      return canOrbit;
+    }
+    
+    function EnablePan(){
+      if(canPan) return;
+      canPan = true;
+    }
+    function DisablePan(){
+      if(!canPan) return;
+      canPan = false;
+    }
+    function CanPan(){
+      return canPan;
+    }
+    
+    function EnableZoom(){
+      if(canZoom) return;
+      canZoom = true;
+    }
+    function DisableZoom(){
+      if(!canZoom) return;
+      canZoom = false;
+    }
+    function CanZoom(){
+      return canZoom;
+    }
+    
+    function AddVoxel(voxel){
+      cameraElement.appendChild(voxel.getDomElement());
+    }
+    function RemoveVoxel(voxel){
+      cameraElement.removeChild(voxel.getDomElement());
     }
     
     
@@ -204,18 +382,58 @@
     
       mouse.current.x = event.x;
       mouse.current.y = event.y;
-    
-      const rotations = 2;
-      rotation.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
-      rotation.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
-    
-      UpdateSceneTransforms();
+      
+      if (canPan && mouse.shiftDown){
+        Pan(mouse.lastMove.dx, mouse.lastMove.dy);
+        UpdateSceneTransforms();
+        
+        self.triggerEvent('pan', {
+          rotation: GetRotation(),
+          pan: GetPan(),
+          zoom: GetZoom(),
+          target: self
+        });
+      }else if(canOrbit){
+        const rotations = 2;
+        rotation.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
+        rotation.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
+        UpdateSceneTransforms();
+        
+        self.triggerEvent('orbit', {
+          rotation: GetRotation(),
+          pan: GetPan(),
+          zoom: GetZoom(),
+          target: self
+        });
+      }
     }
     function OnScroll(event){
+      if(!canZoom) return;
+      
       zoom += event.deltaY / 5000;
       UpdateSceneTransforms();
       event.preventDefault();
+      
+      self.triggerEvent('zoom', {
+        rotation: GetRotation(),
+        pan: GetPan(),
+        zoom: GetZoom(),
+        target: self
+      });
       return false;
+    }
+    
+    function BindKeyboard(){
+      window.addEventListener('keydown', KeyDown);
+      window.addEventListener('keyup', KeyUp);
+    }
+    function KeyDown(event){
+      if(event.keyCode === 16 || event.which === 16)
+        mouse.shiftDown = true;
+    }
+    function KeyUp(event){
+      if(event.keyCode === 16 || event.which === 16)
+        mouse.shiftDown = false;
     }
     
     function UpdateSceneTransforms(){
@@ -226,8 +444,11 @@
     
     
     (function Constructor(){
+      EventListener(self);
+      
       CreateSceneElement();
       BindMouse();
+      BindKeyboard();
     }).apply(self, arguments);
   }
   
