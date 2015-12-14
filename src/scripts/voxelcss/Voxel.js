@@ -19,8 +19,7 @@
     var cubeElement;
     var animElement;
     var faces = {};
-    
-    var mesh;
+    var mesh = {};
     
     var dimension = 0;
     
@@ -40,15 +39,16 @@
     
     self.getDomElement = GetDomElement;
     
+    self.clone = Clone;
+    
     
     function SetMesh(_mesh){
       if(_mesh === undefined) return;
       
-      mesh = _mesh;
-      
       for(var label in faces){
-        var faceMesh = mesh[label];
+        var faceMesh = _mesh[label];
         if (faceMesh === undefined) continue;
+        mesh[label] = faceMesh;
         if (faceMesh instanceof Array)
           new SyncedGif(faceMesh, 320).attach(faces[label]);
         else
@@ -104,6 +104,16 @@
       return cubeElement;
     }
     
+    function Clone(){
+      return new Voxel(
+        self.getPositionX(),
+        self.getPositionY(),
+        self.getPositionZ(),
+        dimension,
+        { mesh: mesh }
+      );
+    }
+    
   
     function CreateCube(){
       cubeElement = CreateElem('div', 'cube');
@@ -151,7 +161,7 @@
           wrapper.addEventListener('click', OnBackClicked);
         break;
       }
-      wrapper.addEventListener('contextmenu', OnCubeClicked);
+      wrapper.addEventListener('contextmenu', OnVoxelClick);
       
       var image = CreateElem('img', '');
       faces[label] = image;
@@ -173,10 +183,10 @@
       parentScene.appendChild(cubeElement);
     }
     
-    function OnCubeClicked(event){
+    function OnVoxelClick(event){
       event.preventDefault();
       
-      self.triggerEvent('CubeClick', {
+      self.triggerEvent('VoxelClick', {
         target: self
       });
       
@@ -216,13 +226,13 @@
   
     (function Constructor(x, y, z, dim, options){
       Positioned(EventListener(self));
+      self.addEventListener('move', UpdatePosition);
+      
+      SetDimension(dim);
+      CreateCube();
       
       self.setPosition(x, y, z);
-      SetDimension(dim);
-      
-      CreateCube();
-      UpdatePosition();
-      
+    
       SetMesh({
         'top': EMPTYGIF,
         'bottom': EMPTYGIF,

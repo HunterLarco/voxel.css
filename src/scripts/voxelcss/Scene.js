@@ -9,6 +9,7 @@
     var undefined;
     
     
+    var parentContainer;
     var sceneElement;
     var zoomElement;
     var cameraElement;
@@ -67,6 +68,7 @@
     self.attach = Attach;
     self.detach = Detach;
     self.isAttached = IsAttached;
+    self.getParentElement = GetParementElement;
     
     self.enableOrbit = EnableOrbit;
     self.disableOrbit = DisableOrbit;
@@ -288,6 +290,8 @@
     
     function Attach(elem){
       if(isAttached) throw 'Cannot attach currently attached scene';
+      
+      parentContainer = elem;
       elem.appendChild(sceneElement);
       isAttached = true;
     }
@@ -298,6 +302,9 @@
     }
     function IsAttached(){
       return isAttached;
+    }
+    function GetParementElement(){
+      return parentContainer;
     }
     
     function EnableOrbit(){

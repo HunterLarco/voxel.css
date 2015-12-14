@@ -21,10 +21,13 @@
     self.isSaved = IsSavedToBrowser;
     self.deleteSave = DeleteSave;
     
+    self.getScene = GetScene;
+    self.getVoxels = GetVoxels;
+    
     
     function AddVoxel(voxel){
       voxels.push(voxel);
-      scene.add(voxel);
+      return scene.add(voxel);
     }
     function RemoveVoxel(voxel){
       var index = voxels.indexOf(voxel);
@@ -51,7 +54,7 @@
     function Import(string){
       ClearBlocks();
       
-      var json = JSON.parse(string);
+      var json = JSON.parse(string+'');
       
       for(var i=0,serial; serial=json[i++];){
         var voxel = new Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
@@ -76,14 +79,21 @@
     function DeleteSave(){
       localStorage.setItem(FormSaveName(), '');
     }
-    function FormSaveName(){
-      return 'savedWorld<'+worldLabel+'>';
+    
+    function GetScene(){
+      return scene;
+    }
+    function GetVoxels(){
+      return voxels.concat([]);
     }
     
     
     function ClearBlocks(){
       while(voxels.length > 0)
         RemoveBlock(voxels[0]);
+    }
+    function FormSaveName(){
+      return 'savedWorld<'+worldLabel+'>';
     }
     
     

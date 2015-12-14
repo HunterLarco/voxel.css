@@ -1,18 +1,26 @@
 (function(){
   
+  // EVENTS
+  //   onMove
   function Positioned(obj){
     var self = obj || new Function();
     
     
     var position = {x:0, y:0, z:0};
+    var canTriggerEvent = true;
     
 
     function SetPosition(x, y, z){
-      return {
+      canTriggerEvent = false;
+      var old = {
         x: SetPositionX(x),
         y: SetPositionY(y),
         z: SetPositionZ(z)
       }
+      
+      canTriggerEvent = true;
+      self.triggerEvent('move');
+      return old;
     }
     function SetPositionX(x){
       if(x === undefined || typeof x != 'number') 
@@ -20,6 +28,8 @@
       
       var old = position.x;
       position.x = x;
+      
+      if (canTriggerEvent) self.triggerEvent('move');
       return old;
     }
     function SetPositionY(y){
@@ -28,6 +38,8 @@
       
       var old = position.y;
       position.y = y;
+      
+      if (canTriggerEvent) self.triggerEvent('move');
       return old;
     }
     function SetPositionZ(z){
@@ -36,15 +48,22 @@
       
       var old = position.z;
       position.z = z;
+      
+      if (canTriggerEvent) self.triggerEvent('move');
       return old;
     }
     
     function Translate(x, y, z){
-      return {
+      canTriggerEvent = false;
+      var old = {
         x: TranslateX(x),
         y: TranslateY(y),
         z: TranslateZ(z)
       }
+      
+      canTriggerEvent = true;
+      self.triggerEvent('move');
+      return old;
     }
     function TranslateX(x){
       if(x === undefined || typeof x != 'number') 

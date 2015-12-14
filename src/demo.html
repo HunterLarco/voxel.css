@@ -129,8 +129,6 @@ body{
 }
 
 .sidebar{
-  display:none;
-  
   position:fixed;
   left:0px;
   top:0px;
@@ -161,12 +159,13 @@ body{
 <script src='scripts/voxelcss/Voxel.js'></script>
 <script src='scripts/voxelcss/Scene.js'></script>
 <script src='scripts/voxelcss/World.js'></script>
+<script src='scripts/voxelcss/Editor.js'></script>
 
 
 
 
 <script src='scripts/voxelcss/SavedWorld.js'></script>
-<script src='scripts/voxelcss/SyncedGif.js'></script>
+<script src='scripts/SyncedGif.js'></script>
 
 <script src='scripts/data/meshes.js'></script>
 <script src='scripts/data/defaultworld.js'></script>
@@ -200,38 +199,30 @@ body{
   
   var scene;
   var world;
+  var editor;
   
   
   window.addEventListener('load', Init);
+  
   function Init(){
     LoadSidebar();
     
     scene = new Scene();
-    scene.pan(7 * BLOCKDIM, 4 * BLOCKDIM, 0);
-    scene.rotate(0, Math.PI/4, 0);
     scene.attach(document.body);
-    
-    // scene.disableOrbit();
-    // scene.disableZoom();
-    // scene.disablePan();
-    
     scene.add(new Voxel(-100, 0, 0, 100, {
       mesh: MESHES.grass
     }));
     
     world = new World(scene);
-    
     world.add(new Voxel(100, 0, 0, 100, {
       mesh: MESHES.water
     }));
     
-    // world.save();
-    // world.load();
-    
-    
-    // if(world.isSavedToBrowser()) world.importFromBrowser();
-    // else world.import(DEFAULTWORLD);
+    editor = new Editor(world, {
+      autosave: true
+    });
   }
+  
   
   function LoadSidebar(){
     var items = document.querySelectorAll('.sidebar .mesh');
@@ -241,7 +232,7 @@ body{
     }
   }
   function SetCurrentMesh(event){
-    world.setToolMesh(event.target.mesh);
+    editor.setToolMesh(event.target.mesh);
   }
   
 })();
