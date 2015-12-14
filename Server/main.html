@@ -317,24 +317,27 @@ label.voxel{
   
   <div class='example'>
     <pre><code>var scene = new voxelcss.Scene();
-scene.pan(100, 0, 0);
-scene.rotate(0, Math.PI/4, 0);
+scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
 scene.attach(document.body);
 
 var world = new voxelcss.World(scene);
 var editor = new voxelcss.Editor(world);
 editor.enableAutoSave();
 
-editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
-  mesh: {
-    'top'    : '//voxelcss.com/res/grass/top.png',
-    'bottom' : '//voxelcss.com/res/grass/bottom.png',
-    'front'  : '//voxelcss.com/res/grass/side.png',
-    'back'   : '//voxelcss.com/res/grass/side.png',
-    'left'   : '//voxelcss.com/res/grass/side.png',
-    'right'  : '//voxelcss.com/res/grass/side.png',
-  }
-}));</code></pre>
+if (editor.isSaved()) {
+  editor.load();
+} else {
+  editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
+    mesh: {
+      'top': '//voxelcss.com/res/grass/top.png',
+      'bottom': '//voxelcss.com/res/grass/bottom.png',
+      'front': '//voxelcss.com/res/grass/side.png',
+      'back': '//voxelcss.com/res/grass/side.png',
+      'left': '//voxelcss.com/res/grass/side.png',
+      'right': '//voxelcss.com/res/grass/side.png',
+    }
+  }));
+}</code></pre>
     <a class='fiddle' target='blank' href='http://jsfiddle.net/hjlarco/rrvsL9h6/'>View in JSFiddle</a>
   </div>
   
