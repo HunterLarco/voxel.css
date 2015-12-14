@@ -132,8 +132,9 @@
       var pos = cube.getPosition();
       var dim = cube.getDimension();
       
-      var cube = new Cube(pos.x + dx*dim, pos.y + dy*dim, pos.z + dz*dim, dim);
-      cube.setMesh(tool.mesh);
+      var cube = new Voxel(pos.x + dx*dim, pos.y + dy*dim, pos.z + dz*dim, dim, {
+        mesh: tool.mesh
+      });
       
       AddBlock(cube);
     }
