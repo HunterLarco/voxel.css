@@ -313,28 +313,38 @@ label.voxel{
   <h1><label class='voxel'>voxel.css</label> makes 3D rendering easy</h1>
   
   <div class='example'>
-    <pre><code>var scene = new Scene();
+    <pre><code>var scene = new voxelcss.Scene();
 scene.pan(100, 0, 0);
-scene.rotate(0, Math.PI/2, 0);
+scene.rotate(0, Math.PI/4, 0);
 scene.attach(document.body);
 
-var world = new SavedWorld(scene);
+var world = new voxelcss.World(scene);
+var editor = new voxelcss.Editor(world);
+editor.enableAutoSave();
 
-if(world.isSavedToBrowser()) world.importFromBrowser();
-else world.add(new Cube(0, 0, 0, 100));</code></pre>
-    <a class='fiddle'>View in JSFiddle</a>
+editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
+  mesh: {
+    'top'    : '//voxelcss.com/res/grass/top.png',
+    'bottom' : '//voxelcss.com/res/grass/bottom.png',
+    'front'  : '//voxelcss.com/res/grass/side.png',
+    'back'   : '//voxelcss.com/res/grass/side.png',
+    'left'   : '//voxelcss.com/res/grass/side.png',
+    'right'  : '//voxelcss.com/res/grass/side.png',
+  }
+}));</code></pre>
+    <a class='fiddle' target='blank' href='http://jsfiddle.net/hjlarco/rrvsL9h6/'>View in JSFiddle</a>
   </div>
   
   <h2>CSS means no ray tracing for mouse events</h2>
 
   <div class='example'>
-    <pre><code>var cube = new Cube(0, 0, 0, 100);
+    <pre><code>var voxel = new voxelcss.Voxel(0, 0, 0, 100);
 
-cube.addEventListener('CubeClick', CubeWasClicked);
+voxel.addEventListener('VoxelClick', VoxelWasClicked);
 
-cube.addEventListener('TopClick', TopWasClicked);
-cube.addEventListener('FrontClick', FrontWasClicked);</code></pre>
-    <a class='fiddle'>View in JSFiddle</a>
+voxel.addEventListener('TopClick', TopWasClicked);
+voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
+    <a class='fiddle' target='blank' href='http://jsfiddle.net/hjlarco/ufrmeoqz/'>View in JSFiddle</a>
   </div>
   
   <h2>CSS means a mesh can support all image types</h2>
