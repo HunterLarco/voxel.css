@@ -18,6 +18,8 @@ handlers:
   static_files: images/favicon.ico
   upload: images/favicon\.ico
 
+- url: /voxelcss
+  static_dir: voxelcss
 - url: /images
   static_dir: images
 - url: /res

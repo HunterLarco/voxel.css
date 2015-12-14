@@ -260,18 +260,19 @@ label.voxel{
   padding:20px 12px;
 }
 
+.scene .cube .anim{
+  animation:fallup 1000ms linear both;
+}
+
 </style>
 
 <title>voxel.css</title>
 
-<script src='scripts/Scene.js'></script>
-<script src='scripts/SavedWorld.js'></script>
-<script src='scripts/Cube.js'></script>
-<script src='scripts/SyncedGif.js'></script>
-<script src='scripts/meshes.js'></script>
 <script src='scripts/defaultworld.js'></script>
+<script src='scripts/meshes.js'></script>
 
-<link rel='stylesheet' type='text/css' href='css/voxel.css'></link>
+<script src='voxelcss/voxel.js'></script>
+<link rel='stylesheet' type='text/css' href='voxelcss/voxel.css'></link>
 
 <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'></link>
 
@@ -293,6 +294,18 @@ label.voxel{
 
 
 <div class='demo'></div>
+
+
+<div class='sidebar'>
+  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
+  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
+  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
+  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
+  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
+  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
+  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
+  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
+</div>
 
 
 <div class='pitch'>
@@ -395,18 +408,19 @@ cube.addEventListener('FrontClick', FrontWasClicked);</code></pre>
 <script>
 (function(){
   
-  const BLOCKDIM = 20;
+  const BLOCKDIM = 36;
   var world;
   var scene;
   
   window.addEventListener('load', Init);
   function Init(){
     CreateWorld();
+    // LoadEditor();
   }
   
   function CreateWorld(){
-    scene = new Scene();
-    scene.pan(7 * BLOCKDIM, 4 * BLOCKDIM, 0);
+    scene = new voxelcss.Scene();
+    scene.pan(4 * BLOCKDIM, 2 * BLOCKDIM, 0);
     scene.rotate(0, Math.PI/2, 0);
     
     window.addEventListener('resize', FixSceneZoom);
@@ -414,13 +428,33 @@ cube.addEventListener('FrontClick', FrontWasClicked);</code></pre>
     scene.attach(document.querySelector('.demo'));
     scene.disableZoom();
     
-    world = new SavedWorld(scene);
-    world.preventEdits();
-    
+    world = new voxelcss.World(scene);
     world.import(DEFAULTWORLD);
   }
   function FixSceneZoom(){
     scene.setZoom(window.innerWidth / 1435);
+  }
+  
+  function LoadEditor(){
+    document.querySelector('.sidebar').style.display = 'block';
+    
+    LoadSidebar();
+    scene.enableZoom();
+    
+    window.editor = new voxelcss.Editor(world);
+    editor.add(new voxelcss.Voxel(0, 0, 0, 36, {
+      mesh: MESHES.dirt
+    }));
+  }
+  function LoadSidebar(){
+    var items = document.querySelectorAll('.sidebar .mesh');
+    for(var i=0,item; item=items[i++];){
+      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.addEventListener('click', SetCurrentMesh);
+    }
+  }
+  function SetCurrentMesh(event){
+    editor.setToolMesh(event.target.mesh);
   }
   
 })();
