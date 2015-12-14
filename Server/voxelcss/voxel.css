@@ -31,7 +31,7 @@
   transform-style: preserve-3d;
 }
 
-.face{
+.scene .face{
   display:block;
   position:absolute;
   
@@ -45,29 +45,29 @@
   
   cursor:pointer;
 }
-.face img{
+.scene .face img{
   width:100%;
   height:100%;
 }
-.cube:hover img{
+.scene .cube:hover img{
   visibility:hidden;
 }
-.cube:hover .face{
+.scene .cube:hover .face{
   background:rgba(0,0,0,0.3);
 }
 
-.cube{
+.scene .cube{
   position:absolute;
   
   transform-style:preserve-3d;
 }
-.cube .anim{
+.scene .cube .anim{
   transform-style:preserve-3d;
 }
-.cube .anim.down{
+.scene .cube .anim.down{
   animation:falldown 1000ms linear both;
 }
-.cube .anim.up{
+.scene .cube .anim.up{
   animation:fallup 1000ms linear both;
 }
 

@@ -1,12 +1,3 @@
-# 1-0-0 Initial Release (Yellow Color Scheme, Minimal Example Work)
-# 2-0-0 1 Year Update (Designed for Employers)
-# 2-0-1 Added Mobile Responsiveness
-# 3-0-0 Redesign
-# 4-0-0 Redesign
-# 5-0-0 Redesign
-# 6-0-0 Redesign and Playground Written
-
-
 application: voxelcss
 version: 0-0-0
 runtime: python27
@@ -17,6 +8,10 @@ handlers:
 - url: /favicon\.ico
   static_files: images/favicon.ico
   upload: images/favicon\.ico
+
+- url: /download/?
+  static_files: downloads/voxelcss-1.0.0.zip
+  upload: downloads/voxelcss-1\.0\.0\.zip
 
 - url: /voxelcss
   static_dir: voxelcss
