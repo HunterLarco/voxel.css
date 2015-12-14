@@ -1,7 +1,7 @@
 (function(){
   
   // EVENTS
-  //   onMove
+  //   onmove
   function Positioned(obj){
     var self = obj || new Function();
     

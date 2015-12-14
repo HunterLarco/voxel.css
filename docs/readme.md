@@ -4,12 +4,12 @@
 
 The goal of this project is to provide a lightweight 3D CSS library with very simple implementation.
 
-[Demo](http://voxelcss.com/demo) — [Documentation](./docs)
+[Demo](http://voxelcss.com/demo)
 
 
 ### Usage ###
 
-Download the [minified library](./build/voxel.js) and [css file](./build/voxel.css) and include both in your html.
+Download the [minified library](../build/voxel.js) and [css file](../build/voxel.css) and include both in your html.
 
 ```html
 <script src="js/voxel.js"></script>
@@ -60,8 +60,7 @@ There are 4 important classes. Scene, World, Editor and of course Voxel. The des
 
 ### Properties and Classes ###
 
-[Core Classes](./Core)
-[Interfaces](./Interfaces)
+[Core Classes](./Core) — [Interfaces](./Interfaces)
 
 
 ### Change log ###

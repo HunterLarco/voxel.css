@@ -180,7 +180,7 @@
       cubeElement.style.transform = 'translate3d('+position.x+'px, '+-position.y+'px, '+position.z+'px)';
     }
     function AppendToScene(){
-      parentScene.appendChild(cubeElement);
+      parentScene.add(self);
     }
     
     function OnVoxelClick(event){

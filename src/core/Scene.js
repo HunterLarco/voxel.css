@@ -1,9 +1,9 @@
 (function(){
   
   // EVENTS
-  //    onOrbit
-  //    onPan
-  //    onZoom
+  //    onorbit
+  //    onpan
+  //    onzoom
   function Scene(){
     var self = this;
     var undefined;
