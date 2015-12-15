@@ -171,8 +171,11 @@ label.voxel{
   
   height:200px;
   
-  perspective:1000px;
-  perspective-origin:50% 50%;
+  -webkit-perspective:1000px;
+  
+          perspective:1000px;
+  -webkit-perspective-origin:50% 50%;
+          perspective-origin:50% 50%;
 }
 .pitch .animation .cube{
   position:absolute;
@@ -185,10 +188,15 @@ label.voxel{
   
   overflow:visible;
   
-  transform-style:preserve-3d;
-  transform:rotateX(-15deg) rotateY(45deg);
+  -webkit-transform-style:preserve-3d;
   
-  animation:CubeRotation 2000ms linear infinite;
+          transform-style:preserve-3d;
+  -webkit-transform:rotateX(-15deg) rotateY(45deg);
+          transform:rotateX(-15deg) rotateY(45deg);
+  
+  -webkit-animation:CubeRotation 2000ms linear infinite;
+  
+          animation:CubeRotation 2000ms linear infinite;
 }
 .pitch .animation .cube.left{
   margin-left:-250px;
@@ -209,27 +217,38 @@ label.voxel{
   height:128px;
 }
 .pitch .animation .cube .left{
-  transform:rotateY(90deg) translate3d(0, 0, 64px);
+  -webkit-transform:rotateY(90deg) translate3d(0, 0, 64px);
+          transform:rotateY(90deg) translate3d(0, 0, 64px);
 }
 .pitch .animation .cube .right{
-  transform:rotateY(90deg) translate3d(0, 0, -64px);
+  -webkit-transform:rotateY(90deg) translate3d(0, 0, -64px);
+          transform:rotateY(90deg) translate3d(0, 0, -64px);
 }
 .pitch .animation .cube .front{
-  transform:translate3d(0, 0, 64px);
+  -webkit-transform:translate3d(0, 0, 64px);
+          transform:translate3d(0, 0, 64px);
 }
 .pitch .animation .cube .back{
-  transform:translate3d(0, 0, -64px);
+  -webkit-transform:translate3d(0, 0, -64px);
+          transform:translate3d(0, 0, -64px);
 }
 .pitch .animation .cube .top{
-  transform:rotateX(90deg) translate3d(0, 0, 64px);
+  -webkit-transform:rotateX(90deg) translate3d(0, 0, 64px);
+          transform:rotateX(90deg) translate3d(0, 0, 64px);
 }
 .pitch .animation .cube .bottom{
-  transform:rotateX(90deg) translate3d(0, 0, -64px);
+  -webkit-transform:rotateX(90deg) translate3d(0, 0, -64px);
+          transform:rotateX(90deg) translate3d(0, 0, -64px);
+}
+
+@-webkit-keyframes CubeRotation {
+  0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
+  100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
 }
 
 @keyframes CubeRotation {
-  0% { transform:rotateX(0deg) rotateY(0deg); }
-  100% { transform:rotateX(360deg) rotateY(360deg); } 
+  0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
+  100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
 }
 
 .calltoaction{
@@ -270,5 +289,6 @@ label.voxel{
 }
 
 .scene .cube .anim{
-  animation:fallup 1000ms linear both;
+  -webkit-animation:fallup 1000ms linear both;
+          animation:fallup 1000ms linear both;
 }

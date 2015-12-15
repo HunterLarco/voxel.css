@@ -22,22 +22,28 @@
     height:96px;
   }
   .pitch .animation .cube .left{
-    transform:rotateY(90deg) translate3d(0, 0, 48px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 48px);
+            transform:rotateY(90deg) translate3d(0, 0, 48px);
   }
   .pitch .animation .cube .right{
-    transform:rotateY(90deg) translate3d(0, 0, -48px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -48px);
+            transform:rotateY(90deg) translate3d(0, 0, -48px);
   }
   .pitch .animation .cube .front{
-    transform:translate3d(0, 0, 48px);
+    -webkit-transform:translate3d(0, 0, 48px);
+            transform:translate3d(0, 0, 48px);
   }
   .pitch .animation .cube .back{
-    transform:translate3d(0, 0, -48px);
+    -webkit-transform:translate3d(0, 0, -48px);
+            transform:translate3d(0, 0, -48px);
   }
   .pitch .animation .cube .top{
-    transform:rotateX(90deg) translate3d(0, 0, 48px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 48px);
+            transform:rotateX(90deg) translate3d(0, 0, 48px);
   }
   .pitch .animation .cube .bottom{
-    transform:rotateX(90deg) translate3d(0, 0, -48px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -48px);
+            transform:rotateX(90deg) translate3d(0, 0, -48px);
   }
   
   .pitch .animation .cube.left{
@@ -134,22 +140,28 @@
     height:80px;
   }
   .pitch .animation .cube .left{
-    transform:rotateY(90deg) translate3d(0, 0, 40px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 40px);
+            transform:rotateY(90deg) translate3d(0, 0, 40px);
   }
   .pitch .animation .cube .right{
-    transform:rotateY(90deg) translate3d(0, 0, -40px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -40px);
+            transform:rotateY(90deg) translate3d(0, 0, -40px);
   }
   .pitch .animation .cube .front{
-    transform:translate3d(0, 0, 40px);
+    -webkit-transform:translate3d(0, 0, 40px);
+            transform:translate3d(0, 0, 40px);
   }
   .pitch .animation .cube .back{
-    transform:translate3d(0, 0, -40px);
+    -webkit-transform:translate3d(0, 0, -40px);
+            transform:translate3d(0, 0, -40px);
   }
   .pitch .animation .cube .top{
-    transform:rotateX(90deg) translate3d(0, 0, 40px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 40px);
+            transform:rotateX(90deg) translate3d(0, 0, 40px);
   }
   .pitch .animation .cube .bottom{
-    transform:rotateX(90deg) translate3d(0, 0, -40px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -40px);
+            transform:rotateX(90deg) translate3d(0, 0, -40px);
   }
   
   .pitch .animation{
@@ -236,22 +248,28 @@
     height:60px;
   }
   .pitch .animation .cube .left{
-    transform:rotateY(90deg) translate3d(0, 0, 30px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 30px);
+            transform:rotateY(90deg) translate3d(0, 0, 30px);
   }
   .pitch .animation .cube .right{
-    transform:rotateY(90deg) translate3d(0, 0, -30px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -30px);
+            transform:rotateY(90deg) translate3d(0, 0, -30px);
   }
   .pitch .animation .cube .front{
-    transform:translate3d(0, 0, 30px);
+    -webkit-transform:translate3d(0, 0, 30px);
+            transform:translate3d(0, 0, 30px);
   }
   .pitch .animation .cube .back{
-    transform:translate3d(0, 0, -30px);
+    -webkit-transform:translate3d(0, 0, -30px);
+            transform:translate3d(0, 0, -30px);
   }
   .pitch .animation .cube .top{
-    transform:rotateX(90deg) translate3d(0, 0, 30px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 30px);
+            transform:rotateX(90deg) translate3d(0, 0, 30px);
   }
   .pitch .animation .cube .bottom{
-    transform:rotateX(90deg) translate3d(0, 0, -30px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -30px);
+            transform:rotateX(90deg) translate3d(0, 0, -30px);
   }
   
   .pitch .animation{
@@ -335,22 +353,28 @@
     height:46px;
   }
   .pitch .animation .cube .left{
-    transform:rotateY(90deg) translate3d(0, 0, 23px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 23px);
+            transform:rotateY(90deg) translate3d(0, 0, 23px);
   }
   .pitch .animation .cube .right{
-    transform:rotateY(90deg) translate3d(0, 0, -23px);
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -23px);
+            transform:rotateY(90deg) translate3d(0, 0, -23px);
   }
   .pitch .animation .cube .front{
-    transform:translate3d(0, 0, 23px);
+    -webkit-transform:translate3d(0, 0, 23px);
+            transform:translate3d(0, 0, 23px);
   }
   .pitch .animation .cube .back{
-    transform:translate3d(0, 0, -23px);
+    -webkit-transform:translate3d(0, 0, -23px);
+            transform:translate3d(0, 0, -23px);
   }
   .pitch .animation .cube .top{
-    transform:rotateX(90deg) translate3d(0, 0, 23px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 23px);
+            transform:rotateX(90deg) translate3d(0, 0, 23px);
   }
   .pitch .animation .cube .bottom{
-    transform:rotateX(90deg) translate3d(0, 0, -23px);
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -23px);
+            transform:rotateX(90deg) translate3d(0, 0, -23px);
   }
   
   .pitch .animation{
