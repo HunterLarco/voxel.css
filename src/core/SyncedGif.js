@@ -22,6 +22,7 @@
     
     self.getImage = GetImage;
     self.attach = Attach;
+    self.detach = Detach;
     self.getDuration = GetDuration;
     
     
@@ -47,6 +48,12 @@
     function Attach(image){
       images.push(image);
       image.src = imageSequence[index];
+    }
+    function Detach(image){
+      var index = images.indexOf(image);
+      if(index === -1) return;
+      
+      images.splice(index, 1);
     }
     function GetDuration(){
       return duration;
