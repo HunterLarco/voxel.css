@@ -12,22 +12,64 @@ Mediates adding CSS voxels to a scene while tracking their position and mesh.
 
 ### Constructor ###
 
-* Voxel(x, y, z, dimension, options)
-  * options{ mesh }
+`Voxel(x, y, z, dimension, options)`
+
+x, y, z — Positional coordinates (numerical)
+demension — Voxel width, height, and depth
+*optional* options.mesh — The mesh for this voxel (see setMesh)
 
 
 ### Properties ###
 
-* setMesh(mesh)
-* getMesh()
-* animUp(scene)
-* animDown(scene)
-* addToScene(scene)
-* removeFromScene()
-* setDimension(dimension)
-* getDimension()
-* getDomElement()
-* clone()
+`.setMesh(mesh)`
+
+mesh — A dict containing 'front', 'back', 'top', 'bottom', 'left' and 'right' faces specified.
+
+Changes the images used for each provided face for this voxel.
+
+`getMesh()`
+
+Returns the current mesh as a dict.
+
+`animUp(scene)`
+
+scene — A Scene instance.
+
+Adds the current voxel to the provided scene with an upward animation.
+
+`animDown(scene)`
+
+scene — A Scene instance.
+
+Adds the current voxel to the provided scene with an downward animation.
+
+`addToScene(scene)`
+
+scene — A Scene instance.
+
+Adds the current voxel to the provided scene.
+
+`removeFromScene()`
+
+Removes the voxel from the scene it is currently attached to.
+
+`setDimension(dimension)`
+
+dimension — Integer for width, height, depth of the voxel.
+
+Updates the dimension and propogates changes to the dom.
+
+`getDimension()`
+
+Returns the voxel's current dimension.
+
+`getDomElement()`
+
+Returns the dom element containing the current voxel.
+
+`clone()`
+
+Returns a voxel instance with the same position, dimension, and mesh as the current voxel.
 
 
 ### Events ###

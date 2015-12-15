@@ -7,7 +7,7 @@ Allows event listeners to be added, removed, and triggered for any object.
 
 ### Constructor ###
 
-* EventListener()
+`EventListener()`
 
 
 ### Properties ###
