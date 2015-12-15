@@ -71,8 +71,7 @@ const MESHES = {
     'front'  : '/res/dirt/main.png',
     'back'   : '/res/dirt/main.png',
     'left'   : '/res/dirt/main.png',
-    'right'  : '/res/dirt/main.png',
-    'label'  : 'dirt'
+    'right'  : '/res/dirt/main.png'
   },
   
   grass: {
@@ -81,8 +80,7 @@ const MESHES = {
     'front'  : '/res/grass/side.png',
     'back'   : '/res/grass/side.png',
     'left'   : '/res/grass/side.png',
-    'right'  : '/res/grass/side.png',
-    'label'  : 'grass'
+    'right'  : '/res/grass/side.png'
   },
   
   water: {
@@ -91,38 +89,34 @@ const MESHES = {
     'front'  : '/res/water/main.png',
     'back'   : '/res/water/main.png',
     'left'   : '/res/water/main.png',
-    'right'  : '/res/water/main.png',
-    'label'  : 'water'
+    'right'  : '/res/water/main.png'
   },
   
   waterFall: {
     'top'    : '/res/water/main.png',
     'bottom' : '/res/water/main.png',
-    'front'  : GIFS.waterFall,
-    'back'   : GIFS.waterFall,
-    'left'   : GIFS.waterFall,
-    'right'  : GIFS.waterFall,
-    'label'  : 'waterFall'
+    'front'  : '/res/water/fall.gif',
+    'back'   : '/res/water/fall.gif',
+    'left'   : '/res/water/fall.gif',
+    'right'  : '/res/water/fall.gif'
   },
   
   waterFallTop: {
     'top'    : '/res/water/main.png',
     'bottom' : '/res/water/main.png',
-    'front'  : GIFS.waterFallTop,
-    'back'   : GIFS.waterFallTop,
-    'left'   : GIFS.waterFallTop,
-    'right'  : GIFS.waterFallTop,
-    'label'  : 'waterFallTop'
+    'front'  : '/res/water/falltop.gif',
+    'back'   : '/res/water/falltop.gif',
+    'left'   : '/res/water/falltop.gif',
+    'right'  : '/res/water/falltop.gif'
   },
   
   waterFallCrash: {
     'top'    : '/res/water/main.png',
     'bottom' : '/res/water/main.png',
-    'front'  : GIFS.waterFallCrash,
-    'back'   : GIFS.waterFallCrash,
-    'left'   : GIFS.waterFallCrash,
-    'right'  : GIFS.waterFallCrash,
-    'label'  : 'waterFallCrash'
+    'front'  : '/res/water/crash.gif',
+    'back'   : '/res/water/crash.gif',
+    'left'   : '/res/water/crash.gif',
+    'right'  : '/res/water/crash.gif'
   },
   
   cloud: {
@@ -131,8 +125,7 @@ const MESHES = {
     'front'  : '/res/cloud/main.png',
     'back'   : '/res/cloud/main.png',
     'left'   : '/res/cloud/main.png',
-    'right'  : '/res/cloud/main.png',
-    'label'  : 'cloud'
+    'right'  : '/res/cloud/main.png'
   },
   
   treeTrunk: {
@@ -141,8 +134,7 @@ const MESHES = {
     'front'  : '/res/tree/bark.png',
     'back'   : '/res/tree/bark.png',
     'left'   : '/res/tree/bark.png',
-    'right'  : '/res/tree/bark.png',
-    'label'  : 'treeTrunk'
+    'right'  : '/res/tree/bark.png'
   },
   
   treeLeaves: {
@@ -151,8 +143,7 @@ const MESHES = {
     'front'  : '/res/tree/leaves.png',
     'back'   : '/res/tree/leaves.png',
     'left'   : '/res/tree/leaves.png',
-    'right'  : '/res/tree/leaves.png',
-    'label'  : 'treeLeaves'
+    'right'  : '/res/tree/leaves.png'
   }
   
 }
