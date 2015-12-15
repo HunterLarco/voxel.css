@@ -49,10 +49,15 @@
         var faceMesh = _mesh[label];
         if (faceMesh === undefined) continue;
         mesh[label] = faceMesh;
-        if (faceMesh instanceof Array)
-          new voxelcss.SyncedGif(faceMesh, 320).attach(faces[label]);
-        else
+        if(faces[label] !== undefined && faces[label].SyncedGif !== undefined)
+          faces[label].SyncedGif.detach(faces[label]);
+        if (faceMesh instanceof Array){
+          var gif = new voxelcss.SyncedGif(faceMesh, 320);
+          gif.attach(faces[label]);
+          faces[label].SyncedGif = gif;
+        }else{
           faces[label].src = faceMesh;
+        }
       }
     }
     function GetMesh(){
