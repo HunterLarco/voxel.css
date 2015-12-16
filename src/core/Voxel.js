@@ -1,5 +1,7 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  
   // EVENTS
   //    onCubeClick
   //    onTopClick

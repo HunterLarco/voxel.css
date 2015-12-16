@@ -1,5 +1,8 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  if(!window.voxelcss.interfaces) window.voxelcss.interfaces = {};
+  
   // EVENTS
   //   onmove
   function Positioned(obj){

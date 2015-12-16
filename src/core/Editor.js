@@ -1,5 +1,7 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  
   function Editor(){
     var self = this;
     var undefined;
