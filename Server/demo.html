@@ -20,14 +20,32 @@ body{
   top:0px;
   z-index:1;
   
+  padding:7px;
+  
   height:100%;
+  max-width:222px;
   overflow:scroll;
   
   background:rgb(250,250,250);
 }
-.sidebar img{
+.sidebar .divider{
   display:block;
-  margin:20px;
+  
+  font-size:12px;
+  line-height:12px;
+  
+  padding:3px 0px;
+  margin:10px 7px 0px 7px;
+  
+  color:rgb(51,51,51);
+  border-bottom:1px solid rgb(31,31,31);
+}
+.sidebar .button:hover{
+  background:rgb(240,240,240);
+}
+.sidebar img{
+  display:inline-block;
+  margin:7px;
   
   cursor:pointer;
   
@@ -78,12 +96,17 @@ body{
 
 
 <div class='sidebar'>
+  <div class='divider'>Ground</div>
   <img class='mesh' data-mesh='grass'          src='/res/grass/side.png'/>
   <img class='mesh' data-mesh='dirt'           src='/res/dirt/main.png'/>
+  
+  <div class='divider'>Water</div>
   <img class='mesh' data-mesh='water'          src='/res/water/main.png'/>
   <img class='mesh' data-mesh='waterFallTop'   src='/res/water/falltop.png'/>
   <img class='mesh' data-mesh='waterFall'      src='/res/water/fall.png'/>
   <img class='mesh' data-mesh='waterFallCrash' src='/res/water/crash.png'/>
+  
+  <div class='divider'>Tree</div>
   <img class='mesh' data-mesh='treeLeaves'     src='/res/tree/leaves.png'/>
   <img class='mesh' data-mesh='treeTrunk'      src='/res/tree/bark.png'/>
 </div>
@@ -102,6 +125,37 @@ body{
 <script>
 (function(){
   
+  // https://gist.github.com/gre/1650294
+  var EasingFunctions = {
+    // no easing, no acceleration
+    linear: function (t) { return t },
+    // accelerating from zero velocity
+    easeInQuad: function (t) { return t*t },
+    // decelerating to zero velocity
+    easeOutQuad: function (t) { return t*(2-t) },
+    // acceleration until halfway, then deceleration
+    easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+    // accelerating from zero velocity 
+    easeInCubic: function (t) { return t*t*t },
+    // decelerating to zero velocity 
+    easeOutCubic: function (t) { return (--t)*t*t+1 },
+    // acceleration until halfway, then deceleration 
+    easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+    // accelerating from zero velocity 
+    easeInQuart: function (t) { return t*t*t*t },
+    // decelerating to zero velocity 
+    easeOutQuart: function (t) { return 1-(--t)*t*t*t },
+    // acceleration until halfway, then deceleration
+    easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+    // accelerating from zero velocity
+    easeInQuint: function (t) { return t*t*t*t*t },
+    // decelerating to zero velocity
+    easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
+    // acceleration until halfway, then deceleration 
+    easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+  }
+  
+  
   var world;
   var scene;
   var editor;
@@ -110,8 +164,9 @@ body{
   function Init(){
     scene = new voxelcss.Scene();
     scene.pan(0, 0, 0);
-    scene.rotate(-Math.PI/11, Math.PI/3, 0);
     scene.attach(document.body);
+    
+    document.querySelector('.scene').style.perspective = 'none';
     
     world = new voxelcss.World(scene);
     editor = new voxelcss.Editor(world);
@@ -122,6 +177,25 @@ body{
     
     LoadSidebar();
   }
+  
+  function Rotate(direction, duration, totalFrames){
+    var totalFrames = totalFrames || 100;
+    
+    var startTime = Date.now();
+    var duration = duration || 500;
+    var change = Math.PI/2 * direction;
+    
+    var lastValue = 0;
+    for(var i=0; i<totalFrames; i++)
+      (function(i){
+        setTimeout(function(){
+          var value = EasingFunctions.easeInOutCubic(i / (totalFrames-1)) * change;
+          scene.rotateY(value - lastValue);
+          lastValue = value;
+        }, i*duration/totalFrames);
+      })(i);
+  }
+  window.Rotate = Rotate;
   
   function LoadSidebar(){
     var items = document.querySelectorAll('.sidebar .mesh');
