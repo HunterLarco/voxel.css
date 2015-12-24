@@ -370,6 +370,7 @@
     function BindMouse(){
       sceneElement.addEventListener('mousedown', MouseDown);
       sceneElement.addEventListener('mousewheel', OnScroll);
+      sceneElement.addEventListener('wheel', OnScroll);
     }
     function MouseDown(event){
       mouse.start.x = event.x || event.clientX;
