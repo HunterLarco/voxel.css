@@ -1,5 +1,7 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  
   // EVENTS
   //    onCubeClick
   //    onTopClick
@@ -13,7 +15,7 @@
     var undefined;
     
     
-    const EMPTYGIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    var EMPTYGIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     
     
     var cubeElement;

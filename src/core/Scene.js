@@ -1,5 +1,7 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  
   // EVENTS
   //    onorbit
   //    onpan
@@ -384,6 +386,8 @@
       window.removeEventListener('mouseup', MouseUp);
     }
     function MouseMove(event){
+      console.log(event)
+      
       mouse.lastMove.dx = event.x - mouse.current.x;
       mouse.lastMove.dy = event.y - mouse.current.y;
     
@@ -401,7 +405,7 @@
           target: self
         });
       }else if(canOrbit){
-        const rotations = 2;
+        var rotations = 2;
         rotation.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
         rotation.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
         UpdateSceneTransforms();

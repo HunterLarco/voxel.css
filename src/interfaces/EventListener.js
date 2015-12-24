@@ -1,5 +1,8 @@
 (function(){
   
+  if(!window.voxelcss) window.voxelcss = {};
+  if(!window.voxelcss.interfaces) window.voxelcss.interfaces = {};
+  
   function EventListener(obj){
     var self = obj || new Function();
     
