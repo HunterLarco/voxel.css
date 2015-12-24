@@ -372,11 +372,11 @@
       sceneElement.addEventListener('mousewheel', OnScroll);
     }
     function MouseDown(event){
-      mouse.start.x = event.x;
-      mouse.start.y = event.y;
+      mouse.start.x = event.x || event.clientX;
+      mouse.start.y = event.y || event.clientY;
     
-      mouse.current.x = event.x;
-      mouse.current.y = event.y;
+      mouse.current.x = event.x || event.clientX;
+      mouse.current.y = event.y || event.clientY;
     
       window.addEventListener('mousemove', MouseMove);
       window.addEventListener('mouseup', MouseUp);
@@ -386,13 +386,11 @@
       window.removeEventListener('mouseup', MouseUp);
     }
     function MouseMove(event){
-      console.log(event)
-      
-      mouse.lastMove.dx = event.x - mouse.current.x;
-      mouse.lastMove.dy = event.y - mouse.current.y;
+      mouse.lastMove.dx = (event.x || event.clientX) - mouse.current.x;
+      mouse.lastMove.dy = (event.y || event.clientY) - mouse.current.y;
     
-      mouse.current.x = event.x;
-      mouse.current.y = event.y;
+      mouse.current.x = event.x || event.clientX;
+      mouse.current.y = event.y || event.clientY;
       
       if (canPan && mouse.shiftDown){
         Pan(mouse.lastMove.dx, mouse.lastMove.dy);
