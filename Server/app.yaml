@@ -10,8 +10,8 @@ handlers:
   upload: images/favicon\.ico
 
 - url: /download/?
-  static_files: downloads/voxelcss-1.0.0.zip
-  upload: downloads/voxelcss-1\.0\.0\.zip
+  static_files: downloads/latest.zip
+  upload: downloads/latest\.zip
 
 - url: /voxelcss
   static_dir: voxelcss
