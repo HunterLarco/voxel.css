@@ -64,14 +64,7 @@ if (editor.isSaved()) {
   editor.load();
 } else {
   editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
-    mesh: {
-      'top': '//voxelcss.com/res/grass/top.png',
-      'bottom': '//voxelcss.com/res/grass/bottom.png',
-      'front': '//voxelcss.com/res/grass/side.png',
-      'back': '//voxelcss.com/res/grass/side.png',
-      'left': '//voxelcss.com/res/grass/side.png',
-      'right': '//voxelcss.com/res/grass/side.png',
-    }
+    mesh: voxelcss.Meshes.grass
   }));
 }</code></pre>
     <a class='fiddle' target='blank' href='http://jsfiddle.net/hjlarco/rrvsL9h6/'>View in JSFiddle</a>
