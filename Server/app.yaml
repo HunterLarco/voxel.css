@@ -13,7 +13,7 @@ handlers:
   static_files: downloads/latest.zip
   upload: downloads/latest\.zip
 
-- url: /voxelcss
+- url: /dist
   static_dir: voxelcss
 - url: /images
   static_dir: images
