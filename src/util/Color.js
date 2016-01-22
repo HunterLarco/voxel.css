@@ -5,8 +5,10 @@
 	
   function Color(){
     var self = this;
+    
 	
     var color = [0,0,0];
+    
 	
     self.toHex = ToHex;
     self.toRawHex = ToRawHex;
@@ -20,6 +22,7 @@
     self.getR = GetR;
     self.getG = GetG;
     self.getB = GetB;
+    
 	
     function Invert(){
       return new Color(color.map(function(value){return 255-value;}));
@@ -42,7 +45,7 @@
       return '#'+ToRawHex();
     }
     function ToRawHex(){
-      return voxelcss.util.Hex.RgbToHex(GetR(), GetG(), GetB());
+      return RgbToHex(GetR(), GetG(), GetB());
     }
     function ToRGB(){
       return {
@@ -57,21 +60,39 @@
     function ToRGBString(){
       return 'rgb('+ToRGBArray().join(',')+')';
     }
+    
+    
+    function HexToRgb(hex) {
+      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+      });
+
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
+    function RgbToHex(r, g, b){
+      return ''+((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    
 	
-    var Constructor = voxelcss.util.Overload.function();
-    Constructor.overload(new Function());
+    var Constructor = voxelcss.util.Overload();
     Constructor.overload(function(clr){
       color = clr.slice(0,3).map(function(val){return Math.min(255, Math.max(0, Math.round(val)));});
-    }, ['array']);
+    }, [Array]);
     Constructor.overload(function(r,g,b){
       Constructor([r,g,b]);
-    }, ['number', 'number', 'number']);
+    }, [Number, Number, Number]);
     Constructor.overload(function(obj){
       Constructor(obj.r||0, obj.g||0, obj.b||0);
-    }, ['object']);
+    }, [Object]);
     Constructor.overload(function(hex){
       Constructor(HexToRgb(hex));
-    }, ['string']);
+    }, [String]);
     Constructor.apply(this, arguments);
   }
   

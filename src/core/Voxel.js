@@ -152,34 +152,54 @@
       var x = lightSource.x;
       var y = lightSource.y;
       var z = lightSource.z;
+
+      var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:-1});
+      var angle = result.angle;
+      var percent = 1 - angle / (Math.PI/2);
+      percent *= percent;
+      faces['back'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent *= percent;
-      faces['back'].shader.style.opacity  = (result.direction > 0 ? 1 : percent) * scale;
       faces['front'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      
+      var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
+      var angle = result.angle;
+      var percent = 1 - angle / (Math.PI/2);
+      percent *= percent;
+      faces['left'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent *= percent;
-      faces['left'].shader.style.opacity  = (result.direction > 0 ? 1 : percent) * scale;
       faces['right'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
-
+      
       var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent *= percent;
-      faces['bottom'].shader.style.opacity = (result.direction > 0 ? 1 : percent) * scale;
-      faces['top'].shader.style.opacity    = (result.direction < 0 ? 1 : percent) * scale;
+      faces['top'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      
+      var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
+      var angle = result.angle;
+      var percent = 1 - angle / (Math.PI/2);
+      percent *= percent;
+      faces['bottom'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
     }
     function AngleFromLightSource(x, y, z, plane){
       var rotMatrix = GenRotMatrix(parentScene.getRotationX(), -parentScene.getRotationY());
       var point = {x:x, y:y, z:z};
       var rotatedPoint = Rotate(point, rotMatrix);
-      var direction = plane.C == 1 ? rotatedPoint.z : (plane.B == 1 ? rotatedPoint.y : rotatedPoint.x);
-      var angle = Math.asin(Math.abs(rotatedPoint.x * plane.A + rotatedPoint.y * plane.B + rotatedPoint.z * plane.C) / (Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2) + Math.pow(point.z, 2))));
+      rotatedPoint = {
+         x: rotatedPoint.x - self.getPositionX() - plane.A * self.getDimension()/2,
+         y: rotatedPoint.y - self.getPositionY() - plane.B * self.getDimension()/2,
+         z: rotatedPoint.z - self.getPositionZ() - plane.C * self.getDimension()/2
+      }
+      var direction = Math.abs(plane.C) == 1 ? plane.C * rotatedPoint.z : (Math.abs(plane.B) == 1 ? plane.B * rotatedPoint.y : plane.A * rotatedPoint.x);
+      var angle = Math.asin(Math.abs(rotatedPoint.x * plane.A + rotatedPoint.y * plane.B + rotatedPoint.z * plane.C) / (Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2))));
       return {angle:angle, direction:direction};
     }
     function GenRotMatrix(rotX, rotY){

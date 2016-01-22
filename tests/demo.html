@@ -48,8 +48,7 @@ body{
 <script src='../src/core/Editor.js'></script>
 <script src='../src/core/SyncedGif.js'></script>
 
-<script src='../src/util/overload.js'></script>
-<script src='../src/util/hex.js'></script>
+<script src='../src/util/Overload.js'></script>
 <script src='../src/util/Color.js'></script>
 
 <link rel='stylesheet' href='../src/voxel.css'></link>
@@ -82,9 +81,6 @@ body{
 <script>
 (function(){
   
-  var BLOCKDIM = 20;
-  
-  
   var scene;
   var world;
   var editor;
@@ -98,17 +94,48 @@ body{
     scene = new voxelcss.Scene();
     // scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
     scene.attach(document.body);
-    scene.setGlobalLightSource(3000, 3000, 3000);
+    scene.pan(20);
+    //
+    // scene.setGlobalLightSource(0, 0, 0);
+    // scene.add(new voxelcss.Voxel(-100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel(-100,  0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel(-100, 50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( 100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( 100,  0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( 100, 50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
     
-    world = new voxelcss.World(scene);
-    editor = new voxelcss.Editor(world);
-    editor.enableAutoSave();
+    // scene.setGlobalLightSource(0, 0, 200);
+    // scene.add(new voxelcss.Voxel(-150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel(-100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( -50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel(   0,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel(  50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( 100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+    // scene.add(new voxelcss.Voxel( 150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
     
-    editor.load();
-    if(world.getVoxels().length === 0)
-    	editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
-    		mesh: voxelcss.Meshes.grass
-    	}));
+    scene.setGlobalLightSource(0, 0, 500);
+    for(var x=-3; x<=3; x++)
+      for(var y=-3; y<=3; y++)
+        for(var z=-3; z<=3; z++)
+          if(
+            (y == -3 && x == -3) || 
+            (y == -3 && z == -3) || 
+            (x == -3 && z == -3) || 
+            (y ==  3 && x == -3) || 
+            (y ==  3 && z == -3) || 
+            (x ==  3 && z == -3) ||
+            (y == -3 && x == -3) || 
+            (y == -3 && z == -3) || 
+            (x == -3 && z == -3) ||
+            (y == -3 && x ==  3) || 
+            (y == -3 && z ==  3) || 
+            (x == -3 && z ==  3) ||
+            (y ==  3 && x ==  3) || 
+            (y ==  3 && z ==  3) || 
+            (x ==  3 && z ==  3)
+          ){
+            scene.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
+          }
   }
   
   

@@ -354,7 +354,7 @@
       cameraElement.appendChild(voxel.getDomElement());
       voxels.push(voxel);
       voxel.setParentScene(self);
-      voxel.updateLightSource(lightSource);
+      if(!!lightSource) voxel.updateLightSource(lightSource);
     }
     function RemoveVoxel(voxel){
       cameraElement.removeChild(voxel.getDomElement());
