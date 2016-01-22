@@ -98,34 +98,17 @@ body{
     scene = new voxelcss.Scene();
     // scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
     scene.attach(document.body);
-    scene.setGlobalLightSource(300, 0, 200);
+    scene.setGlobalLightSource(3000, 3000, 3000);
     
-    // scene.add(new voxelcss.Voxel(300, 0, 300, 20, {
-    //   mesh: new voxelcss.util.Color(230,230,30)
-    // }));
+    world = new voxelcss.World(scene);
+    editor = new voxelcss.Editor(world);
+    editor.enableAutoSave();
     
-    scene.add(new voxelcss.Voxel(0, 0, 0, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(50, 0, 0, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(-50, 0, 0, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(0, 50, 0, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(0, -50, 0, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(0, 0, 50, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-    scene.add(new voxelcss.Voxel(0, 0, -50, 50, {
-      mesh: new voxelcss.util.Color(102, 201, 215)
-    }));
-  
+    editor.load();
+    if(world.getVoxels().length === 0)
+    	editor.add(new voxelcss.Voxel(0, 0, 0, 100, {
+    		mesh: voxelcss.Meshes.grass
+    	}));
   }
   
   

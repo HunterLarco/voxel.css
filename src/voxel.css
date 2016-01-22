@@ -55,6 +55,9 @@
 .cube:hover .face{
   background:rgba(0,0,0,0.3) !important;
 }
+.cube:hover .face .shader{
+  opacity:0 !important;
+}
 .face .shader{
   display:block;
   
@@ -65,7 +68,7 @@
   height:100%;
   
   background:rgb(0,0,0);
-  opacity:0.25;
+  opacity:0;
 }
 
 .cube{
