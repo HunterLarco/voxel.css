@@ -32,6 +32,9 @@
     var canPan = true;
     var canZoom = true;
     
+    var lightSource = null;
+    var voxels = [];
+    
     
     self.rotate = Rotate;
     self.rotateX = RotateX;
@@ -86,6 +89,8 @@
     
     self.add = AddVoxel;
     self.remove = RemoveVoxel;
+    
+    self.setGlobalLightSource = SetGlobalLightSource;
     
     
     function Rotate(x, y, z){
@@ -347,9 +352,18 @@
     
     function AddVoxel(voxel){
       cameraElement.appendChild(voxel.getDomElement());
+      voxels.push(voxel);
+      voxel.setParentScene(self);
     }
     function RemoveVoxel(voxel){
       cameraElement.removeChild(voxel.getDomElement());
+      voxels.splice(voxels.indexOf(voxel), 1);
+      voxel.removeParentScene();
+    }
+    
+    function SetGlobalLightSource(x, y, z){
+      lightSource = {x:x, y:y, z:z};
+      UpdateVoxelLighting();
     }
     
     
@@ -450,6 +464,13 @@
       cameraElement.style.transform = 'rotateX('+rotation.x+'rad) rotateY('+rotation.y+'rad) rotateZ('+rotation.z+'rad)';
       zoomElement.style.transform  = 'scale('+zoom+', '+zoom+')';
       zoomElement.style.transform += ' translateX('+pan.x+'px) translateY('+pan.y+'px) translateZ('+pan.z+'px)';
+      
+      UpdateVoxelLighting();
+    }
+    function UpdateVoxelLighting(){
+      if(!lightSource) return;
+      for(var i=0,voxel; voxel=voxels[i++];)
+        voxel.updateLightSource(lightSource);
     }
     
     

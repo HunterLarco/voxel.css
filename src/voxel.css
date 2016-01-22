@@ -50,10 +50,22 @@
   height:100%;
 }
 .cube:hover img{
-  visibility:hidden;
+  visibility:hidden !important;
 }
 .cube:hover .face{
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.3) !important;
+}
+.face .shader{
+  display:block;
+  
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  
+  background:rgb(0,0,0);
+  opacity:0.25;
 }
 
 .cube{

@@ -37,7 +37,7 @@ body{
 
 </style>
 
-<script src='../src/setup/LibWrapper.js'></script>
+<script src='../src/ext/Meshes.js'></script>
 
 <script src='../src/interfaces/EventListener.js'></script>
 <script src='../src/interfaces/Positioned.js'></script>
@@ -48,12 +48,15 @@ body{
 <script src='../src/core/Editor.js'></script>
 <script src='../src/core/SyncedGif.js'></script>
 
+<script src='../src/util/overload.js'></script>
+<script src='../src/util/hex.js'></script>
+<script src='../src/util/Color.js'></script>
+
 <link rel='stylesheet' href='../src/voxel.css'></link>
 
 <!-- <script src='../build/voxel.js'></script> -->
 <!-- <link rel='stylesheet' href='../build/voxel.css'></link> -->
 
-<script src='data/meshes.js'></script>
 <script src='data/defaultworld.js'></script>
 
 </head>
@@ -93,28 +96,43 @@ body{
     LoadSidebar();
     
     scene = new voxelcss.Scene();
+    // scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
     scene.attach(document.body);
-    scene.add(new voxelcss.Voxel(-100, 0, 0, 50, {
-      mesh: MESHES.grass
+    scene.setGlobalLightSource(300, 0, 200);
+    
+    // scene.add(new voxelcss.Voxel(300, 0, 300, 20, {
+    //   mesh: new voxelcss.util.Color(230,230,30)
+    // }));
+    
+    scene.add(new voxelcss.Voxel(0, 0, 0, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
     }));
-    
-    world = new voxelcss.World(scene);
-    world.add(new voxelcss.Voxel(100, 0, 0, 100, {
-      mesh: MESHES.water
+    scene.add(new voxelcss.Voxel(50, 0, 0, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
     }));
-    
-    editor = new voxelcss.Editor(world, {
-      autosave: true
-    });
-    
-    if(editor.isSaved()) editor.load();
+    scene.add(new voxelcss.Voxel(-50, 0, 0, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
+    }));
+    scene.add(new voxelcss.Voxel(0, 50, 0, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
+    }));
+    scene.add(new voxelcss.Voxel(0, -50, 0, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
+    }));
+    scene.add(new voxelcss.Voxel(0, 0, 50, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
+    }));
+    scene.add(new voxelcss.Voxel(0, 0, -50, 50, {
+      mesh: new voxelcss.util.Color(102, 201, 215)
+    }));
+  
   }
   
   
   function LoadSidebar(){
     var items = document.querySelectorAll('.sidebar .mesh');
     for(var i=0,item; item=items[i++];){
-      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.mesh = voxelcss.Meshes[item.getAttribute('data-mesh')];
       item.addEventListener('click', SetCurrentMesh);
     }
   }
