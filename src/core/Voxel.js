@@ -204,7 +204,7 @@
       return Math.pow(percent, 3);
     }
     function AngleFromLightSource(x, y, z, plane){
-      var rotMatrix = GenRotMatrix(parentScene.getRotationX(), -parentScene.getRotationY());
+      var rotMatrix = GenRotMatrix(parentScene.getRotationX(), -parentScene.getRotationY(), parentScene.getRotationZ());
       var point = {x:x, y:y, z:z};
       var rotatedPoint = Rotate(point, rotMatrix);
       rotatedPoint = {
@@ -217,7 +217,7 @@
       var angle = Math.asin(Math.abs(rotatedPoint.x * plane.A + rotatedPoint.y * plane.B + rotatedPoint.z * plane.C) / (Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2))));
       return {angle:angle, direction:direction, distance:distance};
     }
-    function GenRotMatrix(rotX, rotY){
+    function GenRotMatrix(rotX, rotY, rotZ){
       var rot_x = [
         [1, 0             , 0              ],
         [0, Math.cos(rotX), -Math.sin(rotX)],
@@ -227,8 +227,13 @@
         [ Math.cos(rotY), 0, Math.sin(rotY)],
         [0              , 1, 0             ],
         [-Math.sin(rotY), 0, Math.cos(rotY)]
-      ];
-      return MultiplyMatrices(rot_y, rot_x);
+      ],
+      rot_z = [
+        [Math.cos(rotZ), -Math.sin(rotZ), 0],
+        [Math.sin(rotZ),  Math.cos(rotZ), 0],
+        [0             ,  0             , 1]
+      ]
+      return MultiplyMatrices(MultiplyMatrices(rot_z, rot_y), rot_x);
     }
     function Rotate(point, rotMatrix){
       var column_vector = [[point.x], [point.y], [point.z]],
