@@ -156,38 +156,41 @@
       var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:-1});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['back'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['front'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['left'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['right'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['top'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
-      percent *= percent;
+      percent = ApplyLightingCurve(percent);
       faces['bottom'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+    }
+    function ApplyLightingCurve(percent){
+      return Math.pow(percent, 3);
     }
     function AngleFromLightSource(x, y, z, plane){
       var rotMatrix = GenRotMatrix(parentScene.getRotationX(), -parentScene.getRotationY());
