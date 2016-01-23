@@ -35,7 +35,13 @@ body{
   border-radius:2px;
 }
 
+.dg.ac{
+  z-index:1 !important;
+}
+
 </style>
+
+<script type="text/javascript" src="./dat.gui.min.js"></script>
 
 <script src='../src/ext/Meshes.js'></script>
 
@@ -47,6 +53,11 @@ body{
 <script src='../src/core/World.js'></script>
 <script src='../src/core/Editor.js'></script>
 <script src='../src/core/SyncedGif.js'></script>
+
+<script src='../src/core/LightSource.js'></script>
+<script src='../src/core/ImageFace.js'></script>
+<script src='../src/core/ColorFace.js'></script>
+<script src='../src/core/Mesh.js'></script>
 
 <script src='../src/util/Overload.js'></script>
 <script src='../src/util/Color.js'></script>
@@ -84,17 +95,22 @@ body{
   var scene;
   var world;
   var editor;
+  var lightSource;
   
   
   window.addEventListener('load', Init);
   
   function Init(){
     LoadSidebar();
+    SetupGUI();
     
     scene = new voxelcss.Scene();
     // scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
     scene.attach(document.body);
     scene.pan(45);
+    
+    world = new voxelcss.World(scene);
+    editor = new voxelcss.Editor(world);
     //
     // scene.setGlobalLightSource(0, 0, 0);
     // scene.add(new voxelcss.Voxel(-100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
@@ -103,39 +119,43 @@ body{
     // scene.add(new voxelcss.Voxel( 100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
     // scene.add(new voxelcss.Voxel( 100,  0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
     // scene.add(new voxelcss.Voxel( 100, 50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    
+    //
     // scene.setGlobalLightSource(0, 0, 200);
-    // scene.add(new voxelcss.Voxel(-150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel(-100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( -50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel(   0,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel(  50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( 100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( 150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    
-    scene.setGlobalLightSource(0, 0, 500);
+//     scene.add(new voxelcss.Voxel(-150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel(-100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel( -50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel(   0,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel(  50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel( 100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//     scene.add(new voxelcss.Voxel( 150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
+//
+    lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.35, 1);
+    scene.setGlobalLightSource(lightSource);
     for(var x=-3; x<=3; x++)
       for(var y=-3; y<=3; y++)
         for(var z=-3; z<=3; z++)
           if(
-            (y == -3 && x == -3) || 
-            (y == -3 && z == -3) || 
-            (x == -3 && z == -3) || 
-            (y ==  3 && x == -3) || 
-            (y ==  3 && z == -3) || 
-            (x ==  3 && z == -3) ||
-            (y == -3 && x == -3) || 
-            (y == -3 && z == -3) || 
+            (y == -3 && x == -3) ||
+            (y == -3 && z == -3) ||
             (x == -3 && z == -3) ||
-            (y == -3 && x ==  3) || 
-            (y == -3 && z ==  3) || 
+            (y ==  3 && x == -3) ||
+            (y ==  3 && z == -3) ||
+            (x ==  3 && z == -3) ||
+            (y == -3 && x == -3) ||
+            (y == -3 && z == -3) ||
+            (x == -3 && z == -3) ||
+            (y == -3 && x ==  3) ||
+            (y == -3 && z ==  3) ||
             (x == -3 && z ==  3) ||
-            (y ==  3 && x ==  3) || 
-            (y ==  3 && z ==  3) || 
+            (y ==  3 && x ==  3) ||
+            (y ==  3 && z ==  3) ||
             (x ==  3 && z ==  3)
           ){
-            scene.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
+            editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
           }
+
+    // scene.setGlobalLightSource(0, 300, 300);
+//     editor.add(new voxelcss.Voxel(0, 0, 0, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
   }
   
   
@@ -148,6 +168,56 @@ body{
   }
   function SetCurrentMesh(event){
     editor.setToolMesh(event.target.mesh);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  var GuiData = function() {
+    this.x = 300;
+    this.y = 300;
+    this.z = 300;
+    this.darkness  = 0.35;
+    this.lightness = 1.0;
+    this.travelDistance = 750;
+  };
+
+  function SetupGUI(){
+    var data = new GuiData();
+    var gui = new dat.GUI();
+    
+    var lighting = gui.addFolder('Light Source');
+    lighting.add(data, 'darkness', 0, 1).onChange(UpdateDarkness);
+    lighting.add(data, 'lightness', 0, 1).onChange(UpdateLightness);
+    lighting.add(data, 'travelDistance', 0, 2000).onChange(UpdateDistance);
+    lighting.add(data, 'x', -300, 300).onChange(UpdatePosition);
+    lighting.add(data, 'y', -300, 300).onChange(UpdatePosition);
+    lighting.add(data, 'z', -300, 300).onChange(UpdatePosition);
+    lighting.open();
+    
+    function UpdateDarkness(){
+      lightSource.setBrightness(data.darkness);
+      scene.update();
+    }
+    function UpdateLightness(){
+      lightSource.setBrightness(null, data.lightness);
+      scene.update();
+    }
+    function UpdateDistance(){
+      lightSource.setTravelDistance(data.travelDistance);
+      scene.update();
+    }
+    function UpdatePosition(){
+      lightSource.setPosition(data.x, data.y, data.z);
+      scene.update();
+    }
   }
   
 })();

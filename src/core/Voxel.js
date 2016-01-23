@@ -147,48 +147,59 @@
     }
     
     function UpdateLightSource(lightSource){
-      var scale = 0.5;
+      var brightness = lightSource.getBrightness();
+      var scale = brightness[1] - brightness[0];
+      var shift = 1 - brightness[1];
       
-      var x = lightSource.x;
-      var y = lightSource.y;
-      var z = lightSource.z;
+      var x = lightSource.getPositionX();
+      var y = lightSource.getPositionY();
+      var z = lightSource.getPositionZ();
 
       var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:-1});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['back'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['back'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['front'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['front'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
       
       var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['left'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['left'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
       
       var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['right'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['right'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['top'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['top'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
       
       var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
       var angle = result.angle;
       var percent = 1 - angle / (Math.PI/2);
       percent = ApplyLightingCurve(percent);
-      faces['bottom'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale;
+      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
+      faces['bottom'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
     }
+    // changes how light something is while in the light
+    // and how dark something is while in the dark
+    // AKA how much light means full brightness
     function ApplyLightingCurve(percent){
       return Math.pow(percent, 3);
     }
@@ -201,9 +212,10 @@
          y: rotatedPoint.y - self.getPositionY() - plane.B * self.getDimension()/2,
          z: rotatedPoint.z - self.getPositionZ() - plane.C * self.getDimension()/2
       }
+      var distance = Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2));
       var direction = Math.abs(plane.C) == 1 ? plane.C * rotatedPoint.z : (Math.abs(plane.B) == 1 ? plane.B * rotatedPoint.y : plane.A * rotatedPoint.x);
       var angle = Math.asin(Math.abs(rotatedPoint.x * plane.A + rotatedPoint.y * plane.B + rotatedPoint.z * plane.C) / (Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2))));
-      return {angle:angle, direction:direction};
+      return {angle:angle, direction:direction, distance:distance};
     }
     function GenRotMatrix(rotX, rotY){
       var rot_x = [

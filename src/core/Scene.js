@@ -91,6 +91,9 @@
     self.remove = RemoveVoxel;
     
     self.setGlobalLightSource = SetGlobalLightSource;
+    self.getGlobalLightSource = GetGlobalLightSource;
+    
+    self.update = Update;
     
     
     function Rotate(x, y, z){
@@ -362,9 +365,16 @@
       voxel.removeParentScene();
     }
     
-    function SetGlobalLightSource(x, y, z){
-      lightSource = {x:x, y:y, z:z};
+    function SetGlobalLightSource(source){
+      lightSource = source;
       UpdateVoxelLighting();
+    }
+    function GetGlobalLightSource(){
+      return lightSource;
+    }
+    
+    function Update(){
+      UpdateSceneTransforms();
     }
     
     
