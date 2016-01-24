@@ -48,10 +48,10 @@
         json.push({
           position: voxel.getPosition(),
           dimension: voxel.getDimension(),
-          mesh: voxel.getMesh()
+          mesh: voxel.getMesh().serialize()
         });
       
-      return JSON.stringify(json);
+        return JSON.stringify(json);
     }
     function Import(string){
       ClearBlocks();
@@ -60,7 +60,7 @@
       
       for(var i=0,serial; serial=json[i++];){
         var voxel = new voxelcss.Voxel(serial.position.x, serial.position.y, serial.position.z, serial.dimension);
-        voxel.setMesh(serial.mesh);
+        voxel.setMesh(voxelcss.Mesh.loadFromSerial(serial.mesh));
         AddVoxel(voxel);
       }
     }

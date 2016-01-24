@@ -32,6 +32,8 @@ body{
 <script src='../src/core/ColorFace.js'></script>
 <script src='../src/core/Mesh.js'></script>
 
+<script src='../src/ext/Meshes.js'></script>
+
 <script src='../src/util/Overload.js'></script>
 <script src='../src/util/Color.js'></script>
 
@@ -66,37 +68,67 @@ body{
     scene.rotate(-Math.PI / 5, Math.PI / 4, 0);
     scene.attach(document.body);
     
-    world = new voxelcss.World(scene);
+    world = new voxelcss.World(scene, 'Demo World');
     editor = new voxelcss.Editor(world);
+    editor.enableAutoSave();
 
     lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.35, 1);
     scene.addLightSource(lightSource);
+    
+    editor.load();
+    if(world.getVoxels().length === 0)
+      BuildCube();
+    
+    // TestMeshes();
+    // BuildCube();
+    SetupGUI();
+  }
+  
+  function TestMeshes(){
+    editor.add(new voxelcss.Voxel(-200, 0, 0, 50, {
+      mesh: voxelcss.Meshes.grass
+    }))
+    
+    editor.add(new voxelcss.Voxel(-150, 0, 0, 50, {
+      mesh: voxelcss.Meshes.dirt
+    }))
+    
+    editor.add(new voxelcss.Voxel(-100, 0, 0, 50, {
+      mesh: voxelcss.Meshes.treeTrunk
+    }))
+    
+    editor.add(new voxelcss.Voxel(-50, 0, 0, 50, {
+      mesh: voxelcss.Meshes.treeLeaves
+    }))
+    
+    editor.add(new voxelcss.Voxel(0, 0, 0, 50, {
+      mesh: voxelcss.Meshes.water
+    }))
+    
+    editor.add(new voxelcss.Voxel(50, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFall
+    }))
+    
+    editor.add(new voxelcss.Voxel(100, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFallTop
+    }))
+    
+    editor.add(new voxelcss.Voxel(150, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFallCrash
+    }))
+    
+    editor.add(new voxelcss.Voxel(200, 0, 0, 50, {
+      mesh: new voxelcss.Mesh(new voxelcss.ColorFace(102,201,215))
+    }))
+  }
+  function BuildCube(){
     for(var x=-3; x<=3; x++)
       for(var y=-3; y<=3; y++)
         for(var z=-3; z<=3; z++)
-          if(
-            (y == -3 && x == -3) ||
-            (y == -3 && z == -3) ||
-            (x == -3 && z == -3) ||
-            (y ==  3 && x == -3) ||
-            (y ==  3 && z == -3) ||
-            (x ==  3 && z == -3) ||
-            (y == -3 && x == -3) ||
-            (y == -3 && z == -3) ||
-            (x == -3 && z == -3) ||
-            (y == -3 && x ==  3) ||
-            (y == -3 && z ==  3) ||
-            (x == -3 && z ==  3) ||
-            (y ==  3 && x ==  3) ||
-            (y ==  3 && z ==  3) ||
-            (x ==  3 && z ==  3)
-          ){
+          if([x, y, z].filter(function(value){return Math.abs(value) === 3}).length >= 2)
             editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {
               mesh: new voxelcss.Mesh(new voxelcss.ColorFace(102,201,215))
             }));
-          }
-
-    SetupGUI();
   }
   
   function LightGuiData(){
@@ -124,10 +156,18 @@ body{
     
     self.zoom = 1;
   }
+  function SavingGuiData(){
+    var self = this;
+    
+    self.autosave = true;
+    self.saveWorld = editor.save;
+    self.loadWorld = editor.load;
+  }
 
   function SetupGUI(){
     var lightData = new LightGuiData();
     var cameraData = new CameraGuiData();
+    var savingData = new SavingGuiData();
     var gui = new dat.GUI();
     
     var lighting = gui.addFolder('Light Source');
@@ -188,6 +228,19 @@ body{
     }
     function UpdateZoom(){
       scene.setZoom(cameraData.zoom);
+    }
+    
+    var saving = gui.addFolder('Save World');
+    saving.add(savingData, 'autosave').onChange(UpdateAutoSave);
+    saving.add(savingData, 'saveWorld');
+    saving.add(savingData, 'loadWorld');
+    // saving.open();
+    
+    function UpdateAutoSave(){
+      if(editor.canAutoSave())
+        editor.disableAutoSave();
+      else
+        editor.enableAutoSave();
     }
   }
   
