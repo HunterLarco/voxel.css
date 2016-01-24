@@ -12,31 +12,6 @@ body{
   background-size:100px 100px;
 }
 
-.sidebar{
-  position:fixed;
-  left:0px;
-  top:0px;
-  z-index:1;
-  
-  height:100%;
-  overflow:scroll;
-  
-  background:rgb(245,245,245);
-  
-  display:none;
-}
-.sidebar img{
-  display:block;
-  margin:20px;
-  
-  cursor:pointer;
-  
-  width:60px;
-  height:60px;
-  
-  border-radius:2px;
-}
-
 .dg.ac{
   z-index:1 !important;
 }
@@ -45,8 +20,6 @@ body{
 
 <script type="text/javascript" src="./dat.gui.min.js"></script>
 
-<script src='../src/ext/Meshes.js'></script>
-
 <script src='../src/interfaces/EventListener.js'></script>
 <script src='../src/interfaces/Positioned.js'></script>
 
@@ -54,8 +27,6 @@ body{
 <script src='../src/core/Scene.js'></script>
 <script src='../src/core/World.js'></script>
 <script src='../src/core/Editor.js'></script>
-<script src='../src/core/SyncedGif.js'></script>
-
 <script src='../src/core/LightSource.js'></script>
 <script src='../src/core/ImageFace.js'></script>
 <script src='../src/core/ColorFace.js'></script>
@@ -79,17 +50,6 @@ body{
   <div class='scene'></div>
 </div>
 
-<div class='sidebar'>
-  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
-  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
-  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
-  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
-  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
-  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
-  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
-  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
-</div>
-
 
 <script>
 (function(){
@@ -99,36 +59,16 @@ body{
   var editor;
   var lightSource;
   
-  
   window.addEventListener('load', Init);
   
   function Init(){
-    LoadSidebar();
-    
     scene = new voxelcss.Scene();
-    // scene.rotate(-Math.PI / 8, Math.PI / 4, 0);
+    scene.rotate(-Math.PI / 5, Math.PI / 4, 0);
     scene.attach(document.body);
     
     world = new voxelcss.World(scene);
     editor = new voxelcss.Editor(world);
-    //
-    // scene.setGlobalLightSource(0, 0, 0);
-    // scene.add(new voxelcss.Voxel(-100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel(-100,  0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel(-100, 50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( 100,-50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( 100,  0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    // scene.add(new voxelcss.Voxel( 100, 50,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-    //
-    // scene.setGlobalLightSource(0, 0, 200);
-//     scene.add(new voxelcss.Voxel(-150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel(-100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel( -50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel(   0,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel(  50,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel( 100,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//     scene.add(new voxelcss.Voxel( 150,0,0,50,{mesh:new voxelcss.util.Color(102,201,215)}));
-//
+
     lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.35, 1);
     scene.addLightSource(lightSource);
     for(var x=-3; x<=3; x++)
@@ -151,34 +91,13 @@ body{
             (y ==  3 && z ==  3) ||
             (x ==  3 && z ==  3)
           ){
-            editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
+            editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {
+              mesh: new voxelcss.Mesh(new voxelcss.ColorFace(102,201,215))
+            }));
           }
 
-    // scene.setGlobalLightSource(0, 300, 300);
-//     editor.add(new voxelcss.Voxel(0, 0, 0, 50, {mesh:new voxelcss.util.Color(102,201,215)}));
     SetupGUI();
   }
-  
-  
-  function LoadSidebar(){
-    var items = document.querySelectorAll('.sidebar .mesh');
-    for(var i=0,item; item=items[i++];){
-      item.mesh = voxelcss.Meshes[item.getAttribute('data-mesh')];
-      item.addEventListener('click', SetCurrentMesh);
-    }
-  }
-  function SetCurrentMesh(event){
-    editor.setToolMesh(event.target.mesh);
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   function LightGuiData(){
     var self = this;
@@ -245,7 +164,7 @@ body{
     camera.add(cameraData, 'rotationY', -360, 360).listen().onChange(UpdateRotation);
     camera.add(cameraData, 'rotationZ', -360, 360).listen().onChange(UpdateRotation);
     camera.add(cameraData, 'zoom', 0, 3).listen().onChange(UpdateZoom);
-    camera.open();
+    // camera.open();
     
     scene.addEventListener('orbit', function(event){
       cameraData.rotationX = event.rotation.x * 180 / Math.PI;
