@@ -146,56 +146,90 @@
       );
     }
     
-    function UpdateLightSource(lightSource){
-      var brightness = lightSource.getBrightness();
-      var scale = brightness[1] - brightness[0];
-      var shift = 1 - brightness[1];
+    function UpdateLightSource(lightSources){
+      var front  = 1;
+      var back   = 1;
+      var left   = 1;
+      var right  = 1;
+      var top    = 1;
+      var bottom = 1;
       
-      var x = lightSource.getPositionX();
-      var y = lightSource.getPositionY();
-      var z = lightSource.getPositionZ();
+      for(var i=0,lightSource; lightSource=lightSources[i++];){
+        var brightness = lightSource.getBrightness();
+        var scale = brightness[1] - brightness[0];
+        var shift = 1 - brightness[1];
+      
+        var x = lightSource.getPositionX();
+        var y = lightSource.getPositionY();
+        var z = lightSource.getPositionZ();
 
-      var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:-1});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['back'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(back > 0){
+          var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:-1});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          back = Math.max(0, back - (1 - opacity));
+        }
       
-      var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['front'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(front > 0){
+          var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          front = Math.max(0, front - (1 - opacity));
+        }
       
-      var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['left'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(left > 0){
+          var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          left = Math.max(0, left - (1 - opacity));
+        }
       
-      var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['right'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(right > 0){
+          var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          right = Math.max(0, right - (1 - opacity));
+        }
       
-      var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['top'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(top > 0){
+          var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          top = Math.max(0, top - (1 - opacity));
+        }
       
-      var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
-      var angle = result.angle;
-      var percent = 1 - angle / (Math.PI/2);
-      percent = ApplyLightingCurve(percent);
-      percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6))
-      faces['bottom'].shader.style.opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+        if(bottom > 0){
+          var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
+          var angle = result.angle;
+          var percent = 1 - angle / (Math.PI/2);
+          percent = ApplyLightingCurve(percent);
+          percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
+          var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
+          bottom = Math.max(0, bottom - (1 - opacity));
+        }
+      }
+      
+      faces['front'].shader.style.opacity  = front;
+      faces['back'].shader.style.opacity   = back;
+      faces['left'].shader.style.opacity   = left;
+      faces['right'].shader.style.opacity  = right;
+      faces['top'].shader.style.opacity    = top;
+      faces['bottom'].shader.style.opacity = bottom;
     }
     // changes how light something is while in the light
     // and how dark something is while in the dark

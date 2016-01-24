@@ -32,7 +32,7 @@
     var canPan = true;
     var canZoom = true;
     
-    var lightSource = null;
+    var lightSources = [];
     var voxels = [];
     
     
@@ -90,8 +90,9 @@
     self.add = AddVoxel;
     self.remove = RemoveVoxel;
     
-    self.setGlobalLightSource = SetGlobalLightSource;
-    self.getGlobalLightSource = GetGlobalLightSource;
+    self.addLightSource = AddLightSource;
+    self.removeLightSource = RemoveLightSource;
+    self.getLightSources = GetLightSources;
     
     self.update = Update;
     
@@ -357,7 +358,7 @@
       cameraElement.appendChild(voxel.getDomElement());
       voxels.push(voxel);
       voxel.setParentScene(self);
-      if(!!lightSource) voxel.updateLightSource(lightSource);
+      if(lightSources.length !== 0) voxel.updateLightSource(lightSources);
     }
     function RemoveVoxel(voxel){
       cameraElement.removeChild(voxel.getDomElement());
@@ -365,12 +366,26 @@
       voxel.removeParentScene();
     }
     
-    function SetGlobalLightSource(source){
-      lightSource = source;
+    function AddLightSource(source){
+      var index = lightSources.indexOf(source);
+      if(index !== -1) return false;
+      
+      lightSources.push(source);
       UpdateVoxelLighting();
+      
+      return true;
     }
-    function GetGlobalLightSource(){
-      return lightSource;
+    function RemoveLightSource(source){
+      var index = lightSources.indexOf(source);
+      if(index === -1) return false;
+      
+      lightSources.splice(index, 1);
+      UpdateVoxelLighting();
+      
+      return true;
+    }
+    function GetLightSources(){
+      return lightSources;
     }
     
     function Update(){
@@ -479,9 +494,9 @@
       UpdateVoxelLighting();
     }
     function UpdateVoxelLighting(){
-      if(!lightSource) return;
+      if(lightSources.length === 0) return;
       for(var i=0,voxel; voxel=voxels[i++];)
-        voxel.updateLightSource(lightSource);
+        voxel.updateLightSource(lightSources);
     }
     
     
