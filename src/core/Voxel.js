@@ -15,9 +15,6 @@
     var undefined;
     
     
-    var EMPTYGIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-    
-    
     var cubeElement;
     var animElement;
     var faces = {};
@@ -49,37 +46,11 @@
     
     
     function SetMesh(_mesh){
-      if(_mesh === undefined) return;
-      
-      if(_mesh instanceof voxelcss.util.Color){
-        _mesh = {
-          'top'    : _mesh,
-          'bottom' : _mesh,
-          'front'  : _mesh,
-          'back'   : _mesh,
-          'left'   : _mesh,
-          'right'  : _mesh
-        }
-      }
-      
-      for(var label in faces){
-        var faceMesh = _mesh[label];
-        if (faceMesh === undefined) continue;
-        mesh[label] = faceMesh;
-        if(faces[label] !== undefined && faces[label].SyncedGif !== undefined)
-          faces[label].SyncedGif.detach(faces[label]);
-        if (faceMesh instanceof Array){
-          var gif = new voxelcss.SyncedGif(faceMesh, 320);
-          gif.attach(faces[label]);
-          faces[label].SyncedGif = gif;
-        }else if(faceMesh instanceof voxelcss.util.Color){
-          var faceElem = faces[label].parentElement;
-          faceElem.style.background = faceMesh.toHex();
-          faces[label].src = EMPTYGIF;
-        }else{
-          faces[label].src = faceMesh;
-        }
-      }
+      if(_mesh === undefined || _mesh.constructor !== voxelcss.Mesh) return;
+      var old = mesh;
+      mesh = _mesh;
+      ApplyMesh();
+      return old;
     }
     function GetMesh(){
       return mesh;
@@ -295,6 +266,21 @@
       return m;
     }
     
+    
+    function ApplyMesh(){
+      var _mesh = mesh.getFaces();
+      for(var label in faces){
+        var faceMesh = _mesh[label];
+        if (faceMesh instanceof voxelcss.ImageFace){
+          faces[label].src = faceMesh.getSource();
+          faces[label].removeAttribute('class');
+        }else if(faceMesh instanceof voxelcss.ColorFace){
+          var faceElem = faces[label].parentElement;
+          faceElem.style.background = '#' + faceMesh.getHex();
+          faces[label].setAttribute('class', 'colored');
+        }
+      }
+    }
   
     function CreateCube(){
       cubeElement = CreateElem('div', 'cube');
@@ -418,15 +404,7 @@
       
       self.setPosition(x, y, z);
     
-      SetMesh({
-        'top': EMPTYGIF,
-        'bottom': EMPTYGIF,
-        'front': EMPTYGIF,
-        'back': EMPTYGIF,
-        'left': EMPTYGIF,
-        'right': EMPTYGIF
-      });
-      
+      SetMesh(new voxelcss.Mesh());
       if(options !== undefined && options.mesh !== undefined)
         SetMesh(options.mesh);
     }).apply(self, arguments);

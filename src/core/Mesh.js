@@ -42,37 +42,37 @@
     
     
     function SetFront(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = front;
       front = face;
       return old;
     }
     function SetBack(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = back;
       back = face;
       return old;
     }
     function SetLeft(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = left;
       left = face;
       return old;
     }
     function SetRight(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = right;
       right = face;
       return old;
     }
     function SetTop(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = top;
       top = face;
       return old;
     }
     function SetBottom(face){
-      if(!ContainsFaceType(face)) return;
+      if(face === undefined || !ContainsFaceType(face)) return;
       var old = bottom;
       bottom = face;
       return old;
@@ -101,6 +101,15 @@
       var old = GetFaces();
       
       if(faces === undefined) return old;
+      if(ContainsFaceType(faces))
+        faces = {
+          'front' : faces,
+          'back'  : faces,
+          'top'   : faces,
+          'bottom': faces,
+          'left'  : faces,
+          'right' : faces
+        };
       
       SetFront(faces.front);
       SetBack(faces.back);
@@ -149,14 +158,7 @@
     
     
     (function Constructor(faces){
-      SetFaces({
-        'front' : new voxelcss.ImageFace(),
-        'back'  : new voxelcss.ImageFace(),
-        'left'  : new voxelcss.ImageFace(),
-        'right' : new voxelcss.ImageFace(),
-        'top'   : new voxelcss.ImageFace(),
-        'bottom': new voxelcss.ImageFace()
-      });
+      SetFaces(new voxelcss.ImageFace());
       SetFaces(faces);
     }).apply(self, arguments);
   }
