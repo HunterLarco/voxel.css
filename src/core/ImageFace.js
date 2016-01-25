@@ -7,6 +7,8 @@
   var EMPTYGIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   
   
+  // implements eventlistener
+  // events -> onChange
   function ImageFace(){
     var self = this;
     
@@ -18,12 +20,14 @@
     self.getSource = GetSource;
     
     self.serialize = Serialize;
+    self.clone = Clone;
     
     
     function SetSource(src){
       if(!src) return source;
       var old = source;
       source = src;
+      TriggerChangeEvent();
       return old;
     }
     function GetSource(){
@@ -33,9 +37,18 @@
     function Serialize(){
       return source;
     }
+    function Clone(){
+      return new ImageFace(source);
+    }
+    
+    
+    function TriggerChangeEvent(){
+      self.triggerEvent('change', {target:self});
+    }
     
     
     (function Constructor(src){
+      voxelcss.interfaces.EventListener(self);
       SetSource(src);
     }).apply(self, arguments);
   }

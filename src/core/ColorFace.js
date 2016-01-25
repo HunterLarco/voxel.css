@@ -4,6 +4,8 @@
   if(!window.voxelcss) window.voxelcss = {};
   
   
+  // implements eventlistener
+  // events -> onChange
   function ColorFace(){
     var self = this;
     var undefined;
@@ -17,6 +19,7 @@
     self.getHex = GetHex;
     
     self.serialize = Serialize;
+    self.clone = Clone;
     
     
     function SetColor(data){
@@ -44,6 +47,9 @@
     function Serialize(){
       return JSON.stringify(color);
     }
+    function Clone(){
+      return new ColorFace(color);
+    }
     
     
     function SetColorFromRGBA(r, g, b, a){
@@ -52,6 +58,7 @@
       if(g != undefined && g.constructor == Number) color.g = g;
       if(b != undefined && b.constructor == Number) color.b = b;
       if(a != undefined && a.constructor == Number) color.a = a;
+      TriggerChangeEvent();
       return old;
     }
     function SetColorFromRGBADict(dict){
@@ -68,6 +75,7 @@
       var old = GetRGBA();
       color = HexToRgb(hex);
       color.a = 1;
+      TriggerChangeEvent();
       return old;
     }
     
@@ -88,8 +96,13 @@
       return ''+((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
     
+    function TriggerChangeEvent(){
+      self.triggerEvent('change', {target:self});
+    }
+    
     
     (function Constructor(){
+      voxelcss.interfaces.EventListener(self);
       SetColor.apply(this, arguments);
     }).apply(self, arguments);
   }

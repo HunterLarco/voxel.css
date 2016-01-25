@@ -48,42 +48,54 @@
     function SetFront(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = front;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       front = face;
+      front.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetBack(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = back;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       back = face;
+      back.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetLeft(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = left;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       left = face;
+      left.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetRight(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = right;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       right = face;
+      right.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetTop(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = top;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       top = face;
+      top.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetBottom(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = bottom;
+      if(!!old) old.removeEventListener('change', OnFaceChangeEvent);
       bottom = face;
+      bottom.addEventListener('change', OnFaceChangeEvent);
       if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
@@ -171,6 +183,10 @@
           return key;
       }
       return null;
+    }
+    
+    function OnFaceChangeEvent(){
+      TriggerChangeEvent();
     }
     function TriggerChangeEvent(){
       self.triggerEvent('change', {target: self, faces:GetFaces()});

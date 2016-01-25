@@ -18,7 +18,7 @@
     var cubeElement;
     var animElement;
     var faces = {};
-    var mesh = {};
+    var mesh;
     
     var dimension = 0;
     
@@ -48,7 +48,7 @@
     function SetMesh(_mesh){
       if(_mesh === undefined || _mesh.constructor !== voxelcss.Mesh) return;
       var old = mesh;
-      if(!old) old.removeEventListener('change', ApplyMesh);
+      if(!!old) old.removeEventListener('change', ApplyMesh);
       mesh = _mesh;
       mesh.addEventListener('change', ApplyMesh);
       ApplyMesh();
