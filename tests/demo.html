@@ -155,7 +155,11 @@ body{
     self.autosave = editor.canAutoSave();
     self.saveWorld = editor.save;
     self.loadWorld = editor.load;
-    self.deleteSave = editor.deleteSave;
+    self.revertToDefault = function RevertToDefault(){
+      editor.deleteSave();
+      editor.load();
+      BuildCube();
+    };
   }
   function CubeOptions(){
     var self = this;
@@ -234,7 +238,7 @@ body{
     saving.add(savingData, 'autosave').onChange(UpdateAutoSave);
     saving.add(savingData, 'saveWorld');
     saving.add(savingData, 'loadWorld');
-    saving.add(savingData, 'deleteSave');
+    saving.add(savingData, 'revertToDefault');
     // saving.open();
     
     function UpdateAutoSave(){
