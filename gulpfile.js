@@ -13,8 +13,9 @@ gulp.task('clean', function(){
 });
 
 gulp.task('dist', function(){
-  gulp.src('./src/Interfaces/*.js')
-    .pipe(addsrc('./src/Core/*.js'))
+  gulp.src('./src/interfaces/*.js')
+    .pipe(addsrc('./src/core/*.js'))
+    .pipe(addsrc('./src/ext/*.js'))
     .pipe(uglify())
     .pipe(concat('voxelcss.js'))
     .pipe(gulp.dest('./dist'));
