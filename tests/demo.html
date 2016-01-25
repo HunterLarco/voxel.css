@@ -7,9 +7,7 @@ body{
   margin:0px;
   
   background:rgb(245,245,245);
-  
-  background:url(res/background.png);
-  background-size:100px 100px;
+  box-shadow:inset 0px 0px 200px rgba(0,0,0,0.4);
 }
 
 .dg.ac{
@@ -34,15 +32,10 @@ body{
 
 <script src='../src/ext/Meshes.js'></script>
 
-<script src='../src/util/Overload.js'></script>
-<script src='../src/util/Color.js'></script>
-
 <link rel='stylesheet' href='../src/voxel.css'></link>
 
 <!-- <script src='../build/voxel.js'></script> -->
 <!-- <link rel='stylesheet' href='../build/voxel.css'></link> -->
-
-<script src='data/defaultworld.js'></script>
 
 </head>
 <body>
@@ -127,47 +120,53 @@ body{
         for(var z=-3; z<=3; z++)
           if([x, y, z].filter(function(value){return Math.abs(value) === 3}).length >= 2)
             editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {
-              mesh: new voxelcss.Mesh(new voxelcss.ColorFace(102,201,215))
+              mesh: new voxelcss.Mesh(new voxelcss.ColorFace(122, 221, 235))
             }));
   }
   
   function LightGuiData(){
     var self = this;
     
-    self.x = 300;
-    self.y = 300;
-    self.z = 300;
+    self.x = lightSource.getPositionX();
+    self.y = lightSource.getPositionY();
+    self.z = lightSource.getPositionZ();
     
-    self.darkness = 0.35;
-    self.lightness = 0.99;
+    self.darkness = lightSource.getBrightness()[0];
+    self.lightness = lightSource.getBrightness()[1];
     
-    self.travelDistance = 750;
+    self.travelDistance = lightSource.getTravelDistance();
   }
   function CameraGuiData(){
     var self = this;
     
-    self.panX = 0;
-    self.panY = 0;
-    self.panZ = 0;
+    self.panX = scene.getPanX();
+    self.panY = scene.getPanY();
+    self.panZ = scene.getPanZ();
     
-    self.rotationX = 0;
-    self.rotationY = 0;
-    self.rotationZ = 0;
+    self.rotationX = scene.getRotationX();
+    self.rotationY = scene.getRotationY();
+    self.rotationZ = scene.getRotationZ();
     
-    self.zoom = 1;
+    self.zoom = scene.getZoom();
   }
   function SavingGuiData(){
     var self = this;
     
-    self.autosave = true;
+    self.autosave = editor.canAutoSave();
     self.saveWorld = editor.save;
     self.loadWorld = editor.load;
+  }
+  function CubeOptions(){
+    var self = this;
+    
+    self.color = '#'+scene.getVoxels()[0].getMesh().getFront().getHex();
   }
 
   function SetupGUI(){
     var lightData = new LightGuiData();
     var cameraData = new CameraGuiData();
     var savingData = new SavingGuiData();
+    var cubeOptions = new CubeOptions();
     var gui = new dat.GUI();
     
     var lighting = gui.addFolder('Light Source');
@@ -241,6 +240,16 @@ body{
         editor.disableAutoSave();
       else
         editor.enableAutoSave();
+    }
+    
+    var cube = gui.addFolder('Cube Options');
+    cube.addColor(cubeOptions, 'color').onChange(UpdateMeshColor);
+    cube.open();
+    
+    function UpdateMeshColor(){
+      var voxels = scene.getVoxels();
+      for(var i=0,voxel; voxel=voxels[i++];)
+        voxel.getMesh().setFaces(new voxelcss.ColorFace(cubeOptions.color));
     }
   }
   

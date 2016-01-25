@@ -9,6 +9,8 @@
   };
   
   
+  // implements event listener
+  // events -> onChange
   function Mesh(){
     var self = this;
     
@@ -19,6 +21,8 @@
     var right;
     var top;
     var bottom;
+    
+    var canTriggerEvent = true;
     
     
     self.setFront  = SetFront;
@@ -45,36 +49,42 @@
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = front;
       front = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetBack(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = back;
       back = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetLeft(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = left;
       left = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetRight(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = right;
       right = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetTop(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = top;
       top = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     function SetBottom(face){
       if(face === undefined || !ContainsFaceType(face)) return;
       var old = bottom;
       bottom = face;
+      if(canTriggerEvent) TriggerChangeEvent();
       return old;
     }
     
@@ -111,12 +121,19 @@
           'right' : faces
         };
       
+      canTriggerEvent = false;
+      
       SetFront(faces.front);
       SetBack(faces.back);
       SetLeft(faces.left);
       SetRight(faces.right);
       SetTop(faces.top);
       SetBottom(faces.bottom);
+      
+      TriggerChangeEvent();
+      canTriggerEvent = true;
+      
+      return old;
     }
     function GetFaces(){
       return {
@@ -155,9 +172,13 @@
       }
       return null;
     }
+    function TriggerChangeEvent(){
+      self.triggerEvent('change', {target: self, faces:GetFaces()});
+    }
     
     
     (function Constructor(faces){
+      voxelcss.interfaces.EventListener(self);
       SetFaces(new voxelcss.ImageFace());
       SetFaces(faces);
     }).apply(self, arguments);

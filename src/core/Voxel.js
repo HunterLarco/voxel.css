@@ -48,7 +48,9 @@
     function SetMesh(_mesh){
       if(_mesh === undefined || _mesh.constructor !== voxelcss.Mesh) return;
       var old = mesh;
+      if(!old) old.removeEventListener('change', ApplyMesh);
       mesh = _mesh;
+      mesh.addEventListener('change', ApplyMesh);
       ApplyMesh();
       return old;
     }

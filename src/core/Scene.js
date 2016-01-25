@@ -89,6 +89,7 @@
     
     self.add = AddVoxel;
     self.remove = RemoveVoxel;
+    self.getVoxels = GetVoxels;
     
     self.addLightSource = AddLightSource;
     self.removeLightSource = RemoveLightSource;
@@ -364,6 +365,9 @@
       cameraElement.removeChild(voxel.getDomElement());
       voxels.splice(voxels.indexOf(voxel), 1);
       voxel.removeParentScene();
+    }
+    function GetVoxels(){
+      return voxels.concat([]);
     }
     
     function AddLightSource(source){
