@@ -19,29 +19,28 @@ body{
   background-size:100px 100px;
 }
 
-.sidebar{
-  display:none;
-  
-  position:fixed;
+.demo .drag{
+  position:absolute;
+  bottom:0px;
   left:0px;
-  top:0px;
-  z-index:1;
+  width:100%;
   
-  height:100%;
-  overflow:scroll;
-  
-  background:rgb(250,250,250);
-}
-.sidebar img{
   display:block;
-  margin:20px;
   
-  cursor:pointer;
+  margin:10px 0px;
+  padding:0px;
   
-  width:60px;
-  height:60px;
+  font-size:14px;
+  font-weight:400;
   
-  border-radius:2px;
+  color:rgba(0,0,0,0.35);
+  text-align:center;
+  
+  transition:all 250ms;
+  opacity:0;
+}
+.demo .drag.show{
+  opacity:1;
 }
 
 .nav{
@@ -65,15 +64,21 @@ body{
 .nav .item:hover{
   background:rgba(0,0,0,0.2);
 }
-
-.nav img{
+.nav h1{
   display:inline-block;
   vertical-align:middle;
   
-  margin:0px;
-  padding:0px 11px;
+  font-size:18px;
+  line-height:18px;
   
-  height:36px;
+  margin:0px;
+  padding:20px 24px;
+  
+  cursor:default;
+  
+  color:rgb(255,255,255);
+  text-decoration:none;
+  background:rgba(0,0,0,0.4);
 }
 
 label.voxel{
@@ -198,6 +203,9 @@ label.voxel{
   
           animation:CubeRotation 2000ms linear infinite;
 }
+.pitch .animation .cube .face{
+  visibility:visible !important;
+}
 .pitch .animation .cube.left{
   margin-left:-250px;
 }
@@ -245,7 +253,6 @@ label.voxel{
   0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
   100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
 }
-
 @keyframes CubeRotation {
   0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
   100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
@@ -286,9 +293,4 @@ label.voxel{
   color:rgb(255,255,255);
   
   padding:20px 12px;
-}
-
-.scene .cube .anim{
-  -webkit-animation:fallup 1000ms linear both;
-          animation:fallup 1000ms linear both;
 }
