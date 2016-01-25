@@ -120,6 +120,10 @@
       voxel.addEventListener('BackClick', OnBackClick);
       voxel.addEventListener('LeftClick', OnLeftClick);
       voxel.addEventListener('RightClick', OnRightClick);
+      
+      voxel.addEventListener('MeshChange', function(){
+        if(canAutoSave) Save();
+      });
     }
     function UnBindVoxel(voxel){
       voxel.removeEventListener('VoxelClick', OnVoxelClick);

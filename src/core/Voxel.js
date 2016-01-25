@@ -10,6 +10,7 @@
   //    onBackClick
   //    onLeftClick
   //    onRightClick
+  //    onMeshChange
   function Voxel(){
     var self = this;
     var undefined;
@@ -48,9 +49,9 @@
     function SetMesh(_mesh){
       if(_mesh === undefined || _mesh.constructor !== voxelcss.Mesh) return;
       var old = mesh;
-      if(!!old) old.removeEventListener('change', ApplyMesh);
+      if(!!old) old.removeEventListener('change', OnMeshChange);
       mesh = _mesh;
-      mesh.addEventListener('change', ApplyMesh);
+      mesh.addEventListener('change', OnMeshChange);
       ApplyMesh();
       return old;
     }
@@ -269,6 +270,10 @@
     }
     
     
+    function OnMeshChange(){
+      ApplyMesh();
+      self.triggerEvent('MeshChange', {target:self, mesh:mesh});
+    }
     function ApplyMesh(){
       var _mesh = mesh.getFaces();
       for(var label in faces){

@@ -65,7 +65,7 @@ body{
     editor = new voxelcss.Editor(world);
     editor.enableAutoSave();
 
-    lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.35, 1);
+    lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.2, 1);
     scene.addLightSource(lightSource);
     
     editor.load();
@@ -120,7 +120,7 @@ body{
         for(var z=-3; z<=3; z++)
           if([x, y, z].filter(function(value){return Math.abs(value) === 3}).length >= 2)
             editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {
-              mesh: new voxelcss.Mesh(new voxelcss.ColorFace(122, 221, 235))
+              mesh: new voxelcss.Mesh(new voxelcss.ColorFace('#ca8940'))
             }));
   }
   
@@ -155,6 +155,7 @@ body{
     self.autosave = editor.canAutoSave();
     self.saveWorld = editor.save;
     self.loadWorld = editor.load;
+    self.deleteSave = editor.deleteSave;
   }
   function CubeOptions(){
     var self = this;
@@ -233,6 +234,7 @@ body{
     saving.add(savingData, 'autosave').onChange(UpdateAutoSave);
     saving.add(savingData, 'saveWorld');
     saving.add(savingData, 'loadWorld');
+    saving.add(savingData, 'deleteSave');
     // saving.open();
     
     function UpdateAutoSave(){
