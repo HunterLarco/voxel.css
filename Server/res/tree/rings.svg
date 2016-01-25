@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="400.000000pt" height="400.000000pt" viewBox="0 0 400.000000 400.000000">
+
+  <rect x="0"   y="0"   width="400" height="25" style="fill:#352e27;"/>
+  <rect x="0"   y="375" width="400" height="25" style="fill:#352e27;"/>
+  <rect x="0"   y="0"   width="25" height="400" style="fill:#352e27;"/>
+  <rect x="375" y="0"   width="25" height="400" style="fill:#352e27;"/>
+  
+  <rect x="25"  y="25"  width="350" height="25" style="fill:#3f3932;"/>
+  <rect x="25"  y="350" width="350" height="25" style="fill:#3f3932;"/>
+  <rect x="25"  y="25"  width="25" height="350" style="fill:#3f3932;"/>
+  <rect x="350" y="25"  width="25" height="350" style="fill:#3f3932;"/>
+  
+  <rect x="50"  y="50"  width="300" height="25" style="fill:#4e4841;"/>
+  <rect x="50"  y="325" width="300" height="25" style="fill:#4e4841;"/>
+  <rect x="50"  y="50"  width="25" height="300" style="fill:#4e4841;"/>
+  <rect x="325" y="50"  width="25" height="300" style="fill:#4e4841;"/>
+  
+  <rect x="75"  y="75"  width="250" height="25" style="fill:#3f3932;"/>
+  <rect x="75"  y="300" width="250" height="25" style="fill:#3f3932;"/>
+  <rect x="75"  y="75"  width="25" height="250" style="fill:#3f3932;"/>
+  <rect x="300" y="75"  width="25" height="250" style="fill:#3f3932;"/>
+  
+  <rect x="100" y="100" width="200" height="25" style="fill:#5e5750;"/>
+  <rect x="100" y="275" width="200" height="25" style="fill:#5e5750;"/>
+  <rect x="100" y="100" width="25" height="200" style="fill:#5e5750;"/>
+  <rect x="275" y="100" width="25" height="200" style="fill:#5e5750;"/>
+  
+  <rect x="125" y="125" width="150" height="25" style="fill:#4e4841;"/>
+  <rect x="125" y="250" width="150" height="25" style="fill:#4e4841;"/>
+  <rect x="125" y="125" width="25" height="150" style="fill:#4e4841;"/>
+  <rect x="250" y="125" width="25" height="150" style="fill:#4e4841;"/>
+  
+  <rect x="150" y="150" width="100" height="25" style="fill:#3f3932;"/>
+  <rect x="150" y="225" width="100" height="25" style="fill:#3f3932;"/>
+  <rect x="150" y="150" width="25" height="100" style="fill:#3f3932;"/>
+  <rect x="225" y="150" width="25" height="100" style="fill:#3f3932;"/>
+  
+  <rect x="175" y="175" width="50" height="25" style="fill:#352e27;"/>
+  <rect x="175" y="200" width="50" height="25" style="fill:#352e27;"/>
+  <rect x="175" y="175" width="25" height="50" style="fill:#352e27;"/>
+  <rect x="200" y="175" width="25" height="50" style="fill:#352e27;"/>
+
+</svg>

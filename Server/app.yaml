@@ -1,0 +1,34 @@
+application: voxelcss
+version: 0-0-0
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: images/favicon.ico
+  upload: images/favicon\.ico
+
+- url: /download/?
+  static_files: downloads/latest.zip
+  upload: downloads/latest\.zip
+
+- url: /dist
+  static_dir: voxelcss
+- url: /images
+  static_dir: images
+- url: /res
+  static_dir: res
+- url: /css
+  static_dir: css
+- url: /highlight
+  static_dir: highlight
+- url: /scripts
+  static_dir: scripts
+
+- url: .*
+  script: app.app
+
+libraries:
+- name: webapp2
+  version: "2.5.1"

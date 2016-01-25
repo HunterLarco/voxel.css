@@ -1,0 +1,389 @@
+@media screen and (max-width: 900px){
+  .pitch .example{
+    max-width:none;
+    width:auto;
+    margin:0px 35px;
+  }
+  
+  .pitch .imagePreview .item .img,
+  .pitch .imagePreview .item img{
+    width:96px;
+    height:96px;
+  }
+  .pitch .imagePreview .item .img{
+    width:92px;
+    height:92px;
+  }
+  
+  .pitch .animation .cube .face{
+    margin-left:-48px;
+    margin-top:-48px;
+    width:96px;
+    height:96px;
+  }
+  .pitch .animation .cube .left{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 48px);
+            transform:rotateY(90deg) translate3d(0, 0, 48px);
+  }
+  .pitch .animation .cube .right{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -48px);
+            transform:rotateY(90deg) translate3d(0, 0, -48px);
+  }
+  .pitch .animation .cube .front{
+    -webkit-transform:translate3d(0, 0, 48px);
+            transform:translate3d(0, 0, 48px);
+  }
+  .pitch .animation .cube .back{
+    -webkit-transform:translate3d(0, 0, -48px);
+            transform:translate3d(0, 0, -48px);
+  }
+  .pitch .animation .cube .top{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 48px);
+            transform:rotateX(90deg) translate3d(0, 0, 48px);
+  }
+  .pitch .animation .cube .bottom{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -48px);
+            transform:rotateX(90deg) translate3d(0, 0, -48px);
+  }
+  
+  .pitch .animation .cube.left{
+    margin-left:-190px;
+  }
+  .pitch .animation .cube.right{
+    margin-left:190px;
+  }
+  
+  .pitch h1{
+    font-size:34px;
+    line-height:34px;
+  }
+  .pitch h2{
+    font-size:27px;
+    line-height:27px;
+  }
+  
+  .calltoaction{
+    padding:50px;
+  }
+  .calltoaction .buttons a{
+    font-size:18px;
+    line-height:16px;
+  }
+  
+  .footer{
+    padding:16px 8px;
+    
+    font-size:16px;
+    line-height:16px;
+  }
+}
+
+@media screen and (max-width: 600px){
+  .demo{
+    height:40%;
+  }
+  
+  .nav .item{
+    font-size:16px;
+    line-height:16px;
+    
+    padding:16px 9px;
+  }
+  .nav img{
+    padding:0px 8px;
+    
+    height:28px;
+  }
+  
+  .pitch .example code{
+    font-size:12px;
+    line-height:14px;
+  }
+  .pitch .example .fiddle{
+    font-size:12px;
+    line-height:12px;
+    
+    padding:14px 23px;
+  }
+  
+  .pitch h1{
+    font-size:28px;
+    line-height:28px;
+  }
+  .pitch h2{
+    font-size:21px;
+    line-height:21px;
+  }
+  
+  .calltoaction{
+    padding:40px;
+  }
+  .calltoaction .buttons a{
+    font-size:16px;
+    line-height:14px;
+  }
+  
+  .pitch .imagePreview .item .img,
+  .pitch .imagePreview .item img{
+    width:80px;
+    height:80px;
+  }
+  .pitch .imagePreview .item .img{
+    width:76px;
+    height:76px;
+  }
+  
+  .pitch .animation .cube .face{
+    margin-left:-40px;
+    margin-top:-40px;
+    width:80px;
+    height:80px;
+  }
+  .pitch .animation .cube .left{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 40px);
+            transform:rotateY(90deg) translate3d(0, 0, 40px);
+  }
+  .pitch .animation .cube .right{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -40px);
+            transform:rotateY(90deg) translate3d(0, 0, -40px);
+  }
+  .pitch .animation .cube .front{
+    -webkit-transform:translate3d(0, 0, 40px);
+            transform:translate3d(0, 0, 40px);
+  }
+  .pitch .animation .cube .back{
+    -webkit-transform:translate3d(0, 0, -40px);
+            transform:translate3d(0, 0, -40px);
+  }
+  .pitch .animation .cube .top{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 40px);
+            transform:rotateX(90deg) translate3d(0, 0, 40px);
+  }
+  .pitch .animation .cube .bottom{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -40px);
+            transform:rotateX(90deg) translate3d(0, 0, -40px);
+  }
+  
+  .pitch .animation{
+    height:140px;
+  }
+  .pitch .animation .cube.left{
+    margin-left:-140px;
+  }
+  .pitch .animation .cube.right{
+    margin-left:140px;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .nav .item{
+    font-size:14px;
+    line-height:14px;
+    
+    padding:12px 6px;
+  }
+  .nav img{
+    padding:0px 5px;
+    
+    height:20px;
+  }
+  
+  .pitch{
+    margin:40px 0px;
+  }
+  .pitch .example{
+    padding:40px 0px;
+    margin:0px 20px;
+  }
+  .pitch .example code{
+    font-size:10px;
+    line-height:12px;
+  }
+  .pitch .example .fiddle{
+    font-size:11px;
+    line-height:11px;
+    
+    padding:12px 20px;
+  }
+  
+  .pitch h1{
+    font-size:22px;
+    line-height:22px;
+  }
+  .pitch h2{
+    font-size:16px;
+    line-height:16px;
+  }
+  
+  .calltoaction{
+    padding:30px;
+  }
+  .calltoaction .buttons a{
+    font-size:14px;
+    line-height:12px;
+    
+    padding:13px 20px;
+  }
+  
+  .footer{
+    padding:14px 6px;
+    font-size:14px;
+    line-height:14px;
+  }
+  
+  .pitch .imagePreview .item .img,
+  .pitch .imagePreview .item img{
+    width:60px;
+    height:60px;
+  }
+  .pitch .imagePreview .item .img{
+    width:56px;
+    height:56px;
+  }
+  
+  .pitch .animation .cube .face{
+    margin-left:-30px;
+    margin-top:-30px;
+    width:60px;
+    height:60px;
+  }
+  .pitch .animation .cube .left{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 30px);
+            transform:rotateY(90deg) translate3d(0, 0, 30px);
+  }
+  .pitch .animation .cube .right{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -30px);
+            transform:rotateY(90deg) translate3d(0, 0, -30px);
+  }
+  .pitch .animation .cube .front{
+    -webkit-transform:translate3d(0, 0, 30px);
+            transform:translate3d(0, 0, 30px);
+  }
+  .pitch .animation .cube .back{
+    -webkit-transform:translate3d(0, 0, -30px);
+            transform:translate3d(0, 0, -30px);
+  }
+  .pitch .animation .cube .top{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 30px);
+            transform:rotateX(90deg) translate3d(0, 0, 30px);
+  }
+  .pitch .animation .cube .bottom{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -30px);
+            transform:rotateX(90deg) translate3d(0, 0, -30px);
+  }
+  
+  .pitch .animation{
+    height:110px;
+  }
+  .pitch .animation .cube.left{
+    margin-left:-115px;
+  }
+  .pitch .animation .cube.right{
+    margin-left:115px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  .demo{
+    height:35%;
+  }
+  
+  .pitch{
+    margin:30px 0px;
+  }
+  .pitch .example{
+    padding:30px 0px;
+    margin:0px 14px;
+  }
+  .pitch .example code{
+    font-size:9px;
+    line-height:10px;
+  }
+  .pitch .example .fiddle{
+    font-size:10px;
+    line-height:10px;
+    
+    padding:10px 16px;
+  }
+  
+  .pitch h1{
+    font-size:17px;
+    line-height:17px;
+  }
+  .pitch h2{
+    font-size:13px;
+    line-height:13px;
+  }
+  
+  .calltoaction{
+    padding:20px 10px;
+  }
+  .calltoaction .buttons a{
+    font-size:12px;
+    line-height:10px;
+    
+    padding:12px 18px;
+    margin:0px 4px;
+  }
+  
+  .footer{
+    padding:12px 6px;
+    font-size:13px;
+    line-height:13px;
+  }
+  
+  .pitch .imagePreview .item .img,
+  .pitch .imagePreview .item img{
+    width:46px;
+    height:46px;
+  }
+  .pitch .imagePreview .item .img{
+    width:42px;
+    height:42px;
+  }
+  .pitch .imagePreview .item h3{
+    font-size:10px;
+    line-height:10px;
+  }
+  
+  .pitch .animation .cube .face{
+    margin-left:-23px;
+    margin-top:-23px;
+    width:46px;
+    height:46px;
+  }
+  .pitch .animation .cube .left{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, 23px);
+            transform:rotateY(90deg) translate3d(0, 0, 23px);
+  }
+  .pitch .animation .cube .right{
+    -webkit-transform:rotateY(90deg) translate3d(0, 0, -23px);
+            transform:rotateY(90deg) translate3d(0, 0, -23px);
+  }
+  .pitch .animation .cube .front{
+    -webkit-transform:translate3d(0, 0, 23px);
+            transform:translate3d(0, 0, 23px);
+  }
+  .pitch .animation .cube .back{
+    -webkit-transform:translate3d(0, 0, -23px);
+            transform:translate3d(0, 0, -23px);
+  }
+  .pitch .animation .cube .top{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, 23px);
+            transform:rotateX(90deg) translate3d(0, 0, 23px);
+  }
+  .pitch .animation .cube .bottom{
+    -webkit-transform:rotateX(90deg) translate3d(0, 0, -23px);
+            transform:rotateX(90deg) translate3d(0, 0, -23px);
+  }
+  
+  .pitch .animation{
+    height:85px;
+  }
+  .pitch .animation .cube.left{
+    margin-left:-90px;
+  }
+  .pitch .animation .cube.right{
+    margin-left:90px;
+  }
+}

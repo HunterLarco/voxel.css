@@ -1,0 +1,294 @@
+body{
+  padding:0px;
+  margin:0px;
+  
+  background:rgb(245,245,245);
+  color:rgb(31,31,31);
+  
+  font-size:0px;
+  font-family:'lato', Helvetica, Arial;
+  font-weight:400;
+}
+
+.demo{
+  position:relative;
+  
+  height:67%;
+  
+  background:rgb(232,232,232);
+  background-size:100px 100px;
+}
+
+.sidebar{
+  display:none;
+  
+  position:fixed;
+  left:0px;
+  top:0px;
+  z-index:1;
+  
+  height:100%;
+  overflow:scroll;
+  
+  background:rgb(250,250,250);
+}
+.sidebar img{
+  display:block;
+  margin:20px;
+  
+  cursor:pointer;
+  
+  width:60px;
+  height:60px;
+  
+  border-radius:2px;
+}
+
+.nav{
+  background:#009688;
+}
+.nav .item{
+  display:inline-block;
+  vertical-align:middle;
+  
+  font-size:18px;
+  line-height:18px;
+  
+  margin:0px;
+  padding:20px 12px;
+  
+  cursor:pointer;
+  
+  color:rgb(255,255,255);
+  text-decoration:none;
+}
+.nav .item:hover{
+  background:rgba(0,0,0,0.2);
+}
+
+.nav img{
+  display:inline-block;
+  vertical-align:middle;
+  
+  margin:0px;
+  padding:0px 11px;
+  
+  height:36px;
+}
+
+label.voxel{
+  color:#009688;
+}
+
+.pitch{
+  margin:50px 0px;
+}
+.pitch h1{
+  margin:0px;
+  padding:0px 20px;
+  
+  text-align:center;
+  
+  font-size:40px;
+  line-height:40px;
+  font-weight:300;
+}
+.pitch h2{
+  margin:0px;
+  padding:0px 20px;
+  
+  text-align:center;
+  
+  font-size:36px;
+  line-height:36px;
+  font-weight:300;
+}
+.pitch .example{
+  padding:50px 0px;
+  
+  max-width:800px;
+  width:100%;
+  margin:auto;
+}
+
+.pitch .example code{
+  font-size:15px;
+  line-height:17px;
+}
+.pitch .example .fiddle{
+  display:block;
+  
+  background:rgb(255,255,255);
+  color:rgb(102,102,102);
+  
+  font-size:15px;
+  line-height:15px;
+  font-weight:300;
+  font-style:italic;
+  text-align:right;
+  
+  padding:16px 26px;
+  
+  cursor:pointer;
+}
+.pitch .example .fiddle:hover{
+  text-decoration:underline;
+}
+
+.pitch .imagePreview{
+  text-align:center;
+}
+.pitch .imagePreview .item{
+  display:inline-block;
+  vertical-align:top;
+  
+  margin:0px 12px;
+}
+.pitch .imagePreview .item h3{
+  font-size:12px;
+  line-height:12px;
+  
+  margin:0px 0px 6px 0px;
+  padding:0px;
+}
+.pitch .imagePreview .item .img,
+.pitch .imagePreview .item img{
+  width:128px;
+  height:128px;
+  
+  border-radius:2px;
+}
+.pitch .imagePreview .item .img{
+  width:124px;
+  height:124px;
+}
+.pitch .imagePreview .item .img{
+  border:2px dashed rgb(120,120,120);
+}
+
+.pitch .animation{
+  position:relative;
+  
+  height:200px;
+  
+  -webkit-perspective:1000px;
+  
+          perspective:1000px;
+  -webkit-perspective-origin:50% 50%;
+          perspective-origin:50% 50%;
+}
+.pitch .animation .cube{
+  position:absolute;
+  
+  top:50%;
+  left:50%;
+  
+  width:0px;
+  height:0px;
+  
+  overflow:visible;
+  
+  -webkit-transform-style:preserve-3d;
+  
+          transform-style:preserve-3d;
+  -webkit-transform:rotateX(-15deg) rotateY(45deg);
+          transform:rotateX(-15deg) rotateY(45deg);
+  
+  -webkit-animation:CubeRotation 2000ms linear infinite;
+  
+          animation:CubeRotation 2000ms linear infinite;
+}
+.pitch .animation .cube.left{
+  margin-left:-250px;
+}
+.pitch .animation .cube.right{
+  margin-left:250px;
+}
+.pitch .animation .cube .face{
+  display:block;
+  position:absolute;
+  
+  outline:none;
+  border:none;
+  
+  margin-left:-64px;
+  margin-top:-64px;
+  width:128px;
+  height:128px;
+}
+.pitch .animation .cube .left{
+  -webkit-transform:rotateY(90deg) translate3d(0, 0, 64px);
+          transform:rotateY(90deg) translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .right{
+  -webkit-transform:rotateY(90deg) translate3d(0, 0, -64px);
+          transform:rotateY(90deg) translate3d(0, 0, -64px);
+}
+.pitch .animation .cube .front{
+  -webkit-transform:translate3d(0, 0, 64px);
+          transform:translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .back{
+  -webkit-transform:translate3d(0, 0, -64px);
+          transform:translate3d(0, 0, -64px);
+}
+.pitch .animation .cube .top{
+  -webkit-transform:rotateX(90deg) translate3d(0, 0, 64px);
+          transform:rotateX(90deg) translate3d(0, 0, 64px);
+}
+.pitch .animation .cube .bottom{
+  -webkit-transform:rotateX(90deg) translate3d(0, 0, -64px);
+          transform:rotateX(90deg) translate3d(0, 0, -64px);
+}
+
+@-webkit-keyframes CubeRotation {
+  0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
+  100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
+}
+
+@keyframes CubeRotation {
+  0% { -webkit-transform:rotateX(0deg) rotateY(0deg); transform:rotateX(0deg) rotateY(0deg); }
+  100% { -webkit-transform:rotateX(360deg) rotateY(360deg); transform:rotateX(360deg) rotateY(360deg); } 
+}
+
+.calltoaction{
+  padding:70px;
+  background:rgb(232,232,232);
+}
+.calltoaction .buttons{
+  text-align:center;
+}
+.calltoaction .buttons a{
+  display:inline-block;
+  cursor:pointer;
+  
+  background:#00BCD4;
+  color:rgb(255,255,255);
+  
+  border:none;
+  border-radius:2px;
+  
+  padding:16px 30px;
+  margin:0px 8px;
+  
+  font-size:24px;
+  line-height:22px;
+  text-decoration:none;
+}
+
+.footer{
+  font-size:18px;
+  line-height:18px;
+  
+  text-align:center;
+  
+  background:#009688;
+  color:rgb(255,255,255);
+  
+  padding:20px 12px;
+}
+
+.scene .cube .anim{
+  -webkit-animation:fallup 1000ms linear both;
+          animation:fallup 1000ms linear both;
+}
