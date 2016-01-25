@@ -5,6 +5,7 @@ var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
 var concat = require('gulp-concat');
 var mincss = require('gulp-minify-css');
+var addsrc = require('gulp-add-src');
 var del = require("del");
 
 gulp.task('clean', function(){
@@ -12,7 +13,8 @@ gulp.task('clean', function(){
 });
 
 gulp.task('dist', function(){
-  gulp.src('./src/*/*.js')
+  gulp.src('./src/Interfaces/*.js')
+    .pipe(addsrc('./src/Core/*.js'))
     .pipe(uglify())
     .pipe(concat('voxelcss.js'))
     .pipe(gulp.dest('./dist'));

@@ -227,6 +227,26 @@ voxel — A voxel instance.
 
 Removes the provided voxel from the scene.
 
+`getVoxels()`
+
+Returns all voxel objects in the scene.
+
+`addLightSource(lightSource)`
+
+lightSource — A LightSource instance.
+
+Adds the provided light source to the scene.
+
+`removeLightSource(lightSource)`
+
+lightSource — A LightSource instance.
+
+Removes the provided light source from the scene.
+
+`getLightSources()`
+
+Returns all light source instances from the scene.
+
 
 ### Events ###
 

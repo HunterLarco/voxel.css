@@ -7,37 +7,16 @@ body{
   margin:0px;
   
   background:rgb(245,245,245);
-  
-  background:url(res/background.png);
-  background-size:100px 100px;
+  box-shadow:inset 0px 0px 200px rgba(0,0,0,0.4);
 }
 
-.sidebar{
-  position:fixed;
-  left:0px;
-  top:0px;
-  z-index:1;
-  
-  height:100%;
-  overflow:scroll;
-  
-  background:rgb(245,245,245);
-}
-.sidebar img{
-  display:block;
-  margin:20px;
-  
-  cursor:pointer;
-  
-  width:60px;
-  height:60px;
-  
-  border-radius:2px;
+.dg.ac{
+  z-index:1 !important;
 }
 
 </style>
 
-<script src='../src/setup/LibWrapper.js'></script>
+<script type="text/javascript" src="./dat.gui.min.js"></script>
 
 <script src='../src/interfaces/EventListener.js'></script>
 <script src='../src/interfaces/Positioned.js'></script>
@@ -46,15 +25,17 @@ body{
 <script src='../src/core/Scene.js'></script>
 <script src='../src/core/World.js'></script>
 <script src='../src/core/Editor.js'></script>
-<script src='../src/core/SyncedGif.js'></script>
+<script src='../src/core/LightSource.js'></script>
+<script src='../src/core/ImageFace.js'></script>
+<script src='../src/core/ColorFace.js'></script>
+<script src='../src/core/Mesh.js'></script>
+
+<script src='../src/ext/Meshes.js'></script>
 
 <link rel='stylesheet' href='../src/voxel.css'></link>
 
-<!-- <script src='../build/voxel.js'></script> -->
-<!-- <link rel='stylesheet' href='../build/voxel.css'></link> -->
-
-<script src='data/meshes.js'></script>
-<script src='data/defaultworld.js'></script>
+<!-- <script src='../dist/voxelcss.js'></script> -->
+<!-- <link rel='stylesheet' href='../dist/voxel.css'></link> -->
 
 </head>
 <body>
@@ -64,62 +45,214 @@ body{
   <div class='scene'></div>
 </div>
 
-<div class='sidebar'>
-  <img class='mesh' data-mesh='grass'          src='res/grass/side.png'/>
-  <img class='mesh' data-mesh='dirt'           src='res/dirt/main.png'/>
-  <img class='mesh' data-mesh='water'          src='res/water/main.png'/>
-  <img class='mesh' data-mesh='waterFallTop'   src='res/water/falltop.png'/>
-  <img class='mesh' data-mesh='waterFall'      src='res/water/fall.png'/>
-  <img class='mesh' data-mesh='waterFallCrash' src='res/water/crash.png'/>
-  <img class='mesh' data-mesh='treeLeaves'     src='res/tree/leaves.png'/>
-  <img class='mesh' data-mesh='treeTrunk'      src='res/tree/bark.png'/>
-</div>
-
 
 <script>
 (function(){
   
-  var BLOCKDIM = 20;
-  
-  
   var scene;
   var world;
   var editor;
-  
+  var lightSource;
   
   window.addEventListener('load', Init);
   
   function Init(){
-    LoadSidebar();
-    
     scene = new voxelcss.Scene();
+    scene.rotate(-Math.PI / 5, Math.PI / 4, 0);
     scene.attach(document.body);
-    scene.add(new voxelcss.Voxel(-100, 0, 0, 50, {
-      mesh: MESHES.grass
-    }));
     
-    world = new voxelcss.World(scene);
-    world.add(new voxelcss.Voxel(100, 0, 0, 100, {
-      mesh: MESHES.water
-    }));
+    world = new voxelcss.World(scene, 'Demo World');
+    editor = new voxelcss.Editor(world);
+    editor.enableAutoSave();
+
+    lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.2, 1);
+    scene.addLightSource(lightSource);
     
-    editor = new voxelcss.Editor(world, {
-      autosave: true
+    editor.load();
+    if(world.getVoxels().length === 0)
+      BuildCube();
+    
+    // TestMeshes();
+    // BuildCube();
+    SetupGUI();
+  }
+  
+  function TestMeshes(){
+    editor.add(new voxelcss.Voxel(-200, 0, 0, 50, {
+      mesh: voxelcss.Meshes.grass
+    }))
+    
+    editor.add(new voxelcss.Voxel(-150, 0, 0, 50, {
+      mesh: voxelcss.Meshes.dirt
+    }))
+    
+    editor.add(new voxelcss.Voxel(-100, 0, 0, 50, {
+      mesh: voxelcss.Meshes.treeTrunk
+    }))
+    
+    editor.add(new voxelcss.Voxel(-50, 0, 0, 50, {
+      mesh: voxelcss.Meshes.treeLeaves
+    }))
+    
+    editor.add(new voxelcss.Voxel(0, 0, 0, 50, {
+      mesh: voxelcss.Meshes.water
+    }))
+    
+    editor.add(new voxelcss.Voxel(50, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFall
+    }))
+    
+    editor.add(new voxelcss.Voxel(100, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFallTop
+    }))
+    
+    editor.add(new voxelcss.Voxel(150, 0, 0, 50, {
+      mesh: voxelcss.Meshes.waterFallCrash
+    }))
+    
+    editor.add(new voxelcss.Voxel(200, 0, 0, 50, {
+      mesh: new voxelcss.Mesh(new voxelcss.ColorFace(102,201,215))
+    }))
+  }
+  function BuildCube(){
+    for(var x=-3; x<=3; x++)
+      for(var y=-3; y<=3; y++)
+        for(var z=-3; z<=3; z++)
+          if([x, y, z].filter(function(value){return Math.abs(value) === 3}).length >= 2)
+            editor.add(new voxelcss.Voxel(x*50, y*50, z*50, 50, {
+              mesh: new voxelcss.Mesh(new voxelcss.ColorFace('#ca8940'))
+            }));
+  }
+  
+  function LightGuiData(){
+    var self = this;
+    
+    self.x = lightSource.getPositionX();
+    self.y = lightSource.getPositionY();
+    self.z = lightSource.getPositionZ();
+    
+    self.darkness = lightSource.getBrightness()[0];
+    self.lightness = lightSource.getBrightness()[1];
+    
+    self.travelDistance = lightSource.getTravelDistance();
+  }
+  function CameraGuiData(){
+    var self = this;
+    
+    self.panX = scene.getPanX();
+    self.panY = scene.getPanY();
+    self.panZ = scene.getPanZ();
+    
+    self.rotationX = scene.getRotationX();
+    self.rotationY = scene.getRotationY();
+    self.rotationZ = scene.getRotationZ();
+    
+    self.zoom = scene.getZoom();
+  }
+  function SavingGuiData(){
+    var self = this;
+    
+    self.autosave = editor.canAutoSave();
+    self.saveWorld = editor.save;
+    self.loadWorld = editor.load;
+    self.revertToDefault = function RevertToDefault(){
+      editor.deleteSave();
+      editor.load();
+      BuildCube();
+    };
+  }
+  function CubeOptions(){
+    var self = this;
+    
+    self.color = '#'+scene.getVoxels()[0].getMesh().getFront().getHex();
+  }
+
+  function SetupGUI(){
+    var lightData = new LightGuiData();
+    var cameraData = new CameraGuiData();
+    var savingData = new SavingGuiData();
+    var cubeOptions = new CubeOptions();
+    var gui = new dat.GUI();
+    
+    var lighting = gui.addFolder('Light Source');
+    lighting.add(lightData, 'darkness', 0, 1).step(0.01).onChange(UpdateDarkness);
+    lighting.add(lightData, 'lightness', 0, 1).step(0.01).onChange(UpdateLightness);
+    lighting.add(lightData, 'travelDistance', 0, 2000).onChange(UpdateDistance);
+    lighting.add(lightData, 'x', -500, 500).onChange(UpdatePosition);
+    lighting.add(lightData, 'y', -500, 500).onChange(UpdatePosition);
+    lighting.add(lightData, 'z', -500, 500).onChange(UpdatePosition);
+    lighting.open();
+    
+    function UpdateDarkness(){
+      lightSource.setBrightness(lightData.darkness);
+    }
+    function UpdateLightness(){
+      lightSource.setBrightness(null, lightData.lightness);
+    }
+    function UpdateDistance(){
+      lightSource.setTravelDistance(lightData.travelDistance);
+    }
+    function UpdatePosition(){
+      lightSource.setPosition(lightData.x, lightData.y, lightData.z);
+    }
+    
+    var camera = gui.addFolder('Scene');
+    camera.add(cameraData, 'panX', -500, 500).listen().onChange(UpdatePan);
+    camera.add(cameraData, 'panY', -500, 500).listen().onChange(UpdatePan);
+    camera.add(cameraData, 'panZ', -500, 500).listen().onChange(UpdatePan);
+    camera.add(cameraData, 'rotationX', -360, 360).listen().onChange(UpdateRotation);
+    camera.add(cameraData, 'rotationY', -360, 360).listen().onChange(UpdateRotation);
+    camera.add(cameraData, 'rotationZ', -360, 360).listen().onChange(UpdateRotation);
+    camera.add(cameraData, 'zoom', 0, 3).listen().onChange(UpdateZoom);
+    // camera.open();
+    
+    scene.addEventListener('orbit', function(event){
+      cameraData.rotationX = event.rotation.x * 180 / Math.PI;
+      cameraData.rotationY = event.rotation.y * 180 / Math.PI;
+      cameraData.rotationZ = event.rotation.z * 180 / Math.PI;
+    });
+    scene.addEventListener('zoom', function(event){
+      cameraData.zoom = event.zoom;
+    });
+    scene.addEventListener('pan', function(event){
+      cameraData.panX = event.pan.x;
+      cameraData.panY = event.pan.y;
+      cameraData.panZ = event.pan.z;
     });
     
-    if(editor.isSaved()) editor.load();
-  }
-  
-  
-  function LoadSidebar(){
-    var items = document.querySelectorAll('.sidebar .mesh');
-    for(var i=0,item; item=items[i++];){
-      item.mesh = MESHES[item.getAttribute('data-mesh')];
-      item.addEventListener('click', SetCurrentMesh);
+    function UpdateRotation(){
+      scene.setRotation(cameraData.rotationX * Math.PI / 180, cameraData.rotationY * Math.PI / 180, cameraData.rotationZ * Math.PI / 180);
     }
-  }
-  function SetCurrentMesh(event){
-    editor.setToolMesh(event.target.mesh);
+    function UpdatePan(){
+      scene.setPan(cameraData.panX, cameraData.panY, cameraData.panZ);
+    }
+    function UpdateZoom(){
+      scene.setZoom(cameraData.zoom);
+    }
+    
+    var saving = gui.addFolder('Save World');
+    saving.add(savingData, 'autosave').onChange(UpdateAutoSave);
+    saving.add(savingData, 'saveWorld');
+    saving.add(savingData, 'loadWorld');
+    saving.add(savingData, 'revertToDefault');
+    // saving.open();
+    
+    function UpdateAutoSave(){
+      if(editor.canAutoSave())
+        editor.disableAutoSave();
+      else
+        editor.enableAutoSave();
+    }
+    
+    var cube = gui.addFolder('Cube Options');
+    cube.addColor(cubeOptions, 'color').onChange(UpdateMeshColor);
+    cube.open();
+    
+    function UpdateMeshColor(){
+      var voxels = scene.getVoxels();
+      for(var i=0,voxel; voxel=voxels[i++];)
+        voxel.getMesh().setFaces(new voxelcss.ColorFace(cubeOptions.color));
+    }
   }
   
 })();

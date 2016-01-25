@@ -4,86 +4,62 @@
   
   voxelcss.Meshes = {
   
-    dirt: {
-      'top'    : 'http://voxelcss.com/res/dirt/main.png',
-      'bottom' : 'http://voxelcss.com/res/dirt/main.png',
-      'front'  : 'http://voxelcss.com/res/dirt/main.png',
-      'back'   : 'http://voxelcss.com/res/dirt/main.png',
-      'left'   : 'http://voxelcss.com/res/dirt/main.png',
-      'right'  : 'http://voxelcss.com/res/dirt/main.png'
-    },
+    dirt: new voxelcss.Mesh(
+      new voxelcss.ImageFace('http://voxelcss.com/res/dirt/main.png')
+    ),
   
-    grass: {
-      'top'    : 'http://voxelcss.com/res/grass/top.png',
-      'bottom' : 'http://voxelcss.com/res/grass/bottom.png',
-      'front'  : 'http://voxelcss.com/res/grass/side.png',
-      'back'   : 'http://voxelcss.com/res/grass/side.png',
-      'left'   : 'http://voxelcss.com/res/grass/side.png',
-      'right'  : 'http://voxelcss.com/res/grass/side.png'
-    },
+    grass: new voxelcss.Mesh({
+      'top'    : new voxelcss.ImageFace('http://voxelcss.com/res/grass/top.png'),
+      'bottom' : new voxelcss.ImageFace('http://voxelcss.com/res/grass/bottom.png'),
+      'front'  : new voxelcss.ImageFace('http://voxelcss.com/res/grass/side.png'),
+      'back'   : new voxelcss.ImageFace('http://voxelcss.com/res/grass/side.png'),
+      'left'   : new voxelcss.ImageFace('http://voxelcss.com/res/grass/side.png'),
+      'right'  : new voxelcss.ImageFace('http://voxelcss.com/res/grass/side.png')
+    }),
   
-    water: {
-      'top'    : 'http://voxelcss.com/res/water/main.png',
-      'bottom' : 'http://voxelcss.com/res/water/main.png',
-      'front'  : 'http://voxelcss.com/res/water/main.png',
-      'back'   : 'http://voxelcss.com/res/water/main.png',
-      'left'   : 'http://voxelcss.com/res/water/main.png',
-      'right'  : 'http://voxelcss.com/res/water/main.png'
-    },
+    water: new voxelcss.Mesh(
+      new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png')
+    ),
   
-    waterFall: {
-      'top'    : 'http://voxelcss.com/res/water/main.png',
-      'bottom' : 'http://voxelcss.com/res/water/main.png',
-      'front'  : 'http://voxelcss.com/res/water/fall.png',
-      'back'   : 'http://voxelcss.com/res/water/fall.png',
-      'left'   : 'http://voxelcss.com/res/water/fall.png',
-      'right'  : 'http://voxelcss.com/res/water/fall.png'
-    },
+    waterFall: new voxelcss.Mesh({
+      'top'    : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'bottom' : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'front'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/fall.png'),
+      'back'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/fall.png'),
+      'left'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/fall.png'),
+      'right'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/fall.png')
+    }),
   
-    waterFallTop: {
-      'top'    : 'http://voxelcss.com/res/water/main.png',
-      'bottom' : 'http://voxelcss.com/res/water/main.png',
-      'front'  : 'http://voxelcss.com/res/water/falltop.png',
-      'back'   : 'http://voxelcss.com/res/water/falltop.png',
-      'left'   : 'http://voxelcss.com/res/water/falltop.png',
-      'right'  : 'http://voxelcss.com/res/water/falltop.png'
-    },
+    waterFallTop: new voxelcss.Mesh({
+      'top'    : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'bottom' : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'front'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/falltop.png'),
+      'back'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/falltop.png'),
+      'left'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/falltop.png'),
+      'right'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/falltop.png')
+    }),
   
-    waterFallCrash: {
-      'top'    : 'http://voxelcss.com/res/water/main.png',
-      'bottom' : 'http://voxelcss.com/res/water/main.png',
-      'front'  : 'http://voxelcss.com/res/water/crash.png',
-      'back'   : 'http://voxelcss.com/res/water/crash.png',
-      'left'   : 'http://voxelcss.com/res/water/crash.png',
-      'right'  : 'http://voxelcss.com/res/water/crash.png'
-    },
+    waterFallCrash: new voxelcss.Mesh({
+      'top'    : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'bottom' : new voxelcss.ImageFace('http://voxelcss.com/res/water/main.png'),
+      'front'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/crash.png'),
+      'back'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/crash.png'),
+      'left'   : new voxelcss.ImageFace('http://voxelcss.com/res/water/crash.png'),
+      'right'  : new voxelcss.ImageFace('http://voxelcss.com/res/water/crash.png')
+    }),
   
-    cloud: {
-      'top'    : 'http://voxelcss.com/res/cloud/main.png',
-      'bottom' : 'http://voxelcss.com/res/cloud/main.png',
-      'front'  : 'http://voxelcss.com/res/cloud/main.png',
-      'back'   : 'http://voxelcss.com/res/cloud/main.png',
-      'left'   : 'http://voxelcss.com/res/cloud/main.png',
-      'right'  : 'http://voxelcss.com/res/cloud/main.png'
-    },
+    treeTrunk: new voxelcss.Mesh({
+      'top'    : new voxelcss.ImageFace('http://voxelcss.com/res/tree/rings.png'),
+      'bottom' : new voxelcss.ImageFace('http://voxelcss.com/res/tree/rings.png'),
+      'front'  : new voxelcss.ImageFace('http://voxelcss.com/res/tree/bark.png'),
+      'back'   : new voxelcss.ImageFace('http://voxelcss.com/res/tree/bark.png'),
+      'left'   : new voxelcss.ImageFace('http://voxelcss.com/res/tree/bark.png'),
+      'right'  : new voxelcss.ImageFace('http://voxelcss.com/res/tree/bark.png')
+    }),
   
-    treeTrunk: {
-      'top'    : 'http://voxelcss.com/res/tree/rings.png',
-      'bottom' : 'http://voxelcss.com/res/tree/rings.png',
-      'front'  : 'http://voxelcss.com/res/tree/bark.png',
-      'back'   : 'http://voxelcss.com/res/tree/bark.png',
-      'left'   : 'http://voxelcss.com/res/tree/bark.png',
-      'right'  : 'http://voxelcss.com/res/tree/bark.png'
-    },
-  
-    treeLeaves: {
-      'top'    : 'http://voxelcss.com/res/tree/leaves.png',
-      'bottom' : 'http://voxelcss.com/res/tree/leaves.png',
-      'front'  : 'http://voxelcss.com/res/tree/leaves.png',
-      'back'   : 'http://voxelcss.com/res/tree/leaves.png',
-      'left'   : 'http://voxelcss.com/res/tree/leaves.png',
-      'right'  : 'http://voxelcss.com/res/tree/leaves.png'
-    }
+    treeLeaves: new voxelcss.Mesh(
+      new voxelcss.ImageFace('http://voxelcss.com/res/tree/leaves.png')
+    )
   
   }
   
