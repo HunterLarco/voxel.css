@@ -185,19 +185,15 @@ body{
     
     function UpdateDarkness(){
       lightSource.setBrightness(lightData.darkness);
-      scene.update();
     }
     function UpdateLightness(){
       lightSource.setBrightness(null, lightData.lightness);
-      scene.update();
     }
     function UpdateDistance(){
       lightSource.setTravelDistance(lightData.travelDistance);
-      scene.update();
     }
     function UpdatePosition(){
       lightSource.setPosition(lightData.x, lightData.y, lightData.z);
-      scene.update();
     }
     
     var camera = gui.addFolder('Scene');

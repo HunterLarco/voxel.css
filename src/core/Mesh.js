@@ -10,7 +10,7 @@
   
   
   // implements event listener
-  // events -> onChange
+  // events -> onchange
   function Mesh(){
     var self = this;
     

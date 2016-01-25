@@ -5,7 +5,7 @@
   
   
   // implements eventlistener
-  // events -> onChange
+  // events -> onchange
   function ColorFace(){
     var self = this;
     var undefined;
@@ -22,7 +22,7 @@
     self.clone = Clone;
     
     
-    function SetColor(data){
+    function SetColor(){
       if(arguments.length === 1 && arguments[0].constructor != Number){
         if(arguments[0].constructor == String)
           return SetColorFromHex(arguments[0]);

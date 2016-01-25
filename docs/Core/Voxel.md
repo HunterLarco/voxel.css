@@ -23,13 +23,13 @@ demension — Voxel width, height, and depth
 
 `.setMesh(mesh)`
 
-mesh — A dict containing 'front', 'back', 'top', 'bottom', 'left' and 'right' faces specified.
+mesh — A mesh instance.
 
 Changes the images used for each provided face for this voxel.
 
 `getMesh()`
 
-Returns the current mesh as a dict.
+Returns the current mesh instance.
 
 `animUp(scene)`
 
@@ -70,6 +70,10 @@ Returns the dom element containing the current voxel.
 `clone()`
 
 Returns a voxel instance with the same position, dimension, and mesh as the current voxel.
+
+`updateLightSource`
+
+Given a list of light source instances, update the voxel's shading.
 
 
 ### Events ###

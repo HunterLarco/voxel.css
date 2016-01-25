@@ -8,7 +8,7 @@
   
   
   // implements eventlistener
-  // events -> onChange
+  // events -> onchange
   function ImageFace(){
     var self = this;
     

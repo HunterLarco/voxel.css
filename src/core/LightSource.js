@@ -4,6 +4,7 @@
   
   // implements interface positioned
   // implements interface eventlistener (positioned dependency)
+  // events -> change
   function LightSource(){
     var self = this;
     var undefined;
@@ -27,6 +28,7 @@
       
       var old = travelDistance;
       travelDistance = distance;
+      self.triggerEvent('change', {target:self});
       return old;
     }
     function GetTravelDistance(){
@@ -37,6 +39,7 @@
       var old = GetBrightness();
       if(typeof light == 'number') maxLight = light;
       if(typeof dark == 'number') maxDark = dark;
+      self.triggerEvent('change', {target:self});
       return old;
     }
     function GetBrightness(){

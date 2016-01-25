@@ -95,8 +95,6 @@
     self.removeLightSource = RemoveLightSource;
     self.getLightSources = GetLightSources;
     
-    self.update = Update;
-    
     
     function Rotate(x, y, z){
       return {
@@ -374,6 +372,9 @@
       var index = lightSources.indexOf(source);
       if(index !== -1) return false;
       
+      source.addEventListener('change', UpdateVoxelLighting);
+      source.addEventListener('move', UpdateVoxelLighting);
+      
       lightSources.push(source);
       UpdateVoxelLighting();
       
@@ -383,6 +384,9 @@
       var index = lightSources.indexOf(source);
       if(index === -1) return false;
       
+      source.removeEventListener('change', UpdateVoxelLighting);
+      source.removeEventListener('move', UpdateVoxelLighting);
+      
       lightSources.splice(index, 1);
       UpdateVoxelLighting();
       
@@ -390,10 +394,6 @@
     }
     function GetLightSources(){
       return lightSources;
-    }
-    
-    function Update(){
-      UpdateSceneTransforms();
     }
     
     
