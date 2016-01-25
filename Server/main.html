@@ -5,7 +5,6 @@
 <title>voxel.css</title>
 
 <script src='/scripts/defaultworld.js'></script>
-<script src='/scripts/meshes.js'></script>
 
 <script src='/dist/voxel.js'></script>
 <link rel='stylesheet' type='text/css' href='/dist/voxel.css'></link>
@@ -148,8 +147,6 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
 <div class='footer'>Go. Build something crazy!</div>
 
 
-
-
 <script>
 (function(){
   
@@ -189,13 +186,13 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
     
     window.editor = new voxelcss.Editor(world);
     editor.add(new voxelcss.Voxel(0, 0, 0, 36, {
-      mesh: MESHES.dirt
+      mesh: voxelcss.Meshes.dirt
     }));
   }
   function LoadSidebar(){
     var items = document.querySelectorAll('.sidebar .mesh');
     for(var i=0,item; item=items[i++];){
-      item.mesh = MESHES[item.getAttribute('data-mesh')];
+      item.mesh = voxelcss.Meshes[item.getAttribute('data-mesh')];
       item.addEventListener('click', SetCurrentMesh);
     }
   }
