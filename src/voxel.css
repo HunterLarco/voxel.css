@@ -31,7 +31,7 @@
   transform-style: preserve-3d;
 }
 
-.face{
+.scene .face{
   display:block;
   position:absolute;
   
@@ -43,25 +43,28 @@
   width:36px;
   height:36px;
   
+  cursor:move;
+}
+.scene.edit .face{
   cursor:pointer;
 }
-.face img{
+.scene .face img{
   width:100%;
   height:100%;
 }
-.face img.colored{
+.scene .face img.colored{
   visibility:hidden;
 }
-.cube:hover img{
+.scene.edit .cube:hover img{
   visibility:hidden !important;
 }
-.cube:hover .face{
+.scene.edit .cube:hover .face{
   background:rgba(0,0,0,0.3) !important;
 }
-.cube:hover .face .shader{
+.scene.edit .cube:hover .face .shader{
   opacity:0 !important;
 }
-.face .shader{
+.scene .face .shader{
   display:block;
   
   position:absolute;
@@ -74,18 +77,18 @@
   opacity:0;
 }
 
-.cube{
+.scene .cube{
   position:absolute;
   
   transform-style:preserve-3d;
 }
-.cube .anim{
+.scene .cube .anim{
   transform-style:preserve-3d;
 }
-.cube .anim.down{
+.scene .cube .anim.down{
   animation:falldown 1000ms linear both;
 }
-.cube .anim.up{
+.scene .cube .anim.up{
   animation:fallup 1000ms linear both;
 }
 

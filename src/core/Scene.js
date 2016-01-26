@@ -74,6 +74,7 @@
     self.detach = Detach;
     self.isAttached = IsAttached;
     self.getParentElement = GetParementElement;
+    self.getDomElement = GetDomElement;
     
     self.enableOrbit = EnableOrbit;
     self.disableOrbit = DisableOrbit;
@@ -315,6 +316,9 @@
     }
     function GetParementElement(){
       return parentContainer;
+    }
+    function GetDomElement(){
+      return sceneElement;
     }
     
     function EnableOrbit(){

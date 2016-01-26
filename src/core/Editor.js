@@ -41,9 +41,13 @@
     
     function Enable(){
       isEnabled = true;
+      var sceneElem = world.getScene().getDomElement();
+      sceneElem.setAttribute('class', 'scene edit');
     }
     function Disable(){
       isEnabled = false;
+      var sceneElem = world.getScene().getDomElement();
+      sceneElem.setAttribute('class', 'scene');
     }
     function IsEnabled(){
       return isEnabled;
@@ -196,6 +200,7 @@
       if(options !== undefined && options.autosave === true)
         EnableAutoSave();
       
+      Enable();
       LoadWorldVoxels();
     }).apply(self, arguments);
   }
