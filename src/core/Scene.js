@@ -495,9 +495,9 @@
     }
     
     function UpdateSceneTransforms(){
-      cameraElement.style.transform = 'rotateX('+rotation.x+'rad) rotateY('+rotation.y+'rad) rotateZ('+rotation.z+'rad)';
-      zoomElement.style.transform  = 'scale('+zoom+', '+zoom+')';
-      zoomElement.style.transform += ' translateX('+pan.x+'px) translateY('+pan.y+'px) translateZ('+pan.z+'px)';
+      cameraElement.style.transform = cameraElement.style.webkitTransform = 'rotateX('+rotation.x+'rad) rotateY('+rotation.y+'rad) rotateZ('+rotation.z+'rad)';
+      zoomElement.style.transform = zoomElement.style.webkitTransform = 'scale('+zoom+', '+zoom+')';
+      zoomElement.style.transform = zoomElement.style.webkitTransform = zoomElement.style.transform + ' translateX('+pan.x+'px) translateY('+pan.y+'px) translateZ('+pan.z+'px)';
       
       UpdateVoxelLighting();
     }

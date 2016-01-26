@@ -311,27 +311,27 @@
       
       switch(label){
         case 'top'   :
-          wrapper.style.transform = 'rotateX(90deg) translateZ('+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'rotateX(90deg) translateZ('+dimension/2+'px)';
           wrapper.addEventListener('click', OnTopClicked);
         break;
         case 'bottom':
-          wrapper.style.transform = 'rotateX(90deg) translateZ(-'+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'rotateX(90deg) translateZ(-'+dimension/2+'px)';
           wrapper.addEventListener('click', OnBottomClicked);
         break;
         case 'left'  :
-          wrapper.style.transform = 'rotateY(90deg) translateZ(-'+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'rotateY(90deg) translateZ(-'+dimension/2+'px)';
           wrapper.addEventListener('click', OnLeftClicked);
         break;
         case 'right' :
-          wrapper.style.transform = 'rotateY(90deg) translateZ('+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'rotateY(90deg) translateZ('+dimension/2+'px)';
           wrapper.addEventListener('click', OnRightClicked);
         break;
         case 'front' :
-          wrapper.style.transform = 'translateZ('+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'translateZ('+dimension/2+'px)';
           wrapper.addEventListener('click', OnFrontClicked);
         break;
         case 'back'  :
-          wrapper.style.transform = 'translateZ(-'+dimension/2+'px)';
+          wrapper.style.transform = wrapper.style.webkitTransform = 'translateZ(-'+dimension/2+'px)';
           wrapper.addEventListener('click', OnBackClicked);
         break;
       }
@@ -355,7 +355,7 @@
     
     function UpdatePosition(){
       var position = self.getPosition();
-      cubeElement.style.transform = 'translate3d('+position.x+'px, '+-position.y+'px, '+position.z+'px)';
+      cubeElement.style.transform = cubeElement.style.webkitTransform = 'translate3d('+position.x+'px, '+-position.y+'px, '+position.z+'px)';
     }
     function AppendToScene(){
       parentScene.add(self);
