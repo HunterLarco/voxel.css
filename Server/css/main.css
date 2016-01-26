@@ -16,7 +16,6 @@ body{
   height:67%;
   
   background:rgb(232,232,232);
-  background-size:100px 100px;
 }
 
 .demo .drag{
@@ -35,12 +34,6 @@ body{
   
   color:rgba(0,0,0,0.35);
   text-align:center;
-  
-  transition:all 250ms;
-  opacity:0;
-}
-.demo .drag.show{
-  opacity:1;
 }
 
 .nav{
@@ -64,21 +57,14 @@ body{
 .nav .item:hover{
   background:rgba(0,0,0,0.2);
 }
-.nav h1{
+.nav img{
   display:inline-block;
   vertical-align:middle;
   
-  font-size:18px;
-  line-height:18px;
-  
   margin:0px;
-  padding:20px 24px;
+  padding:0px 11px;
   
-  cursor:default;
-  
-  color:rgb(255,255,255);
-  text-decoration:none;
-  background:rgba(0,0,0,0.4);
+  height:36px;
 }
 
 label.voxel{

@@ -5,6 +5,7 @@
 <title>voxel.css</title>
 
 <script type='text/javascript' src='/scripts/analytics.js'></script>
+<script type='text/javascript' src='/scripts/logoworld.js'></script>
 
 <script src='/dist/voxel.js'></script>
 <link rel='stylesheet' type='text/css' href='/dist/voxel.css'></link>
@@ -23,7 +24,7 @@
 
 
 <div class='nav'>
-  <h1>voxel.css</h1>
+  <img src='/images/icon.png'/>
   <a class='item' href='//github.com/HunterLarco/voxel.css'>Docs</a>
   <a class='item' href='/download'>Download</a>
   <a class='item' href='//github.com/HunterLarco/voxel.css'>Github Repo</a>
@@ -141,7 +142,6 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
 (function(){
   
   var BLOCKDIM = 70;
-  var world;
   var scene;
   var lightSource;
   
@@ -167,7 +167,8 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
     setTimeout(AddWater, 2000);
     setTimeout(AddTreeTrunk, 2700);
     setTimeout(AddTreeLeaves, 3300);
-    setTimeout(ShowDragLabel, 4200);
+    setTimeout(HideWorld, 4300);
+    setTimeout(LoadLogo, 6800);
   }
   
   function AddGround(){
@@ -225,8 +226,42 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
     ];
     AnimateBlocks(blocks, voxelcss.Meshes.treeLeaves);
   }
-  function ShowDragLabel(){
-    document.querySelector('.demo .drag').setAttribute('class', 'drag show');
+  function HideWorld(){
+    var voxels = scene.getVoxels();
+    function RemoveWhile(){
+      scene.remove(voxels[voxels.length - 1]);
+      voxels = scene.getVoxels();
+      if(voxels.length > 0)
+        setTimeout(RemoveWhile, 50);
+    }
+    RemoveWhile();
+  }
+  function LoadLogo(){
+    scene.setPan(4 * 36, 2 * 36, 0);
+    scene.setRotation(0, Math.PI/2);
+    
+    lightSource.setTravelDistance(2400);
+    lightSource.setPosition(0, 200, 1000);
+    
+    FixSceneZoom();
+    window.addEventListener('resize', FixSceneZoom);
+    
+    var voxels = JSON.parse(LOGOWORLD);
+    var i = 0;
+    function AddVoxel(){
+      if(i >= voxels.length) return;
+      var json = voxels[i++];
+      var pos = json.position;
+      var voxel = new voxelcss.Voxel(pos.x, pos.y, pos.z, json.dimension, {
+        mesh: voxelcss.Mesh.loadFromSerial(json.mesh)
+      });
+      voxel.animUp(scene);
+      setTimeout(AddVoxel, 30);
+    }
+    AddVoxel();
+  }
+  function FixSceneZoom(){
+    scene.setZoom(window.innerWidth / 1435);
   }
   function AnimateBlocks(map, mesh){
     var time=0;
