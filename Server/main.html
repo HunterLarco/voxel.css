@@ -4,7 +4,8 @@
 
 <title>voxel.css</title>
 
-<script src='/scripts/defaultworld.js'></script>
+<script type='text/javascript' src='/scripts/analytics.js'></script>
+<script type='text/javascript' src='/scripts/logoworld.js'></script>
 
 <script src='/dist/voxel.js'></script>
 <link rel='stylesheet' type='text/css' href='/dist/voxel.css'></link>
@@ -31,18 +32,8 @@
 </div>
 
 
-<div class='demo'></div>
-
-
-<div class='sidebar'>
-  <img class='mesh' data-mesh='grass'          src='/res/grass/side.png'/>
-  <img class='mesh' data-mesh='dirt'           src='/res/dirt/main.png'/>
-  <img class='mesh' data-mesh='water'          src='/res/water/main.png'/>
-  <img class='mesh' data-mesh='waterFallTop'   src='/res/water/falltop.png'/>
-  <img class='mesh' data-mesh='waterFall'      src='/res/water/fall.png'/>
-  <img class='mesh' data-mesh='waterFallCrash' src='/res/water/crash.png'/>
-  <img class='mesh' data-mesh='treeLeaves'     src='/res/tree/leaves.png'/>
-  <img class='mesh' data-mesh='treeTrunk'      src='/res/tree/bark.png'/>
+<div class='demo'>
+  <div class='drag'>drag anywhere to rotate scene</div>
 </div>
 
 
@@ -150,54 +141,162 @@ voxel.addEventListener('FrontClick', FrontWasClicked);</code></pre>
 <script>
 (function(){
   
-  const BLOCKDIM = 36;
-  var world;
+  var BLOCKDIM = 70;
   var scene;
+  var lightSource;
   
   window.addEventListener('load', Init);
   function Init(){
     CreateWorld();
-    // LoadEditor();
   }
   
   function CreateWorld(){
-    scene = new voxelcss.Scene();
-    scene.pan(4 * BLOCKDIM, 2 * BLOCKDIM, 0);
-    scene.rotate(0, Math.PI/2, 0);
+    if(window.innerWidth <= 600)
+      BLOCKDIM = 50;
     
-    FixSceneZoom();
-    window.addEventListener('resize', FixSceneZoom);
+    scene = new voxelcss.Scene();
+    scene.rotate(-Math.PI/5, Math.PI/4, 0);
+    
+    lightSource = new voxelcss.LightSource(200, 500, 400, 800, 0.2, 1);
+    scene.addLightSource(lightSource);
     
     scene.attach(document.querySelector('.demo'));
     scene.disableZoom();
     
-    world = new voxelcss.World(scene);
-    world.import(DEFAULTWORLD);
+    setTimeout(AddGround, 500);
+    setTimeout(AddWater, 2000);
+    setTimeout(AddTreeTrunk, 2700);
+    setTimeout(AddTreeLeaves, 3300);
+    setTimeout(HideWorld, 4300);
+    setTimeout(LoadLogo, 6800);
+  }
+  
+  function AddGround(){
+    var i = 0;
+    for(var x=-2; x<=2; x++)
+      for(var z=-2; z<=2; z++)
+        (function(x, z){
+          setTimeout(function(){
+            new voxelcss.Voxel(BLOCKDIM*x, 0, BLOCKDIM*z, BLOCKDIM, {
+              mesh: voxelcss.Meshes.grass
+            }).animUp(scene);
+          }, (i++) * 50);
+        })(x, z);
+  }
+  function AddWater(){
+    var blocks = [
+      {x:-1.99, y:0.05, z:-1},
+      {x:-1, y:0.05, z:-1},
+      {x:0, y:0.05, z:-1},
+      {x:0, y:0.05, z:0},
+      {x:1, y:0.05, z:0},
+      {x:1, y:0.05, z:1},
+      {x:1.99, y:0.05, z:1}
+    ];
+    AnimateBlocks(blocks, voxelcss.Meshes.water);
+  }
+  function AddTreeTrunk(){
+    var blocks = [
+      {x:1, y:1, z:-1},
+      {x:1, y:2, z:-1},
+      {x:1, y:3, z:-1},
+      {x:1, y:4, z:-1},
+      {x:1, y:5, z:-1}
+    ];
+    if(window.innerWidth <= 600){
+      AnimatePan(0, 90, 0, 300);
+      AnimateZoom(-0.5, 300);
+    }else{
+      AnimatePan(0, 130, 0, 300);
+      AnimateZoom(-0.4, 300);
+    }
+    AnimateBlocks(blocks, voxelcss.Meshes.treeTrunk);
+  }
+  function AddTreeLeaves(){
+    var blocks = [
+      {x:1, y:6, z:-1},
+      {x:2, y:5, z:-1},
+      {x:2, y:4, z:-1},
+      {x:0, y:5, z:-1},
+      {x:0, y:4, z:-1},
+      {x:1, y:5, z:-2},
+      {x:1, y:4, z:-2},
+      {x:1, y:5, z:0},
+      {x:1, y:4, z:0}
+    ];
+    AnimateBlocks(blocks, voxelcss.Meshes.treeLeaves);
+  }
+  function HideWorld(){
+    var voxels = scene.getVoxels();
+    function RemoveWhile(){
+      scene.remove(voxels[voxels.length - 1]);
+      voxels = scene.getVoxels();
+      if(voxels.length > 0)
+        setTimeout(RemoveWhile, 50);
+    }
+    RemoveWhile();
+  }
+  function LoadLogo(){
+    scene.setPan(4 * 36, 2 * 36, 0);
+    scene.setRotation(0, Math.PI/2);
+    
+    lightSource.setTravelDistance(2400);
+    lightSource.setPosition(0, 200, 1000);
+    
+    FixSceneZoom();
+    window.addEventListener('resize', FixSceneZoom);
+    
+    var voxels = JSON.parse(LOGOWORLD);
+    var i = 0;
+    function AddVoxel(){
+      if(i >= voxels.length) return;
+      var json = voxels[i++];
+      var pos = json.position;
+      var voxel = new voxelcss.Voxel(pos.x, pos.y, pos.z, json.dimension, {
+        mesh: voxelcss.Mesh.loadFromSerial(json.mesh)
+      });
+      voxel.animUp(scene);
+      setTimeout(AddVoxel, 30);
+    }
+    AddVoxel();
   }
   function FixSceneZoom(){
     scene.setZoom(window.innerWidth / 1435);
   }
-  
-  function LoadEditor(){
-    document.querySelector('.sidebar').style.display = 'block';
-    
-    LoadSidebar();
-    scene.enableZoom();
-    
-    window.editor = new voxelcss.Editor(world);
-    editor.add(new voxelcss.Voxel(0, 0, 0, 36, {
-      mesh: voxelcss.Meshes.dirt
-    }));
-  }
-  function LoadSidebar(){
-    var items = document.querySelectorAll('.sidebar .mesh');
-    for(var i=0,item; item=items[i++];){
-      item.mesh = voxelcss.Meshes[item.getAttribute('data-mesh')];
-      item.addEventListener('click', SetCurrentMesh);
+  function AnimateBlocks(map, mesh){
+    var time=0;
+    for(var i=0; i<map.length; i++){
+      var pos = map[i];
+      (function(pos){
+        setTimeout(function(){
+          new voxelcss.Voxel(BLOCKDIM*pos.x, BLOCKDIM*pos.y, BLOCKDIM*pos.z, BLOCKDIM, {
+            mesh: mesh
+          }).animUp(scene);
+        }, (time++) * 50);
+      })(pos);
     }
   }
-  function SetCurrentMesh(event){
-    editor.setToolMesh(event.target.mesh);
+  function AnimatePan(x, y, z, duration){
+    var stepduration = 20;
+    var time = 0;
+    var steps = Math.floor(duration / stepduration);
+    var dx = x / steps;
+    var dy = y / steps;
+    var dz = z / steps;
+    for(var i=0; i<steps; i++)
+      setTimeout(function(){
+        scene.pan(dx, dy, dz);
+      }, (time++) * stepduration);
+  }
+  function AnimateZoom(zoom, duration){
+    var stepduration = 20;
+    var time = 0;
+    var steps = Math.floor(duration / stepduration);
+    var dz = zoom / steps;
+    for(var i=0; i<steps; i++)
+      setTimeout(function(){
+        scene.zoom(dz);
+      }, (time++) * stepduration);
   }
   
 })();
