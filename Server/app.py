@@ -17,7 +17,15 @@ class Demo(webapp2.RequestHandler):
     self.response.out.write(template.render(path, template_values))
 
 
+class AboutMe(webapp2.RequestHandler):
+  def get(self):
+    template_values = {}
+    path = os.path.join(os.path.dirname(__file__), 'aboutme.html')
+    self.response.out.write(template.render(path, template_values))
+
+
 app = webapp2.WSGIApplication([
+  ('/aboutme/?', AboutMe),
   ('/demo/?', Demo),
   ('/.*', Landing)
 ], debug=True)
