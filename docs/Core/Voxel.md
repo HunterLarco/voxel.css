@@ -14,9 +14,18 @@ Mediates adding CSS voxels to a scene while tracking their position and mesh.
 
 `Voxel(x, y, z, dimension, options)`
 
-x, y, z — Positional coordinates (numerical)
-demension — Voxel width, height, and depth
-*optional* options.mesh — The mesh for this voxel (see setMesh)
+`x`, `y` and `z` — Numerical position coordinates
+
+`dimension` — A single number stating the Voxel width, height, and depth
+
+`options` _(optional)_ — an object containing the a mesh property (See setMesh).
+
+**Example:** 
+```js
+var myVoxel = new voxelcss.Voxel(100, 250, 0, 300, {
+  mesh: voxelcss.Meshes.grass
+});
+```
 
 
 ### Properties ###
