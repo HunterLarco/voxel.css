@@ -59,6 +59,18 @@ There are 4 important classes. Scene, World, Editor and of course Voxel. The des
 [Core Classes](./docs/Core) — [Interfaces](./docs/Interfaces)
 
 
+### Future Features ###
+
+- Shadows
+- Firefox back-face culling
+- Mobile touch support
+
+
+### Projects built with voxel.css ###
+
+- [https://codepen.io/wesbos/pen/EPLVMv?editors=0110](https://codepen.io/wesbos/pen/EPLVMv?editors=0110)
+
+
 ### Change log ###
 
 [releases](https://github.com/HunterLarco/voxel.css/releases)
