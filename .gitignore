@@ -1,6 +1,2 @@
-<<<<<<< HEAD
-node_modules/*
-=======
 *.pyc
 node_modules
->>>>>>> website
