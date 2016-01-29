@@ -1,7 +1,7 @@
 (function(){
-  
+
   if(!window.voxelcss) window.voxelcss = {};
-  
+
   // EVENTS
   //    onCubeClick
   //    onTopClick
@@ -14,38 +14,38 @@
   function Voxel(){
     var self = this;
     var undefined;
-    
-    
+
+
     var cubeElement;
     var animElement;
     var faces = {};
     var mesh;
-    
+
     var dimension = 0;
-    
+
     var parentScene;
-    
-    
+
+
     self.setMesh = SetMesh;
     self.getMesh = GetMesh;
-    
+
     self.animUp = AnimUp;
     self.animDown = AnimDown;
     self.addToScene = AddToScene;
     self.removeFromScene = RemoveFromScene;
     self.setParentScene = SetParentScene;
     self.removeParentScene = RemoveParentScene;
-    
+
     self.setDimension = SetDimension;
     self.getDimension = GetDimension;
-    
+
     self.getDomElement = GetDomElement;
-    
+
     self.clone = Clone;
-    
+
     self.updateLightSource = UpdateLightSource;
-    
-    
+
+
     function SetMesh(_mesh){
       if(_mesh === undefined || _mesh.constructor !== voxelcss.Mesh) return;
       var old = mesh;
@@ -58,29 +58,29 @@
     function GetMesh(){
       return mesh;
     }
-    
+
     function AnimUp(scene){
       if(scene === undefined)
         throw 'Scene required to add voxel to scene';
-      
+
       parentScene = scene;
-      animElement.setAttribute('class', 'anim up');
+      animElement.setAttribute('class', 'animated-up');
       AppendToScene();
     }
     function AnimDown(scene){
       if(scene === undefined)
         throw 'Scene required to add voxel to scene';
-      
+
       parentScene = scene;
-      animElement.setAttribute('class', 'anim down');
+      animElement.setAttribute('class', 'animated-down');
       AppendToScene();
     }
     function AddToScene(scene){
       if(scene === undefined)
         throw 'Scene required to add voxel to scene';
-      
+
       parentScene = scene;
-      animElement.setAttribute('class', 'anim');
+      animElement.setAttribute('class', 'animated');
       AppendToScene();
     }
     function RemoveFromScene(){
@@ -93,11 +93,11 @@
     function RemoveParentScene(){
       parentScene = undefined;
     }
-    
+
     function SetDimension(dim){
-      if(dim === undefined || typeof dim != 'number') 
+      if(dim === undefined || typeof dim != 'number')
         return dimension;
-      
+
       var old = dimension;
       dimension = dim;
       return old;
@@ -105,11 +105,11 @@
     function GetDimension(){
       return dimension;
     }
-    
+
     function GetDomElement(){
       return cubeElement;
     }
-    
+
     function Clone(){
       return new voxelcss.Voxel(
         self.getPositionX(),
@@ -119,7 +119,7 @@
         { mesh: mesh }
       );
     }
-    
+
     function UpdateLightSource(lightSources){
       var front  = 1;
       var back   = 1;
@@ -127,12 +127,12 @@
       var right  = 1;
       var top    = 1;
       var bottom = 1;
-      
+
       for(var i=0,lightSource; lightSource=lightSources[i++];){
         var brightness = lightSource.getBrightness();
         var scale = brightness[1] - brightness[0];
         var shift = 1 - brightness[1];
-      
+
         var x = lightSource.getPositionX();
         var y = lightSource.getPositionY();
         var z = lightSource.getPositionZ();
@@ -146,7 +146,7 @@
           var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
           back = Math.max(0, back - (1 - opacity));
         }
-      
+
         if(front > 0){
           var result = AngleFromLightSource(x, y, z, {A:0, B:0, C:1});
           var angle = result.angle;
@@ -156,7 +156,7 @@
           var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
           front = Math.max(0, front - (1 - opacity));
         }
-      
+
         if(left > 0){
           var result = AngleFromLightSource(x, y, z, {A:-1, B:0, C:0});
           var angle = result.angle;
@@ -166,7 +166,7 @@
           var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
           left = Math.max(0, left - (1 - opacity));
         }
-      
+
         if(right > 0){
           var result = AngleFromLightSource(x, y, z, {A:1, B:0, C:0});
           var angle = result.angle;
@@ -176,7 +176,7 @@
           var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
           right = Math.max(0, right - (1 - opacity));
         }
-      
+
         if(top > 0){
           var result = AngleFromLightSource(x, y, z, {A:0, B:1, C:0});
           var angle = result.angle;
@@ -186,7 +186,7 @@
           var opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
           top = Math.max(0, top - (1 - opacity));
         }
-      
+
         if(bottom > 0){
           var result = AngleFromLightSource(x, y, z, {A:0, B:-1, C:0});
           var angle = result.angle;
@@ -197,7 +197,7 @@
           bottom = Math.max(0, bottom - (1 - opacity));
         }
       }
-      
+
       faces['front'].shader.style.opacity  = front;
       faces['back'].shader.style.opacity   = back;
       faces['left'].shader.style.opacity   = left;
@@ -246,7 +246,7 @@
     function Rotate(point, rotMatrix){
       var column_vector = [[point.x], [point.y], [point.z]],
       rotated = MultiplyMatrices(rotMatrix, column_vector);
-		
+
       return {
         x: rotated[0][0],
         y: rotated[1][0],
@@ -268,8 +268,8 @@
       }
       return m;
     }
-    
-    
+
+
     function OnMeshChange(){
       ApplyMesh();
       self.triggerEvent('MeshChange', {target:self, mesh:mesh});
@@ -284,22 +284,22 @@
         }else if(faceMesh instanceof voxelcss.ColorFace){
           var faceElem = faces[label].parentElement;
           faceElem.style.background = '#' + faceMesh.getHex();
-          faces[label].setAttribute('class', 'colored');
+          faces[label].setAttribute('class', 'voxel-colored');
         }
       }
     }
-  
+
     function CreateCube(){
-      cubeElement = CreateElem('div', 'cube');
-      animElement = CreateElem('div', 'anim');
-    
+      cubeElement = CreateElem('div', 'voxel-cube');
+      animElement = CreateElem('div', 'animated');
+
       CreateFace('top');
       CreateFace('bottom');
       CreateFace('front');
       CreateFace('back');
       CreateFace('left');
       CreateFace('right');
-    
+
       cubeElement.appendChild(animElement);
     }
     function CreateFace(label){
@@ -308,7 +308,7 @@
       wrapper.style.height = dimension + 'px';
       wrapper.style.marginLeft = -dimension/2 + 'px';
       wrapper.style.marginTop = -dimension/2 + 'px';
-      
+
       switch(label){
         case 'top'   :
           wrapper.style.transform = 'rotateX(90deg) translateZ('+dimension/2+'px)';
@@ -336,13 +336,13 @@
         break;
       }
       wrapper.addEventListener('contextmenu', OnVoxelClick);
-      
+
       var image = CreateElem('img', '');
       faces[label] = image;
-      
+
       var shader = CreateElem('div', 'shader');
       faces[label].shader = shader;
-      
+
       wrapper.appendChild(image);
       wrapper.appendChild(shader);
       animElement.appendChild(wrapper);
@@ -352,7 +352,7 @@
       elem.setAttribute('class', cls);
       return elem;
     }
-    
+
     function UpdatePosition(){
       var position = self.getPosition();
       cubeElement.style.transform = 'translate3d('+position.x+'px, '+-position.y+'px, '+position.z+'px)';
@@ -360,14 +360,14 @@
     function AppendToScene(){
       parentScene.add(self);
     }
-    
+
     function OnVoxelClick(event){
       event.preventDefault();
-      
+
       self.triggerEvent('VoxelClick', {
         target: self
       });
-      
+
       return false;
     }
     function OnTopClicked(){
@@ -400,23 +400,23 @@
         target: self
       });
     }
-  
-  
+
+
     (function Constructor(x, y, z, dim, options){
       voxelcss.interfaces.Positioned(voxelcss.interfaces.EventListener(self));
       self.addEventListener('move', UpdatePosition);
-      
+
       SetDimension(dim);
       CreateCube();
-      
+
       self.setPosition(x, y, z);
-    
+
       SetMesh(new voxelcss.Mesh());
       if(options !== undefined && options.mesh !== undefined)
         SetMesh(options.mesh);
     }).apply(self, arguments);
   }
-  
+
   voxelcss.Voxel = Voxel;
-  
+
 })();
