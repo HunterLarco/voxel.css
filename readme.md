@@ -56,7 +56,7 @@ If everything went well you should see [this](http://jsfiddle.net/hjlarco/rrvsL9
 
 ### Core Concepts ###
 
-There are 4 important classes. Scene, World, Editor and of course Voxel. The destinctions between a Scene, World, and Editor are important to know if you are to leverage them well. A Scene is simply a camera. It can rotate, pan, zoom, and contain voxels. Meanwhile a World can save the state of any voxels added to it. This is important as voxels that are in a scene but not in a world are not savable. Lastly the Editor creates all the mouse events necessary to add the user to add and remove blocks from a World with the added option to autosave all changes.
+There are 4 important classes. Scene, World, Editor and of course Voxel. The destinctions between a Scene, World, and Editor are important to know if you are to leverage them well. A Scene is simply a camera. It can rotate, pan, zoom, and contain voxels. Meanwhile a World can save the state of any voxels added to it. This is important as voxels that are in a scene but not in a world are not savable. Lastly the Editor creates all the mouse events necessary to allow the user to add and remove blocks from a World with the added option to autosave all changes.
 
 
 ### Properties and Classes ###
