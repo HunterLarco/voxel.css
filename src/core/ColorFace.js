@@ -14,7 +14,7 @@
       r: 0,
       g: 0,
       b: 0,
-      a:1
+      a: 1
     };
 
     self.setColor = SetColor;
@@ -25,9 +25,9 @@
     self.clone = Clone;
 
     function SetColor() {
-      if (arguments.length === 1 && arguments[0].constructor != Number){
+      if (arguments.length === 1 && arguments[0].constructor !== Number){
 
-        if(arguments[0].constructor == String) {
+        if (arguments[0].constructor === String) {
           return SetColorFromHex(arguments[0]);
         }
 
@@ -121,7 +121,7 @@
     }
 
     function RgbToHex(r, g, b) {
-      return ''+((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      return '' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
 
     function TriggerChangeEvent() {

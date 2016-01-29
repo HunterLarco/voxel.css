@@ -120,7 +120,7 @@
     function SetDimension(dim) {
       var old;
 
-      if (dim === undefined || typeof dim != 'number') {
+      if (dim === undefined || typeof dim !== 'number') {
         return dimension;
       }
 
@@ -150,6 +150,8 @@
     }
 
     function UpdateLightSource(lightSources) {
+      var PI = Math.PI;
+
       var front  = 1;
       var back   = 1;
       var left   = 1;
@@ -187,7 +189,7 @@
             C: -1
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -201,7 +203,7 @@
             C:1
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -215,7 +217,7 @@
             C: 0
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -229,7 +231,7 @@
             C: 0
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -243,7 +245,7 @@
             C: 0
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -257,7 +259,7 @@
             C: 0
           });
           angle   = result.angle;
-          percent = 1 - angle / (Math.PI/2);
+          percent = 1 - angle / (PI / 2);
           percent = ApplyLightingCurve(percent);
           percent = Math.min(1, percent + Math.pow(result.distance / lightSource.getTravelDistance(), 6));
           opacity = (result.direction < 0 ? 1 : percent) * scale + shift;
@@ -295,7 +297,7 @@
       };
 
       distance = Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2));
-      direction = Math.abs(plane.C) == 1 ? plane.C * rotatedPoint.z : (Math.abs(plane.B) == 1 ? plane.B * rotatedPoint.y : plane.A * rotatedPoint.x);
+      direction = Math.abs(plane.C) === 1 ? plane.C * rotatedPoint.z : (Math.abs(plane.B) === 1 ? plane.B * rotatedPoint.y : plane.A * rotatedPoint.x);
       angle = Math.asin(Math.abs(rotatedPoint.x * plane.A + rotatedPoint.y * plane.B + rotatedPoint.z * plane.C) / (Math.sqrt(Math.pow(rotatedPoint.x, 2) + Math.pow(rotatedPoint.y, 2) + Math.pow(rotatedPoint.z, 2))));
 
       return {

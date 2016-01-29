@@ -126,7 +126,7 @@
     function RotateX(x) {
       var old;
 
-      if (x === undefined || typeof x != 'number') {
+      if (x === undefined || typeof x !== 'number') {
         return rotation.x;
       }
 
@@ -140,7 +140,7 @@
     function RotateY(y) {
       var old;
 
-      if (y === undefined || typeof y != 'number') {
+      if (y === undefined || typeof y !== 'number') {
         return rotation.y;
       }
 
@@ -154,7 +154,7 @@
     function RotateZ(z) {
       var old;
 
-      if (z === undefined || typeof z != 'number') {
+      if (z === undefined || typeof z !== 'number') {
         return rotation.z;
       }
 
@@ -180,7 +180,7 @@
     function SetRotationX(x) {
       var old;
 
-      if (x === undefined || typeof x != 'number') {
+      if (x === undefined || typeof x !== 'number') {
         return rotation.x;
       }
 
@@ -194,7 +194,7 @@
     function SetRotationY(y) {
       var old;
 
-      if (y === undefined || typeof y != 'number') {
+      if (y === undefined || typeof y !== 'number') {
         return rotation.y;
       }
 
@@ -208,7 +208,7 @@
     function SetRotationZ(z) {
       var old;
 
-      if (z === undefined || typeof z != 'number') {
+      if (z === undefined || typeof z !== 'number') {
         return rotation.z;
       }
 
@@ -250,7 +250,7 @@
     function PanX(x) {
       var old;
 
-      if (x === undefined || typeof x != 'number') {
+      if (x === undefined || typeof x !== 'number') {
         return pan.x;
       }
 
@@ -264,7 +264,7 @@
     function PanY(y) {
       var old;
 
-      if (y === undefined || typeof y != 'number') {
+      if (y === undefined || typeof y !== 'number') {
         return pan.y;
       }
 
@@ -278,7 +278,7 @@
     function PanZ(z) {
       var old;
 
-      if (z === undefined || typeof z != 'number') {
+      if (z === undefined || typeof z !== 'number') {
         return pan.z;
       }
 
@@ -366,7 +366,7 @@
     function Zoom(_zoom) {
       var old;
 
-      if (_zoom === undefined || typeof _zoom != 'number') {
+      if (_zoom === undefined || typeof _zoom !== 'number') {
         return zoom;
       }
 
@@ -380,7 +380,7 @@
     function SetZoom(_zoom) {
       var old;
 
-      if (_zoom === undefined || typeof _zoom != 'number') {
+      if (_zoom === undefined || typeof _zoom !== 'number') {
         return zoom;
       }
 
@@ -591,7 +591,7 @@
           zoom: GetZoom(),
           target: self
         });
-      } else if(canOrbit){
+      } else if (canOrbit) {
         var rotations = 2;
 
         rotation.y += mouse.lastMove.dx / window.innerWidth  * Math.PI * 2 * rotations;

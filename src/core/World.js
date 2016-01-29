@@ -36,7 +36,7 @@
     function RemoveVoxel(voxel) {
       var index = voxels.indexOf(voxel);
 
-      if (index == -1) {
+      if (index === -1) {
         return false;
       }
 

@@ -24,7 +24,7 @@
     function SetTravelDistance(distance) {
       var old;
 
-      if (distance === undefined || typeof distance != 'number') {
+      if (distance === undefined || typeof distance !== 'number') {
         return travelDistance;
       }
 

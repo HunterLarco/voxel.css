@@ -149,7 +149,7 @@
       voxel.addEventListener('LeftClick', OnLeftClick);
       voxel.addEventListener('RightClick', OnRightClick);
 
-      voxel.addEventListener('MeshChange', function(){
+      voxel.addEventListener('MeshChange', function() {
         if (canAutoSave) {
           Save();
         }

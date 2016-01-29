@@ -274,7 +274,7 @@
       for(key in FACETYPES){
         value = FACETYPES[key];
 
-        if (value == type) {
+        if (value === type) {
           return key;
         }
 
@@ -315,8 +315,8 @@
   };
 
   function LoadFaceFromSerial(compositeSerial) {
-    var index = compositeSerial.indexOf('(');
-    var type = compositeSerial.slice(0, index);
+    var index      = compositeSerial.indexOf('(');
+    var type       = compositeSerial.slice(0, index);
     var typeSerial = compositeSerial.slice(index + 1, -1);
 
     return FACETYPES[type].loadFromSerial(typeSerial);
