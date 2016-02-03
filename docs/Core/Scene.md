@@ -151,7 +151,7 @@ zoom — New zoom offset.
 
 Offsets the zoom.
 
-`setSoom(soom)`
+`setZoom(zoom)`
 
 zoom — New zoom value.
 
