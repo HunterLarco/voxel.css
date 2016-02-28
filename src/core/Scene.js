@@ -448,8 +448,7 @@
           target: self
         });
       }else if(canOrbit){
-        var rotations = 2;
-        rotation.y += mouse.lastMove.dx / window.innerWidth * Math.PI*2 * rotations;
+        var rotations = 1;
         rotation.x -= mouse.lastMove.dy / window.innerHeight * Math.PI*2 * rotations;
         UpdateSceneTransforms();
         
