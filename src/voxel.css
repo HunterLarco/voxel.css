@@ -1,91 +1,91 @@
-.scene{
+.voxel-scene{
   position:absolute;
   top:0px;
   left:0px;
   width:100%;
   height:100%;
   overflow:hidden;
-  
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  
+
   perspective:1000px;
   perspective-origin:50% 50%;
-  
+
   cursor:move;
 }
-.scene .zoom,
-.scene .camera{
+.voxel-scene .voxel-zoom,
+.voxel-scene .voxel-camera{
   position:absolute;
   top:50%;
   left:50%;
-  
+
   width:0;
   height:0;
   overflow:visible;
-  
+
   transform-style: preserve-3d;
 }
 
-.face{
+.voxel-face{
   display:block;
   position:absolute;
-  
+
   outline:none;
   border:none;
-  
+
   margin-left:-18px;
   margin-top:-18px;
   width:36px;
   height:36px;
-  
+
   cursor:pointer;
 }
-.face img{
+.voxel-face img{
   width:100%;
   height:100%;
 }
-.face img.colored{
+.voxel-face .voxel-colored{
   visibility:hidden;
 }
-.cube:hover img{
+.voxel-cube:hover img{
   visibility:hidden !important;
 }
-.cube:hover .face{
+.voxel-cube:hover .voxel-face{
   background:rgba(0,0,0,0.3) !important;
 }
-.cube:hover .face .shader{
+.voxel-cube:hover .voxel-face .voxel-shader{
   opacity:0 !important;
 }
-.face .shader{
+.voxel-face .voxel-shader{
   display:block;
-  
+
   position:absolute;
   top:0px;
   left:0px;
   width:100%;
   height:100%;
-  
+
   background:rgb(0,0,0);
   opacity:0;
 }
 
-.cube{
+.voxel-cube{
   position:absolute;
-  
+
   transform-style:preserve-3d;
 }
-.cube .anim{
+.voxel-cube .animated{
   transform-style:preserve-3d;
 }
-.cube .anim.down{
+.voxel-cube .animated-down{
   animation:falldown 1000ms linear both;
 }
-.cube .anim.up{
+.voxel-cube .animated-up{
   animation:fallup 1000ms linear both;
 }
 
@@ -108,7 +108,7 @@
   50% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.048, 0, 1); }
   60.56% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.007, 0, 1); }
   82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
-  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
+  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
 }
 @keyframes falldown {
   0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -300, 0, 1); opacity:0; }
@@ -129,5 +129,5 @@
   50% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -0.048, 0, 1); }
   60.56% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.007, 0, 1); }
   82.78% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
-  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
+  100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
 }
