@@ -85,7 +85,7 @@
     }
     function RemoveFromScene(){
       if(parentScene === undefined) return;
-      parentScene.removeChild(cubeElement);
+      parentScene.remove(self);
     }
     function SetParentScene(scene){
       parentScene = scene;
