@@ -1,0 +1,63 @@
+<html>
+<head>
+<style>
+body{
+  padding:0px;
+  margin:0px;
+  
+  background:rgb(245,245,245);
+  box-shadow:inset 0px 0px 200px rgba(0,0,0,0.4);
+}
+.dg.ac{
+  z-index:1 !important;
+}
+</style>
+
+<script type="text/javascript" src="./dat.gui.min.js"></script>
+
+<script src='src/interfaces/EventListener.js'></script>
+<script src='src/interfaces/Positioned.js'></script>
+
+<script src='src/core/Voxel.js'></script>
+<script src='src/core/Scene.js'></script>
+<script src='src/core/World.js'></script>
+<script src='src/core/Editor.js'></script>
+<script src='src/core/LightSource.js'></script>
+<script src='src/core/ImageFace.js'></script>
+<script src='src/core/ColorFace.js'></script>
+<script src='src/core/Mesh.js'></script>
+<script src="src/Word.js"></script>
+
+<script src='src/ext/Meshes.js'></script>
+
+<link rel='stylesheet' href='voxel.css'></link>
+</head>
+<body>
+
+
+<div class='canvas'>
+  <div class='scene'></div>
+</div>
+
+
+<script>
+function init(element) {
+    var PI          = Math.PI;
+    var scene       = new voxelcss.Scene();
+    var lightSource = new voxelcss.LightSource(0, 0, 1000, 10000, 0.3, 1);
+    var world       = new voxelcss.World(scene);
+    var editor      = new voxelcss.Editor(world);
+    var word 		= new voxelcss.Word(editor);
+
+    scene.rotate(-PI / 8, PI / 4, 0);
+    scene.attach(element);
+    scene.addLightSource(lightSource);
+
+    editor.enableAutoSave();
+    word.addWord('VOXEL.CSS', 110, 0, 0, 100);
+}
+
+init(document.body);
+</script>
+</body>
+</html>
